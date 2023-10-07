@@ -7,4 +7,4 @@ responseHandle.successResponse = (res, status, message, data) => {
   });
 };
 
-module.exports = responseHandle;
+export default responseHandle;

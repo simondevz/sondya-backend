@@ -1,10 +1,19 @@
-const mongoose = require("mongoose");
+/* eslint-disable no-undef */
+
+// import { connect, set } from "mongoose";
+
+// import { connect, set } from "mongoose";
+
+import { connect, set } from "mongoose";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI;
 const connectDB = async () => {
   try {
-    mongoose.set("strictQuery", false);
-    const connection = await mongoose.connect(MONGO_URI, {
+    set("strictQuery", false);
+    const connection = await connect(MONGO_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
     });
@@ -14,4 +23,4 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-module.exports = connectDB;
+export default connectDB;
