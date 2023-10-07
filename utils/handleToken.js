@@ -1,10 +1,16 @@
-const jwt = require("jsonwebtoken");
-const tokenHandler = {};
+/* eslint-disable no-undef */
+import { sign, verify } from "jsonwebtoken";
+
+// @ts-ignore
+import dotenv from "dotenv";
+dotenv.config();
 const secret = process.env.JWT_SECRET;
+
+const tokenHandler = {};
 
 tokenHandler.generateToken = (fieldToSecure, duration) => {
   try {
-    return jwt.sign({ fieldToSecure }, secret, {
+    return sign({ fieldToSecure }, secret, {
       expiresIn: duration ? duration : 18408600000,
     });
   } catch (error) {
@@ -12,13 +18,13 @@ tokenHandler.generateToken = (fieldToSecure, duration) => {
   }
 };
 
-tokenHandler.decodeToken = (token) => {
+tokenHandler.decodeToken = (res, token) => {
   try {
-    return jwt.verify(token, secret);
+    return verify(token, secret);
   } catch (error) {
     res.status(422);
     throw new Error(error);
   }
 };
 
-module.exports = tokenHandler;
+export default tokenHandler;

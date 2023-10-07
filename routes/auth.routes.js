@@ -1,12 +1,11 @@
-const auth = require("../controllers/health.controllers");
-const authRoutes = require("express").Router();
+import auth from "../controllers/auth.controllers";
+
+import Router from "express";
+const authRoutes = Router.Router();
 
 // Basic Auth
-authRoutes.post("/register", health.Post);
-authRoutes.post("/login", health.Post);
-authRoutes.post("/forgotpassword", health.Post);
+authRoutes.post("/register", auth.Post);
+authRoutes.post("/login", auth.Post);
+authRoutes.post("/forgotpassword", auth.Post);
 
-// Profile
-authRoutes.post("/profile", health.Post);
-
-module.exports = authRoutes;
+export default authRoutes;

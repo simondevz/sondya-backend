@@ -1,22 +1,23 @@
+/* eslint-disable no-undef */
 // importing express framework
-const express = require("express");
+import express from "express";
 const app = express();
 
 // importing .env parser
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
 // importing monogodb database
-const connectDB = require("./config/db");
+import connectDB from "./config/db.js";
 connectDB();
 
 // importing middlewares
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
+import cors from "cors";
 // const { protectUser } = require("./middleware/userMiddleware"); // Auth Middlewares
 
 // Routes
-const healthRoutes = require("./routes/health.routes");
+import healthRoutes from "./routes/health.routes.js";
 
 // Running routes
 app.use(cors());
@@ -29,7 +30,7 @@ app.use("/api/v1/", healthRoutes);
 // app.use("/api/", adminRoutes);
 
 // Error Middlewares
-const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 //Not found URL middleware
 app.use(notFound);
