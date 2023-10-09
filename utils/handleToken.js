@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
-import { sign, verify } from "jsonwebtoken";
+// import { sign, verify } from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 
 // @ts-ignore
 import dotenv from "dotenv";
@@ -10,7 +11,7 @@ const tokenHandler = {};
 
 tokenHandler.generateToken = (fieldToSecure, duration) => {
   try {
-    return sign({ fieldToSecure }, secret, {
+    return jsonwebtoken.sign({ fieldToSecure }, secret, {
       expiresIn: duration ? duration : 18408600000,
     });
   } catch (error) {
@@ -20,7 +21,7 @@ tokenHandler.generateToken = (fieldToSecure, duration) => {
 
 tokenHandler.decodeToken = (res, token) => {
   try {
-    return verify(token, secret);
+    return jsonwebtoken.verify(token, secret);
   } catch (error) {
     res.status(422);
     throw new Error(error);

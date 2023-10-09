@@ -1,12 +1,12 @@
 import asyncHandler from "express-async-handler";
-import UserModel from "../models/users.model";
-import responseHandle from "../utils/handleResponse";
-import tokenHandler from "../utils/handleToken";
+import UserModel from "../models/users.model.js";
+import responseHandle from "../utils/handleResponse.js";
+import tokenHandler from "../utils/handleToken.js";
 
 const auth = {};
 
 auth.register = asyncHandler(async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { first_name, last_name, username, email, password } = req.body;
   try {
     const emailTaken = await UserModel.findOne({ email });
     if (emailTaken) {
@@ -23,10 +23,12 @@ auth.register = asyncHandler(async (req, res) => {
     }
 
     const newUser = await UserModel.create({
-      name: name.trim(),
+      first_name: first_name.trim(),
+      last_name: last_name.trim(),
       email: email.trim(),
       username: username.trim(),
       password: password.trim(),
+      type: "user",
     });
 
     if (!newUser) {
