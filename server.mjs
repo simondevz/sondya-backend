@@ -3,6 +3,14 @@
 import express from "express";
 const app = express();
 
+// importing swagger ui
+import { readFileSync } from "fs";
+import swaggerUi from "swagger-ui-express";
+
+// Read the JSON file synchronously
+const rawData = readFileSync("./swagger/swagger_output.json", "utf-8");
+const swaggerFile = JSON.parse(rawData);
+
 // importing .env parser
 import dotenv from "dotenv";
 dotenv.config();
@@ -17,6 +25,7 @@ import cors from "cors";
 // const { protectUser } = require("./middleware/userMiddleware"); // Auth Middlewares
 
 // Routes
+import authRoutes from "./routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 
 // Running routes
@@ -24,6 +33,10 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/api/v1/", healthRoutes);
+app.use("/api/v1/", authRoutes);
+
+//swagger inititailization
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // // protected routes
 // app.use(protectUser);

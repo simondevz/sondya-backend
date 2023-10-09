@@ -1,9 +1,5 @@
 /* eslint-disable no-undef */
 
-// import { connect, set } from "mongoose";
-
-// import { connect, set } from "mongoose";
-
 import { connect, set } from "mongoose";
 
 import dotenv from "dotenv";

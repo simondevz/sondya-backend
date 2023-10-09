@@ -1,11 +1,11 @@
-import auth from "../controllers/auth.controllers";
+import auth from "../controllers/auth.controllers.js";
 
 import Router from "express";
 const authRoutes = Router.Router();
 
 // Basic Auth
-authRoutes.post("/register", auth.Post);
-authRoutes.post("/login", auth.Post);
-authRoutes.post("/forgotpassword", auth.Post);
+authRoutes.post("/register", auth.register);
+authRoutes.post("/login", auth.login);
+// authRoutes.post("/forgotpassword", auth.Post);
 
 export default authRoutes;
