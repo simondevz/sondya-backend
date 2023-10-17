@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-// import { sign, verify } from "jsonwebtoken";
 import jsonwebtoken from "jsonwebtoken";
 
 // @ts-ignore
@@ -11,7 +10,7 @@ const tokenHandler = {};
 
 tokenHandler.generateToken = (fieldToSecure, duration) => {
   try {
-    return jsonwebtoken.sign({ fieldToSecure }, secret, {
+    return jsonwebtoken.sign(fieldToSecure, secret, {
       expiresIn: duration ? duration : 18408600000,
     });
   } catch (error) {

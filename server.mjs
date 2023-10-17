@@ -43,13 +43,13 @@ app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 // app.use("/api/", adminRoutes);
 
 // Error Middlewares
-import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+import errorMiddleware from "./middleware/errorMiddleware.js";
 
 //Not found URL middleware
-app.use(notFound);
+app.use(errorMiddleware.notFound);
 
 //Error handler for the whole app
-app.use(errorHandler);
+app.use(errorMiddleware.errorHandler);
 
 //initializing server
 app.listen(process.env.PORT, () => {
