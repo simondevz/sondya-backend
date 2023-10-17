@@ -18,7 +18,7 @@ auth.register = asyncHandler(async (req, res) => {
     });
 
     if (usernameTaken) {
-      res.status(404);
+      res.status(400);
       throw new Error("Username is taken");
     }
 
@@ -49,22 +49,24 @@ auth.register = asyncHandler(async (req, res) => {
 });
 
 auth.login = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const exists = await UserModel.findOne({
-      username: username.trim(),
-      password: password.trim(),
+      email: email.trim(),
     });
 
-    if (!exists) {
+    if (!exists || (await exists.matchPassword(password)) === false) {
       res.status(400);
       throw new Error("Invalid username or password");
     }
 
     responseHandle.successResponse(res, "200", "Login success", {
-      username: exists.username,
-      token: tokenHandler.generateToken(res, username),
+      email: exists.email,
+      token: tokenHandler.generateToken(
+        { id: exists.id, email: exists.email, username: exists.username },
+        "1d"
+      ),
     });
   } catch (error) {
     res.status(500);
