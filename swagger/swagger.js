@@ -2,7 +2,7 @@ import swaggerAutogen from "swagger-autogen";
 
 const doc = {
   info: {
-    title: "Sodyna E-commerce ebsite",
+    title: "Sodyna E-commerce website",
     description: "Description",
   },
   host: "localhost:8989",

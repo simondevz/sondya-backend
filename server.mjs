@@ -22,9 +22,11 @@ connectDB();
 // importing middlewares
 import bodyParser from "body-parser";
 import cors from "cors";
+import AuthMiddleware from "./middleware/userMiddleware.js";
 // const { protectUser } = require("./middleware/userMiddleware"); // Auth Middlewares
 
 // Routes
+import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 
@@ -35,12 +37,12 @@ app.use(bodyParser.json());
 app.use("/api/v1/", healthRoutes);
 app.use("/api/v1/", authRoutes);
 
+// protected routes
+app.use(AuthMiddleware.protectUser);
+app.use("/api/v1/", AdminUsersRoutes);
+
 //swagger inititailization
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
-// // protected routes
-// app.use(protectUser);
-// app.use("/api/", adminRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";

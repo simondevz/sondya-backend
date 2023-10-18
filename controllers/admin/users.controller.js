@@ -1,14 +1,14 @@
 import asyncHandler from "express-async-handler";
-import UserModel from "../../models/users.model";
-import responseHandle from "../../utils/handleResponse";
+import UserModel from "../../models/users.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const users = {};
 
 users.create = asyncHandler(async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { first_name, last_name, username, email, password } = req.body;
 
   try {
-    const emailTaken = await UserModel.findOne({ email });
+    const emailTaken = await UserModel.findOne({ email: email.trim() });
     if (emailTaken) {
       res.status(400);
       throw new Error("Email is taken");
@@ -24,7 +24,8 @@ users.create = asyncHandler(async (req, res) => {
     }
 
     const newUser = await UserModel.create({
-      name: name.trim(),
+      first_name: first_name.trim(),
+      last_name: last_name.trim(),
       email: email.trim(),
       username: username.trim(),
       password: password.trim(),
@@ -33,14 +34,13 @@ users.create = asyncHandler(async (req, res) => {
     if (!newUser) {
       res.status(500);
       throw new Error("could not create user");
-    } else {
-      responseHandle.successResponse(
-        res,
-        201,
-        "Account created successfully.",
-        newUser
-      );
     }
+    responseHandle.successResponse(
+      res,
+      201,
+      "Account created successfully.",
+      newUser
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);
@@ -49,7 +49,7 @@ users.create = asyncHandler(async (req, res) => {
 
 users.update = asyncHandler(async (req, res) => {
   const check = await UserModel.findById(req.params.id);
-  const { name, username, email, password } = req.body;
+  const { first_name, last_name, username, email, password } = req.body;
   try {
     if (!check) {
       res.status(404);
@@ -58,7 +58,8 @@ users.update = asyncHandler(async (req, res) => {
     const updatedUser = await UserModel.findByIdAndUpdate(
       req.params.id,
       {
-        name: name,
+        first_name: first_name,
+        last_name: last_name,
         username: username,
         email: email,
         password: password,
@@ -111,10 +112,10 @@ users.delete = asyncHandler(async (req, res) => {
 });
 
 users.getbyid = asyncHandler(async (req, res) => {
-  const check = await UserModel.findById(req.params.id);
+  const userDetail = await UserModel.findById(req.params.id);
 
   try {
-    if (!check) {
+    if (!userDetail) {
       res.status(404);
       throw new Error("Id not found");
     } else {
@@ -122,7 +123,7 @@ users.getbyid = asyncHandler(async (req, res) => {
         res,
         200,
         "User found successfully.",
-        check
+        userDetail
       );
     }
   } catch (error) {
@@ -132,10 +133,10 @@ users.getbyid = asyncHandler(async (req, res) => {
 });
 
 users.getall = asyncHandler(async (req, res) => {
-  const check = await UserModel.find();
+  const getall = await UserModel.find();
 
   try {
-    if (!check) {
+    if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
@@ -143,7 +144,7 @@ users.getall = asyncHandler(async (req, res) => {
         res,
         200,
         "Users found successfully.",
-        check
+        getall
       );
     }
   } catch (error) {
