@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import UserModel from "../models/users.model.js";
+import { sendWelcomeEmail } from "../services/users.services.js";
 import responseHandle from "../utils/handleResponse.js";
 import tokenHandler from "../utils/handleToken.js";
 
@@ -35,6 +36,7 @@ auth.register = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error("could not register user");
     } else {
+      sendWelcomeEmail(email.trim());
       responseHandle.successResponse(
         res,
         201,
