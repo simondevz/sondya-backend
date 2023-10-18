@@ -23,6 +23,9 @@ const userSchema = Schema(
     address: {
       type: String,
     },
+    forgot_password_code: {
+      type: String,
+    },
     password: {
       type: String,
       // required: true,
