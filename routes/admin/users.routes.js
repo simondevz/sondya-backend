@@ -1,13 +1,13 @@
 import users from "../../controllers/admin/users.controller.js";
 
 import express from "express";
-const usersRoutes = express.Router();
+const AdminUsersRoutes = express.Router();
 
 // for users
-usersRoutes.post("/admin/create/user", users.register);
-usersRoutes.put("/admin/update/user/:id", users.update);
-usersRoutes.delete("/admin/delete/user/:id", users.delete);
-usersRoutes.get("/admin/getbyid/user/:id", users.getbyid);
-usersRoutes.get("/admin/getall/user", users.getall);
+AdminUsersRoutes.post("/admin/create/user", users.create);
+AdminUsersRoutes.put("/admin/update/user/:id", users.update);
+AdminUsersRoutes.delete("/admin/delete/user/:id", users.delete);
+AdminUsersRoutes.get("/admin/getbyid/user/:id", users.getbyid);
+AdminUsersRoutes.get("/admin/getall/user", users.getall);
 
-export default usersRoutes;
+export default AdminUsersRoutes;

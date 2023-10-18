@@ -18,7 +18,7 @@ tokenHandler.generateToken = (fieldToSecure, duration) => {
   }
 };
 
-tokenHandler.decodeToken = (res, token) => {
+tokenHandler.decodeToken = (token) => {
   try {
     return jsonwebtoken.verify(token, secret);
   } catch (error) {
