@@ -30,9 +30,31 @@ const userSchema = Schema(
       type: String,
       // required: true,
     },
+    country: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    zip_code: {
+      type: String,
+    },
     type: {
       type: String, // admin or user
     },
+    image: [
+      {
+        url: {
+          type: String,
+        },
+        public_id: {
+          type: String,
+        },
+        folder: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
