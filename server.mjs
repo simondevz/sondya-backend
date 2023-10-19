@@ -25,10 +25,11 @@ import cors from "cors";
 import AuthMiddleware from "./middleware/userMiddleware.js";
 // const { protectUser } = require("./middleware/userMiddleware"); // Auth Middlewares
 
-// Routes
+// importing Routes
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
+import profileRoutes from "./routes/profile.routes.js";
 
 // Running routes
 app.use(cors());
@@ -40,9 +41,7 @@ app.use("/api/v1/", authRoutes);
 // protected routes
 app.use(AuthMiddleware.protectUser);
 app.use("/api/v1/", AdminUsersRoutes);
-
-//swagger inititailization
-app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+app.use("/api/v1/", profileRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
@@ -52,6 +51,9 @@ app.use(errorMiddleware.notFound);
 
 //Error handler for the whole app
 app.use(errorMiddleware.errorHandler);
+
+//swagger inititailization
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 //initializing server
 app.listen(process.env.PORT, () => {
