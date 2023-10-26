@@ -194,7 +194,7 @@
         }
       }
     },
-    "/api/v1/admin/create/user": {
+    "/api/v1/admin/user/create": {
       "post": {
         "description": "",
         "parameters": [
@@ -241,7 +241,7 @@
         }
       }
     },
-    "/api/v1/admin/update/user/{id}": {
+    "/api/v1/admin/user/update/{id}": {
       "put": {
         "description": "",
         "parameters": [
@@ -294,7 +294,7 @@
         }
       }
     },
-    "/api/v1/admin/delete/user/{id}": {
+    "/api/v1/admin/user/delete/{id}": {
       "delete": {
         "description": "",
         "parameters": [
@@ -323,7 +323,7 @@
         }
       }
     },
-    "/api/v1/admin/getbyid/user/{id}": {
+    "/api/v1/admin/user/get/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -352,7 +352,7 @@
         }
       }
     },
-    "/api/v1/admin/getall/user": {
+    "/api/v1/admin/users": {
       "get": {
         "description": "",
         "parameters": [
@@ -376,7 +376,7 @@
       }
     },
     "/api/v1/profile/update/{id}": {
-      "post": {
+      "put": {
         "description": "",
         "parameters": [
           {
