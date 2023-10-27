@@ -17,6 +17,10 @@ export const deleteUploads = (publicIds) => {
     cloudinary.uploader.destroy(publicId, (error, result) => {
       if (error) {
         console.error(`Error deleting file with public ID ${publicId}:`, error);
+        // throw new Error(
+        //   `Error deleting file with public ID ${publicId}:`,
+        //   error
+        // );
       } else {
         console.log(`File with public ID ${publicId} deleted:`, result);
       }
