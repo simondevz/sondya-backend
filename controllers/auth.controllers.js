@@ -68,7 +68,8 @@ auth.login = asyncHandler(async (req, res) => {
     }
 
     responseHandle.successResponse(res, "200", "Login success", {
-      exists,
+      email: exists.email,
+      type: exists.type,
       token: tokenHandler.generateToken(
         { id: exists.id, email: exists.email, username: exists.username },
         "1d"
