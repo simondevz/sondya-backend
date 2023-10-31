@@ -12,6 +12,15 @@ const productsSchema = Schema(
       type: String,
     }, // body
     total_stock: { type: Number },
+    tag: {
+      type: String,
+    },
+    brand: {
+      type: String,
+    },
+    model: {
+      type: String,
+    },
 
     // prices
     old_price: {

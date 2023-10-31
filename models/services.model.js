@@ -11,7 +11,13 @@ const servicesSchema = Schema(
     category: {
       type: String,
     },
+    brief_description: {
+      type: String,
+    },
     description: {
+      type: String,
+    },
+    location: {
       type: String,
     }, // body
 
@@ -31,6 +37,16 @@ const servicesSchema = Schema(
       type: Number,
     },
     total_rating: {
+      type: Number,
+    },
+
+    // service status
+    service_status: {
+      type: String, // available | hot | sold |
+    },
+
+    // duration
+    duration: {
       type: Number,
     },
 

@@ -8,6 +8,20 @@ const categoriesSchema = Schema(
     description: {
       type: String,
     }, // body
+    // images
+    image: [
+      {
+        url: {
+          type: String,
+        },
+        public_id: {
+          type: String,
+        },
+        folder: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
