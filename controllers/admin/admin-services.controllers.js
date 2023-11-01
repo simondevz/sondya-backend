@@ -17,7 +17,13 @@ adminServices.create = asyncHandler(async (req, res) => {
   } = req.body;
 
   try {
-    const serviceTaken = await ServiceModel.findOne({
+    const serviceTaken = await ServiceModel.findOne({ name: name.trim() });
+    if (serviceTaken) {
+      res.status(400);
+      throw new Error("service name is taken");
+    }
+
+    const newService = await ServiceModel.create({
       name: name.trim(),
       user: user.trim(),
       category: category.trim(),
@@ -25,18 +31,19 @@ adminServices.create = asyncHandler(async (req, res) => {
       description: description.trim(),
       tag: tag.trim(),
       service_status: service_status.trim(),
-      current_price: current_price.trim(),
+      current_price: current_price,
     });
 
-    if (!serviceTaken) {
+    if (!newService) {
       res.status(500);
       throw new Error("could not create new services");
     }
+
     responseHandle.successResponse(
       res,
       201,
       "services created successfully.",
-      serviceTaken
+      newService
     );
   } catch (error) {
     res.status(500);
@@ -74,7 +81,7 @@ adminServices.update = asyncHandler(async (req, res) => {
         description: description.trim(),
         tag: tag.trim(),
         service_status: service_status.trim(),
-        current_price: current_price.trim(),
+        current_price: current_price,
       },
       {
         new: true,

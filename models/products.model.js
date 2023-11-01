@@ -27,7 +27,7 @@ const productsSchema = Schema(
       type: String,
     }, // pricebefore
     current_price: {
-      type: String,
+      type: Number,
     }, // price now
     percentage_price_off: {
       type: String,
