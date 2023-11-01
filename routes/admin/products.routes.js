@@ -4,10 +4,10 @@ import express from "express";
 const AdminProductsRoutes = express.Router();
 
 // for admin products
-AdminProductsRoutes.post("/admin/category/create", adminProducts.create);
-AdminProductsRoutes.put("/admin/category/update/:id", adminProducts.update);
-AdminProductsRoutes.get("/admin/category/:id", adminProducts.getById);
-AdminProductsRoutes.delete("/admin/category/:id", adminProducts.delete);
-AdminProductsRoutes.get("/admin/categories", adminProducts.getAll);
+AdminProductsRoutes.post("/admin/product/create", adminProducts.create);
+AdminProductsRoutes.put("/admin/product/update/:id", adminProducts.update);
+AdminProductsRoutes.get("/admin/product/:id", adminProducts.getById);
+AdminProductsRoutes.delete("/admin/product/:id", adminProducts.delete);
+AdminProductsRoutes.get("/admin/products", adminProducts.getAll);
 
 export default AdminProductsRoutes;

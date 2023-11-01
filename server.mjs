@@ -41,6 +41,9 @@ app.use(bodyParser.json());
 app.use("/api/v1/", healthRoutes);
 app.use("/api/v1/", authRoutes);
 
+//swagger inititailization
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 // protected routes
 app.use(AuthMiddleware.protectUser);
 app.use("/api/v1/", AdminUsersRoutes);
@@ -57,9 +60,6 @@ app.use(errorMiddleware.notFound);
 
 //Error handler for the whole app
 app.use(errorMiddleware.errorHandler);
-
-//swagger inititailization
-app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 //initializing server
 app.listen(process.env.PORT, () => {

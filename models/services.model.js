@@ -23,10 +23,10 @@ const servicesSchema = Schema(
 
     // prices
     old_price: {
-      type: String,
+      type: Number,
     }, // pricebefore
     current_price: {
-      type: String,
+      type: Number,
     }, // price now
     percentage_price_off: {
       type: String,

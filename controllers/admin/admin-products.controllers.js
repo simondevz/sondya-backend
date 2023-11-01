@@ -21,17 +21,17 @@ adminProducts.create = asyncHandler(async (req, res) => {
     const productTaken = await ProductModel.findOne({ name: name.trim() });
     if (productTaken) {
       res.status(400);
-      throw new Error("Category name is taken");
+      throw new Error("product name is taken");
     }
     const newProducts = await ProductModel.create({
       name: name.trim(),
       category: category.trim(),
       description: description.trim(),
-      total_stock: total_stock.trim(),
+      total_stock: total_stock,
       tag: tag.trim(),
       brand: brand.trim(),
       model: model.trim(),
-      current_price: current_price.trim(),
+      current_price: current_price,
       product_status: product_status.trim(),
     });
 
@@ -75,13 +75,13 @@ adminProducts.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name.trim(),
-        category: category.trim(),
+        category: category,
         description: description.trim(),
-        total_stock: total_stock.trim(),
+        total_stock: total_stock,
         tag: tag.trim(),
         brand: brand.trim(),
         model: model.trim(),
-        current_price: current_price.trim(),
+        current_price: current_price,
         product_status: product_status.trim(),
       },
       {
