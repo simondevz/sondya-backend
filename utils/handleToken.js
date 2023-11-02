@@ -22,7 +22,7 @@ tokenHandler.decodeToken = (token) => {
   try {
     return jsonwebtoken.verify(token, secret);
   } catch (error) {
-    res.status(422);
+    // res.status(422);
     throw new Error(error);
   }
 };
