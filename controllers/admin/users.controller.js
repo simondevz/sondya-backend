@@ -49,7 +49,33 @@ users.create = asyncHandler(async (req, res) => {
 
 users.update = asyncHandler(async (req, res) => {
   const check = await UserModel.findById(req.params.id);
-  const { first_name, last_name, username, email, password } = req.body;
+  const {
+    first_name,
+    last_name,
+    status,
+    username,
+    email,
+    type,
+    phone_number,
+    address,
+    state,
+    country,
+    zip_code,
+
+    //social media
+    facebook_url,
+    linkedin_url,
+    youtube_url,
+    instagram_url,
+    twitter_url,
+    tiktok_url,
+  } = req.body;
+
+  let password;
+  if (req.body?.password) {
+    password = req.body.password;
+  }
+
   try {
     if (!check) {
       res.status(404);
@@ -62,7 +88,22 @@ users.update = asyncHandler(async (req, res) => {
         last_name: last_name,
         username: username,
         email: email,
+        status: status,
         password: password,
+        type: type,
+        phone_number: phone_number,
+        address: address,
+        state: state,
+        country: country,
+        zip_code: zip_code,
+
+        //social media
+        facebook_url: facebook_url,
+        linkedin_url: linkedin_url,
+        youtube_url: youtube_url,
+        instagram_url: instagram_url,
+        twitter_url: twitter_url,
+        tiktok_url: tiktok_url,
       },
       {
         new: true,
