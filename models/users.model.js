@@ -42,6 +42,10 @@ const userSchema = Schema(
     type: {
       type: String, // admin or user
     },
+    status: {
+      type: String, // active or blocked
+      default: "active",
+    },
     image: [
       {
         url: {
@@ -55,6 +59,15 @@ const userSchema = Schema(
         },
       },
     ],
+
+    // online activity
+    last_online: {
+      type: String, // active or blocked
+    },
+    // online activity
+    last_transaction: {
+      type: String, // active or blocked
+    },
   },
   { timestamps: true }
 );
