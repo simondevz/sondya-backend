@@ -68,6 +68,26 @@ const userSchema = Schema(
     last_transaction: {
       type: String, // active or blocked
     },
+
+    // social media
+    facebook_url: {
+      type: String,
+    },
+    linkedin_url: {
+      type: String,
+    },
+    youtube_url: {
+      type: String,
+    },
+    instagram_url: {
+      type: String,
+    },
+    twitter_url: {
+      type: String,
+    },
+    tiktok_url: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
