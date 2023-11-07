@@ -15,6 +15,11 @@ adminProducts.create = asyncHandler(async (req, res) => {
     model,
     current_price,
     product_status,
+
+    old_price,
+    discount_percentage,
+    vat_percentage,
+    total_variants,
   } = req.body;
 
   try {
@@ -24,15 +29,20 @@ adminProducts.create = asyncHandler(async (req, res) => {
       throw new Error("product name is taken");
     }
     const newProducts = await ProductModel.create({
-      name: name.trim(),
-      category: category.trim(),
-      description: description.trim(),
+      name: name,
+      category: category,
+      description: description,
       total_stock: total_stock,
-      tag: tag.trim(),
-      brand: brand.trim(),
-      model: model.trim(),
+      tag: tag,
+      brand: brand,
+      model: model,
       current_price: current_price,
-      product_status: product_status.trim(),
+      product_status: product_status,
+
+      old_price: old_price,
+      discount_percentage: discount_percentage,
+      vat_percentage: vat_percentage,
+      total_variants: total_variants,
     });
 
     if (!newProducts) {
@@ -63,6 +73,11 @@ adminProducts.update = asyncHandler(async (req, res) => {
     model,
     current_price,
     product_status,
+
+    old_price,
+    discount_percentage,
+    vat_percentage,
+    total_variants,
   } = req.body;
 
   try {
@@ -74,15 +89,20 @@ adminProducts.update = asyncHandler(async (req, res) => {
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       req.params.id,
       {
-        name: name.trim(),
+        name: name,
         category: category,
-        description: description.trim(),
+        description: description,
         total_stock: total_stock,
-        tag: tag.trim(),
-        brand: brand.trim(),
-        model: model.trim(),
+        tag: tag,
+        brand: brand,
+        model: model,
         current_price: current_price,
-        product_status: product_status.trim(),
+        product_status: product_status,
+
+        old_price: old_price,
+        discount_percentage: discount_percentage,
+        vat_percentage: vat_percentage,
+        total_variants: total_variants,
       },
       {
         new: true,
