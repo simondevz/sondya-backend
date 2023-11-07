@@ -29,7 +29,10 @@ const productsSchema = Schema(
     current_price: {
       type: Number,
     }, // price now
-    percentage_price_off: {
+    discount_percentage: {
+      type: String,
+    },
+    vat_percentage: {
       type: String,
     },
 
