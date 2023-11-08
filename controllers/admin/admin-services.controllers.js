@@ -7,13 +7,26 @@ const adminServices = {};
 adminServices.create = asyncHandler(async (req, res) => {
   const {
     name,
-    user,
+    owner,
     category,
     brief_description,
     description,
-    tag,
-    current_price,
     service_status,
+    currency,
+    old_price,
+    current_price,
+    percentage_price_off,
+    duration,
+
+    location_description,
+    phone_number,
+    phone_number_backup,
+    email,
+    website_link,
+    country,
+    state,
+    city,
+    map_location_link,
   } = req.body;
 
   try {
@@ -24,14 +37,27 @@ adminServices.create = asyncHandler(async (req, res) => {
     }
 
     const newService = await ServiceModel.create({
-      name: name.trim(),
-      user: user.trim(),
-      category: category.trim(),
-      brief_description: brief_description.trim(),
-      description: description.trim(),
-      tag: tag.trim(),
-      service_status: service_status.trim(),
+      name: name,
+      owner: owner,
+      category: category,
+      brief_description: brief_description,
+      description: description,
+      service_status: service_status,
+      currency: currency,
+      old_price: old_price,
       current_price: current_price,
+      percentage_price_off: percentage_price_off,
+      duration: duration,
+
+      location_description: location_description,
+      phone_number: phone_number,
+      phone_number_backup: phone_number_backup,
+      email: email,
+      website_link: website_link,
+      country: country,
+      state: state,
+      city: city,
+      map_location_link: map_location_link,
     });
 
     if (!newService) {
@@ -56,13 +82,26 @@ adminServices.update = asyncHandler(async (req, res) => {
 
   const {
     name,
-    user,
+    owner,
     category,
     brief_description,
     description,
-    tag,
-    current_price,
     service_status,
+    currency,
+    old_price,
+    current_price,
+    percentage_price_off,
+    duration,
+
+    location_description,
+    phone_number,
+    phone_number_backup,
+    email,
+    website_link,
+    country,
+    state,
+    city,
+    map_location_link,
   } = req.body;
 
   try {
@@ -74,14 +113,27 @@ adminServices.update = asyncHandler(async (req, res) => {
     const updatedServices = await ServiceModel.findByIdAndUpdate(
       req.params.id,
       {
-        name: name.trim(),
-        user: user.trim(),
-        category: category.trim(),
-        brief_description: brief_description.trim(),
-        description: description.trim(),
-        tag: tag.trim(),
-        service_status: service_status.trim(),
+        name: name,
+        owner: owner,
+        category: category,
+        brief_description: brief_description,
+        description: description,
+        service_status: service_status,
+        currency: currency,
+        old_price: old_price,
         current_price: current_price,
+        percentage_price_off: percentage_price_off,
+        duration: duration,
+
+        location_description: location_description,
+        phone_number: phone_number,
+        phone_number_backup: phone_number_backup,
+        email: email,
+        website_link: website_link,
+        country: country,
+        state: state,
+        city: city,
+        map_location_link: map_location_link,
       },
       {
         new: true,

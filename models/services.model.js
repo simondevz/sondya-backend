@@ -5,9 +5,6 @@ const servicesSchema = Schema(
     name: {
       type: String,
     },
-    user: {
-      type: String,
-    },
     category: {
       type: String,
     },
@@ -17,11 +14,27 @@ const servicesSchema = Schema(
     description: {
       type: String,
     },
-    location: {
-      type: String,
-    }, // body
+
+    // owner
+    owner: {
+      id: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+    },
 
     // prices
+    currency: {
+      type: String,
+    }, // pricebefore
     old_price: {
       type: Number,
     }, // pricebefore
@@ -42,12 +55,12 @@ const servicesSchema = Schema(
 
     // service status
     service_status: {
-      type: String, // available | hot | sold |
+      type: String, // available | draft | suspended | closed
     },
 
     // duration
     duration: {
-      type: Number,
+      type: String,
     },
 
     // images
@@ -64,6 +77,35 @@ const servicesSchema = Schema(
         },
       },
     ],
+
+    // service location
+    location_description: {
+      type: String,
+    },
+    phone_number: {
+      type: String,
+    },
+    phone_number_backup: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    website_link: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    map_location_link: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
