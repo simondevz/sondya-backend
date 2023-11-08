@@ -21,7 +21,21 @@ const productsSchema = Schema(
     model: {
       type: String,
     },
-
+    // owner
+    owner: {
+      id: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      email: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+    },
     // prices
     old_price: {
       type: String,
