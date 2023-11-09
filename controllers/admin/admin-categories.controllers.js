@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import CategoryModel from "../../models/categories.model.js";
+import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
+import handleUpload from "../../utils/upload.js";
 
 const adminCategories = {};
 
@@ -14,9 +16,36 @@ adminCategories.create = asyncHandler(async (req, res) => {
       throw new Error("Category name is taken");
     }
 
+    // start of upload images
+    let imageUrl;
+
+    if (req.files) {
+      // upload images to cloudinary
+      let files = req?.files;
+      let multiplePicturePromise = files.map(async (picture, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(picture.buffer).toString("base64");
+        let dataURI = "data:" + picture.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI, index);
+        return cldRes;
+      });
+
+      // get url of uploaded images
+      const imageResponse = await Promise.all(multiplePicturePromise);
+
+      imageUrl = imageResponse.map((image) => {
+        const url = image.secure_url;
+        const public_id = image.public_id;
+        const folder = image.folder;
+        return { url, public_id, folder };
+      });
+    }
+    // end of uploaded images
+
     const newCategories = await CategoryModel.create({
       name: name.trim(),
       description: description.trim(),
+      image: imageUrl,
     });
 
     if (!newCategories) {
@@ -44,11 +73,46 @@ adminCategories.update = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Id not found");
     }
+
+    // start of upload images
+    let imageUrl;
+
+    if (req.files) {
+      // upload images to cloudinary
+      let files = req?.files;
+      let multiplePicturePromise = files.map(async (picture, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(picture.buffer).toString("base64");
+        let dataURI = "data:" + picture.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI, index);
+        return cldRes;
+      });
+
+      // delete previously uploaded images from cloudinary
+      const initialImageArray = [];
+      check.image.forEach((image) => {
+        initialImageArray.push(image.public_id);
+      });
+      deleteUploads(initialImageArray);
+
+      // get url of uploaded images
+      const imageResponse = await Promise.all(multiplePicturePromise);
+
+      imageUrl = imageResponse.map((image) => {
+        const url = image.secure_url;
+        const public_id = image.public_id;
+        const folder = image.folder;
+        return { url, public_id, folder };
+      });
+    }
+    // end of uploaded images
+
     const updatedCategory = await CategoryModel.findByIdAndUpdate(
       req.params.id,
       {
-        name: name.trim(),
-        description: description.trim(),
+        name: name,
+        description: description,
+        image: imageUrl,
       },
       {
         new: true,

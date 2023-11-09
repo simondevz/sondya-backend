@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import ServiceModel from "../../models/services.model.js";
+import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
+import handleUpload from "../../utils/upload.js";
 
 const adminServices = {};
 
@@ -36,6 +38,32 @@ adminServices.create = asyncHandler(async (req, res) => {
       throw new Error("service name is taken");
     }
 
+    // start of upload images
+    let imageUrl;
+
+    if (req.files) {
+      // upload images to cloudinary
+      let files = req?.files;
+      let multiplePicturePromise = files.map(async (picture, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(picture.buffer).toString("base64");
+        let dataURI = "data:" + picture.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI, index);
+        return cldRes;
+      });
+
+      // get url of uploaded images
+      const imageResponse = await Promise.all(multiplePicturePromise);
+
+      imageUrl = imageResponse.map((image) => {
+        const url = image.secure_url;
+        const public_id = image.public_id;
+        const folder = image.folder;
+        return { url, public_id, folder };
+      });
+    }
+    // end of uploaded images
+
     const newService = await ServiceModel.create({
       name: name,
       owner: owner,
@@ -58,6 +86,7 @@ adminServices.create = asyncHandler(async (req, res) => {
       state: state,
       city: city,
       map_location_link: map_location_link,
+      image: imageUrl,
     });
 
     if (!newService) {
@@ -110,6 +139,39 @@ adminServices.update = asyncHandler(async (req, res) => {
       throw new Error("Id not found");
     }
 
+    // start of upload images
+    let imageUrl;
+
+    if (req.files) {
+      // upload images to cloudinary
+      let files = req?.files;
+      let multiplePicturePromise = files.map(async (picture, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(picture.buffer).toString("base64");
+        let dataURI = "data:" + picture.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI, index);
+        return cldRes;
+      });
+
+      // delete previously uploaded images from cloudinary
+      const initialImageArray = [];
+      check.image.forEach((image) => {
+        initialImageArray.push(image.public_id);
+      });
+      deleteUploads(initialImageArray);
+
+      // get url of uploaded images
+      const imageResponse = await Promise.all(multiplePicturePromise);
+
+      imageUrl = imageResponse.map((image) => {
+        const url = image.secure_url;
+        const public_id = image.public_id;
+        const folder = image.folder;
+        return { url, public_id, folder };
+      });
+    }
+    // end of uploaded images
+
     const updatedServices = await ServiceModel.findByIdAndUpdate(
       req.params.id,
       {
@@ -134,6 +196,7 @@ adminServices.update = asyncHandler(async (req, res) => {
         state: state,
         city: city,
         map_location_link: map_location_link,
+        image: imageUrl,
       },
       {
         new: true,
