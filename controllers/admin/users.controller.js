@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import UserModel from "../../models/users.model.js";
+import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
 
 const users = {};
@@ -134,6 +135,13 @@ users.delete = asyncHandler(async (req, res) => {
       throw new Error("Id not found");
     }
     const deleteUser = await UserModel.findByIdAndDelete(req.params.id);
+
+    // delete previously uploaded images from cloudinary
+    const initialImageArray = [];
+    check.image.forEach((image) => {
+      initialImageArray.push(image.public_id);
+    });
+    deleteUploads(initialImageArray);
 
     if (!deleteUser) {
       res.status(500);
