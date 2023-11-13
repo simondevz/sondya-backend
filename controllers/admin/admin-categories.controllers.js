@@ -145,6 +145,13 @@ adminCategories.delete = asyncHandler(async (req, res) => {
     }
     const deleteCategory = await CategoryModel.findByIdAndDelete(req.params.id);
 
+    // delete previously uploaded images from cloudinary
+    const initialImageArray = [];
+    check.image.forEach((image) => {
+      initialImageArray.push(image.public_id);
+    });
+    deleteUploads(initialImageArray);
+
     if (!deleteCategory) {
       res.status(500);
       throw new Error("could not delete category");

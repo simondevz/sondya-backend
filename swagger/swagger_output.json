@@ -262,10 +262,16 @@
             "schema": {
               "type": "object",
               "properties": {
+                "password": {
+                  "example": "any"
+                },
                 "first_name": {
                   "example": "any"
                 },
                 "last_name": {
+                  "example": "any"
+                },
+                "status": {
                   "example": "any"
                 },
                 "username": {
@@ -274,7 +280,40 @@
                 "email": {
                   "example": "any"
                 },
-                "password": {
+                "type": {
+                  "example": "any"
+                },
+                "phone_number": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "zip_code": {
+                  "example": "any"
+                },
+                "facebook_url": {
+                  "example": "any"
+                },
+                "linkedin_url": {
+                  "example": "any"
+                },
+                "youtube_url": {
+                  "example": "any"
+                },
+                "instagram_url": {
+                  "example": "any"
+                },
+                "twitter_url": {
+                  "example": "any"
+                },
+                "tiktok_url": {
                   "example": "any"
                 }
               }
@@ -577,6 +616,18 @@
                 },
                 "product_status": {
                   "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "discount_percentage": {
+                  "example": "any"
+                },
+                "vat_percentage": {
+                  "example": "any"
+                },
+                "total_variants": {
+                  "example": "any"
                 }
               }
             }
@@ -641,6 +692,18 @@
                   "example": "any"
                 },
                 "product_status": {
+                  "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "discount_percentage": {
+                  "example": "any"
+                },
+                "vat_percentage": {
+                  "example": "any"
+                },
+                "total_variants": {
                   "example": "any"
                 }
               }
@@ -757,7 +820,7 @@
                 "name": {
                   "example": "any"
                 },
-                "user": {
+                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -769,13 +832,49 @@
                 "description": {
                   "example": "any"
                 },
-                "tag": {
+                "service_status": {
+                  "example": "any"
+                },
+                "currency": {
+                  "example": "any"
+                },
+                "old_price": {
                   "example": "any"
                 },
                 "current_price": {
                   "example": "any"
                 },
-                "service_status": {
+                "percentage_price_off": {
+                  "example": "any"
+                },
+                "duration": {
+                  "example": "any"
+                },
+                "location_description": {
+                  "example": "any"
+                },
+                "phone_number": {
+                  "example": "any"
+                },
+                "phone_number_backup": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "website_link": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "map_location_link": {
                   "example": "any"
                 }
               }
@@ -783,6 +882,9 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
           },
@@ -816,7 +918,7 @@
                 "name": {
                   "example": "any"
                 },
-                "user": {
+                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -828,13 +930,49 @@
                 "description": {
                   "example": "any"
                 },
-                "tag": {
+                "service_status": {
+                  "example": "any"
+                },
+                "currency": {
+                  "example": "any"
+                },
+                "old_price": {
                   "example": "any"
                 },
                 "current_price": {
                   "example": "any"
                 },
-                "service_status": {
+                "percentage_price_off": {
+                  "example": "any"
+                },
+                "duration": {
+                  "example": "any"
+                },
+                "location_description": {
+                  "example": "any"
+                },
+                "phone_number": {
+                  "example": "any"
+                },
+                "phone_number_backup": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "website_link": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "map_location_link": {
                   "example": "any"
                 }
               }

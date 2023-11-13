@@ -201,6 +201,13 @@ adminProducts.delete = asyncHandler(async (req, res) => {
 
     const deleteProducts = await ProductModel.findByIdAndDelete(req.params.id);
 
+    // delete previously uploaded images from cloudinary
+    const initialImageArray = [];
+    check.image.forEach((image) => {
+      initialImageArray.push(image.public_id);
+    });
+    deleteUploads(initialImageArray);
+
     if (!deleteProducts) {
       res.status(500);
       throw new Error("could not delete product");

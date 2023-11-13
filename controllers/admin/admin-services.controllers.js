@@ -230,6 +230,13 @@ adminServices.delete = asyncHandler(async (req, res) => {
     }
     const deleteServices = await ServiceModel.findByIdAndDelete(req.params.id);
 
+    // delete previously uploaded images from cloudinary
+    const initialImageArray = [];
+    check.image.forEach((image) => {
+      initialImageArray.push(image.public_id);
+    });
+    deleteUploads(initialImageArray);
+
     if (!deleteServices) {
       res.status(500);
       throw new Error("could not delete services");
