@@ -1071,6 +1071,518 @@
         }
       }
     },
+    "/api/v1/seller/product/create": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "total_stock": {
+                  "example": "any"
+                },
+                "tag": {
+                  "example": "any"
+                },
+                "brand": {
+                  "example": "any"
+                },
+                "model": {
+                  "example": "any"
+                },
+                "current_price": {
+                  "example": "any"
+                },
+                "product_status": {
+                  "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "discount_percentage": {
+                  "example": "any"
+                },
+                "vat_percentage": {
+                  "example": "any"
+                },
+                "total_variants": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/product/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "total_stock": {
+                  "example": "any"
+                },
+                "tag": {
+                  "example": "any"
+                },
+                "brand": {
+                  "example": "any"
+                },
+                "model": {
+                  "example": "any"
+                },
+                "current_price": {
+                  "example": "any"
+                },
+                "product_status": {
+                  "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "discount_percentage": {
+                  "example": "any"
+                },
+                "vat_percentage": {
+                  "example": "any"
+                },
+                "total_variants": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/product/{userId}/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/product/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/products": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/service/create": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "owner": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "brief_description": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "service_status": {
+                  "example": "any"
+                },
+                "currency": {
+                  "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "current_price": {
+                  "example": "any"
+                },
+                "percentage_price_off": {
+                  "example": "any"
+                },
+                "duration": {
+                  "example": "any"
+                },
+                "location_description": {
+                  "example": "any"
+                },
+                "phone_number": {
+                  "example": "any"
+                },
+                "phone_number_backup": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "website_link": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "map_location_link": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/service/update/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "owner": {
+                  "example": "any"
+                },
+                "category": {
+                  "example": "any"
+                },
+                "brief_description": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "service_status": {
+                  "example": "any"
+                },
+                "currency": {
+                  "example": "any"
+                },
+                "old_price": {
+                  "example": "any"
+                },
+                "current_price": {
+                  "example": "any"
+                },
+                "percentage_price_off": {
+                  "example": "any"
+                },
+                "duration": {
+                  "example": "any"
+                },
+                "location_description": {
+                  "example": "any"
+                },
+                "phone_number": {
+                  "example": "any"
+                },
+                "phone_number_backup": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "website_link": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "map_location_link": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/service/{userId}/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/service/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/services": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/profile/update/{id}": {
       "put": {
         "description": "",
