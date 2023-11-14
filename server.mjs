@@ -32,15 +32,17 @@ import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
 
-import authRoutes from "./routes/auth.routes.js";
-
-import healthRoutes from "./routes/health.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
+
+import authRoutes from "./routes/auth.routes.js";
+import contactusRoutes from "./routes/contactus.routes.js";
+import healthRoutes from "./routes/health.routes.js";
 
 // Running routes
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use("/api/v1/", contactusRoutes);
 app.use("/api/v1/", healthRoutes);
 app.use("/api/v1/", authRoutes);
 

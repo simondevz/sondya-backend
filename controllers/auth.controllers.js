@@ -196,7 +196,7 @@ auth.resetPassword = asyncHandler(async (req, res) => {
       "200",
       "password updated successfully",
       {
-        email: exists.email.trim(),
+        email: exists.email,
       }
     );
   } catch (error) {
