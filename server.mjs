@@ -23,14 +23,17 @@ connectDB();
 import bodyParser from "body-parser";
 import cors from "cors";
 import AuthMiddleware from "./middleware/userMiddleware.js";
-// const { protectUser } = require("./middleware/userMiddleware"); // Auth Middlewares
 
 // importing Routes
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
+import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
+import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
+
 import authRoutes from "./routes/auth.routes.js";
+
 import healthRoutes from "./routes/health.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 
@@ -46,10 +49,18 @@ app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // protected routes
 app.use(AuthMiddleware.protectUser);
+
+//admin protected
 app.use("/api/v1/", AdminUsersRoutes);
 app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
+
+// seller protected
+app.use("/api/v1/", SellerProductsRoutes);
+app.use("/api/v1/", SellerServicesRoutes);
+
+// user protected
 app.use("/api/v1/", profileRoutes);
 
 // Error Middlewares
