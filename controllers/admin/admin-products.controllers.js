@@ -9,6 +9,7 @@ const adminProducts = {};
 adminProducts.create = asyncHandler(async (req, res) => {
   const {
     name,
+    owner,
     category,
     description,
     total_stock,
@@ -59,6 +60,7 @@ adminProducts.create = asyncHandler(async (req, res) => {
 
     const newProducts = await ProductModel.create({
       name: name,
+      owner: owner,
       category: category,
       description: description,
       total_stock: total_stock,

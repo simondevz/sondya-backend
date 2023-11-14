@@ -1219,16 +1219,10 @@
         }
       }
     },
-    "/api/v1/seller/product/{userId}/{id}": {
+    "/api/v1/seller/product/{id}": {
       "get": {
         "description": "",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -1252,9 +1246,7 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/api/v1/seller/product/{id}": {
+      },
       "delete": {
         "description": "",
         "parameters": [
@@ -1283,10 +1275,16 @@
         }
       }
     },
-    "/api/v1/seller/products": {
+    "/api/v1/seller/products/{userId}": {
       "get": {
         "description": "",
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "authorization",
             "in": "header",
@@ -1496,16 +1494,10 @@
         }
       }
     },
-    "/api/v1/seller/service/{userId}/{id}": {
+    "/api/v1/seller/service/{id}": {
       "get": {
         "description": "",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "id",
             "in": "path",
@@ -1529,9 +1521,7 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/api/v1/seller/service/{id}": {
+      },
       "delete": {
         "description": "",
         "parameters": [
@@ -1560,10 +1550,16 @@
         }
       }
     },
-    "/api/v1/seller/services": {
+    "/api/v1/seller/services/{userId}": {
       "get": {
         "description": "",
         "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "authorization",
             "in": "header",

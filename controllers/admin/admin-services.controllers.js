@@ -111,7 +111,6 @@ adminServices.update = asyncHandler(async (req, res) => {
 
   const {
     name,
-    owner,
     category,
     brief_description,
     description,
@@ -176,7 +175,6 @@ adminServices.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name,
-        owner: owner,
         category: category,
         brief_description: brief_description,
         description: description,

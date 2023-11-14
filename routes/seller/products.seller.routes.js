@@ -15,8 +15,8 @@ SellerProductsRoutes.put(
   upload.array("image"),
   SellerProducts.update
 );
-SellerProductsRoutes.get("/seller/product/:userId/:id", SellerProducts.getById);
+SellerProductsRoutes.get("/seller/product/:id", SellerProducts.getById);
 SellerProductsRoutes.delete("/seller/product/:id", SellerProducts.delete);
-SellerProductsRoutes.get("/seller/products", SellerProducts.getAll);
+SellerProductsRoutes.get("/seller/products/:userId", SellerProducts.getAll);
 
 export default SellerProductsRoutes;
