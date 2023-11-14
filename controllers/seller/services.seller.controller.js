@@ -255,10 +255,7 @@ SellerServices.delete = asyncHandler(async (req, res) => {
 });
 
 SellerServices.getById = asyncHandler(async (req, res) => {
-  const serviceDetails = await ServiceModel.findOne({
-    _id: req.params.id,
-    owner: { id: req.params.userId },
-  });
+  const serviceDetails = await ServiceModel.findById(req.params.id);
 
   try {
     if (!serviceDetails) {
@@ -279,7 +276,7 @@ SellerServices.getById = asyncHandler(async (req, res) => {
 });
 
 SellerServices.getAll = asyncHandler(async (req, res) => {
-  const getall = await ServiceModel.find();
+  const getall = await ServiceModel.find({ owner: { id: req.params.userId } });
   try {
     if (!getall) {
       res.status(404);

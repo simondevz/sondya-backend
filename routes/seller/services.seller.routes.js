@@ -15,8 +15,8 @@ SellerServicesRoutes.put(
   upload.array("image"),
   SellerServices.update
 );
-SellerServicesRoutes.get("/seller/service/:userId/:id", SellerServices.getById);
+SellerServicesRoutes.get("/seller/service/:id", SellerServices.getById);
 SellerServicesRoutes.delete("/seller/service/:id", SellerServices.delete);
-SellerServicesRoutes.get("/seller/services", SellerServices.getAll);
+SellerServicesRoutes.get("/seller/services/:userId", SellerServices.getAll);
 
 export default SellerServicesRoutes;

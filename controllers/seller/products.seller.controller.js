@@ -9,6 +9,7 @@ const SellerProducts = {};
 SellerProducts.create = asyncHandler(async (req, res) => {
   const {
     name,
+    owner,
     category,
     description,
     total_stock,
@@ -59,6 +60,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
 
     const newProducts = await ProductModel.create({
       name: name,
+      owner: owner,
       category: category,
       description: description,
       total_stock: total_stock,
@@ -95,6 +97,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
   const check = await ProductModel.findById(req.params.id);
   const {
     name,
+    owner,
     category,
     description,
     total_stock,
@@ -153,6 +156,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name,
+        owner: owner,
         category: category,
         description: description,
         total_stock: total_stock,
@@ -226,10 +230,7 @@ SellerProducts.delete = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.getById = asyncHandler(async (req, res) => {
-  const productDetails = await ProductModel.findOne({
-    _id: req.params.id,
-    owner: { id: req.params.userId },
-  });
+  const productDetails = await ProductModel.findById(req.params.id);
 
   try {
     if (!productDetails) {
@@ -250,7 +251,7 @@ SellerProducts.getById = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.getAll = asyncHandler(async (req, res) => {
-  const getall = await ProductModel.find();
+  const getall = await ProductModel.find({ owner: { id: req.params.userId } });
   try {
     if (!getall) {
       res.status(404);
