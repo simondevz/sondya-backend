@@ -7,6 +7,7 @@ import handleUpload from "../../utils/upload.js";
 const adminServices = {};
 
 adminServices.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Services']
   const {
     name,
     owner,
@@ -107,6 +108,7 @@ adminServices.create = asyncHandler(async (req, res) => {
 });
 
 adminServices.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Services']
   const check = await ServiceModel.findById(req.params.id);
 
   const {
@@ -219,6 +221,7 @@ adminServices.update = asyncHandler(async (req, res) => {
 });
 
 adminServices.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Services']
   const check = await ServiceModel.findById(req.params.id);
 
   try {
@@ -253,6 +256,7 @@ adminServices.delete = asyncHandler(async (req, res) => {
 });
 
 adminServices.getById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Services']
   const serviceDetails = await ServiceModel.findById(req.params.id);
 
   try {
@@ -274,6 +278,7 @@ adminServices.getById = asyncHandler(async (req, res) => {
 });
 
 adminServices.getAll = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Services']
   const getall = await ServiceModel.find();
   try {
     if (!getall) {

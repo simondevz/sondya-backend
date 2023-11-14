@@ -6,6 +6,7 @@ import responseHandle from "../../utils/handleResponse.js";
 const users = {};
 
 users.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Users']
   const { first_name, last_name, username, email, password } = req.body;
 
   try {
@@ -49,6 +50,7 @@ users.create = asyncHandler(async (req, res) => {
 });
 
 users.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Users']
   const check = await UserModel.findById(req.params.id);
   const {
     first_name,
@@ -128,6 +130,7 @@ users.update = asyncHandler(async (req, res) => {
 });
 
 users.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Users']
   const check = await UserModel.findById(req.params.id);
   try {
     if (!check) {
@@ -161,6 +164,7 @@ users.delete = asyncHandler(async (req, res) => {
 });
 
 users.getbyid = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Users']
   const userDetail = await UserModel.findById(req.params.id);
 
   try {
@@ -182,6 +186,7 @@ users.getbyid = asyncHandler(async (req, res) => {
 });
 
 users.getall = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Users']
   const getall = await UserModel.find();
 
   try {

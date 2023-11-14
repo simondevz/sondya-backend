@@ -13,6 +13,9 @@
   "paths": {
     "/api/v1/health": {
       "get": {
+        "tags": [
+          "Health"
+        ],
         "description": "",
         "responses": {
           "400": {
@@ -21,6 +24,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Health"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -31,6 +37,9 @@
     },
     "/api/v1/register": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "parameters": [
           {
@@ -70,6 +79,9 @@
     },
     "/api/v1/login": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "parameters": [
           {
@@ -100,6 +112,9 @@
     },
     "/api/v1/forgot-password": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "parameters": [
           {
@@ -127,6 +142,9 @@
     },
     "/api/v1/verify-email/{email}": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "parameters": [
           {
@@ -160,6 +178,9 @@
     },
     "/api/v1/reset-password/{email}": {
       "post": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "parameters": [
           {
@@ -196,6 +217,9 @@
     },
     "/api/v1/admin/user/create": {
       "post": {
+        "tags": [
+          "Admin Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -243,6 +267,9 @@
     },
     "/api/v1/admin/user/update/{id}": {
       "put": {
+        "tags": [
+          "Admin Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -335,6 +362,9 @@
     },
     "/api/v1/admin/user/delete/{id}": {
       "delete": {
+        "tags": [
+          "Admin Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -364,6 +394,9 @@
     },
     "/api/v1/admin/user/get/{id}": {
       "get": {
+        "tags": [
+          "Admin Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -393,6 +426,9 @@
     },
     "/api/v1/admin/users": {
       "get": {
+        "tags": [
+          "Admin Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -416,6 +452,9 @@
     },
     "/api/v1/admin/category/create": {
       "post": {
+        "tags": [
+          "Admin Categories"
+        ],
         "description": "",
         "parameters": [
           {
@@ -454,6 +493,9 @@
     },
     "/api/v1/admin/category/update/{id}": {
       "put": {
+        "tags": [
+          "Admin Categories"
+        ],
         "description": "",
         "parameters": [
           {
@@ -498,6 +540,9 @@
     },
     "/api/v1/admin/category/{id}": {
       "get": {
+        "tags": [
+          "Admin Categories"
+        ],
         "description": "",
         "parameters": [
           {
@@ -525,6 +570,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Admin Categories"
+        ],
         "description": "",
         "parameters": [
           {
@@ -554,6 +602,9 @@
     },
     "/api/v1/admin/categories": {
       "get": {
+        "tags": [
+          "Admin Categories"
+        ],
         "description": "",
         "parameters": [
           {
@@ -577,6 +628,9 @@
     },
     "/api/v1/admin/product/create": {
       "post": {
+        "tags": [
+          "Admin Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -591,6 +645,9 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "example": "any"
+                },
+                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -648,6 +705,9 @@
     },
     "/api/v1/admin/product/update/{id}": {
       "put": {
+        "tags": [
+          "Admin Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -725,6 +785,9 @@
     },
     "/api/v1/admin/product/{id}": {
       "get": {
+        "tags": [
+          "Admin Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -752,6 +815,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Admin Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -781,6 +847,9 @@
     },
     "/api/v1/admin/products": {
       "get": {
+        "tags": [
+          "Admin Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -804,6 +873,9 @@
     },
     "/api/v1/admin/service/create": {
       "post": {
+        "tags": [
+          "Admin Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -896,6 +968,9 @@
     },
     "/api/v1/admin/service/update/{id}": {
       "put": {
+        "tags": [
+          "Admin Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -916,9 +991,6 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
-                },
-                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -994,6 +1066,9 @@
     },
     "/api/v1/admin/service/{id}": {
       "get": {
+        "tags": [
+          "Admin Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1021,6 +1096,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Admin Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1050,6 +1128,9 @@
     },
     "/api/v1/admin/services": {
       "get": {
+        "tags": [
+          "Admin Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1073,6 +1154,9 @@
     },
     "/api/v1/seller/product/create": {
       "post": {
+        "tags": [
+          "Seller Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1087,6 +1171,9 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "example": "any"
+                },
+                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -1144,6 +1231,9 @@
     },
     "/api/v1/seller/product/update/{id}": {
       "put": {
+        "tags": [
+          "Seller Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1164,6 +1254,9 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "example": "any"
+                },
+                "owner": {
                   "example": "any"
                 },
                 "category": {
@@ -1221,6 +1314,9 @@
     },
     "/api/v1/seller/product/{id}": {
       "get": {
+        "tags": [
+          "Seller Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1248,6 +1344,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Seller Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1277,6 +1376,9 @@
     },
     "/api/v1/seller/products/{userId}": {
       "get": {
+        "tags": [
+          "Seller Products"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1306,6 +1408,9 @@
     },
     "/api/v1/seller/service/create": {
       "post": {
+        "tags": [
+          "Seller Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1398,6 +1503,9 @@
     },
     "/api/v1/seller/service/update/{id}": {
       "put": {
+        "tags": [
+          "Seller Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1496,6 +1604,9 @@
     },
     "/api/v1/seller/service/{id}": {
       "get": {
+        "tags": [
+          "Seller Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1523,6 +1634,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Seller Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1552,6 +1666,9 @@
     },
     "/api/v1/seller/services/{userId}": {
       "get": {
+        "tags": [
+          "Seller Services"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1581,6 +1698,9 @@
     },
     "/api/v1/profile/update/{id}": {
       "put": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1634,6 +1754,9 @@
     },
     "/api/v1/profile/get/{id}": {
       "get": {
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
