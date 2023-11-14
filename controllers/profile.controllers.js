@@ -9,7 +9,17 @@ const profile = {};
 profile.update = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Users']
   const check = await UserModel.findById(req.params.id);
-  const { first_name, last_name, username, email, password } = req.body;
+  const {
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+    phone_number,
+    state,
+    country,
+    zip_code,
+  } = req.body;
   try {
     if (!check) {
       res.status(404);
@@ -57,6 +67,10 @@ profile.update = asyncHandler(async (req, res) => {
         username: username,
         email: email,
         password: password,
+        phone_number: phone_number,
+        state: state,
+        country: country,
+        zip_code: zip_code,
         image: imageUrl,
       },
       {
@@ -71,6 +85,93 @@ profile.update = asyncHandler(async (req, res) => {
         updatedUser
       );
     }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+profile.updateSocialMedia = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
+  const check = await UserModel.findById(req.params.id);
+  const {
+    facebook_url,
+    linkedin_url,
+    youtube_url,
+    instagram_url,
+    twitter_url,
+    tiktok_url,
+  } = req.body;
+  try {
+    if (!check) {
+      res.status(404);
+      throw new Error("Id not found");
+    }
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        facebook_url: facebook_url,
+        linkedin_url: linkedin_url,
+        youtube_url: youtube_url,
+        instagram_url: instagram_url,
+        twitter_url: twitter_url,
+        tiktok_url: tiktok_url,
+      },
+      {
+        new: true,
+      }
+    );
+    if (updatedUser) {
+      responseHandle.successResponse(
+        res,
+        201,
+        "profile Social handles updated successfully.",
+        updatedUser
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+profile.changePassword = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
+  const check = await UserModel.findById(req.params.id);
+  const { current_password, new_password, confirm_password } = req.body;
+  try {
+    if (!check) {
+      res.status(404);
+      throw new Error("Id not found");
+    }
+
+    if ((await check.matchPassword(current_password)) === false) {
+      res.status(400);
+      throw new Error("Current password is not correct");
+    }
+
+    if (new_password !== confirm_password) {
+      res.status(400);
+      throw new Error("New Passwords doesn't match");
+    }
+
+    check.password = new_password;
+    const changePassword = await check.save();
+
+    if (!changePassword) {
+      res.status(400);
+      throw new Error("The password was not updated. Please try again");
+    }
+
+    responseHandle.successResponse(
+      res,
+      "200",
+      "password updated successfully",
+      {
+        email: check.email,
+      }
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);

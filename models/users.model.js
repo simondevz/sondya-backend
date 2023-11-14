@@ -30,6 +30,9 @@ const userSchema = Schema(
       type: String,
       // required: true,
     },
+    referral: {
+      type: String,
+    },
     country: {
       type: String,
     },
