@@ -33,6 +33,7 @@ import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
+import testimonialRoutes from "./routes/testimonials.routes.js";
 
 // Running routes
 app.use(cors());
@@ -51,6 +52,7 @@ app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", profileRoutes);
+app.use("/api/v1/", testimonialRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
