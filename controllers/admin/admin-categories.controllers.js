@@ -7,6 +7,7 @@ import handleUpload from "../../utils/upload.js";
 const adminCategories = {};
 
 adminCategories.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
   const { name, description } = req.body;
 
   try {
@@ -65,6 +66,7 @@ adminCategories.create = asyncHandler(async (req, res) => {
 });
 
 adminCategories.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
   const check = await CategoryModel.findById(req.params.id);
 
   const { name, description } = req.body;
@@ -137,6 +139,7 @@ adminCategories.update = asyncHandler(async (req, res) => {
 });
 
 adminCategories.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
   const check = await CategoryModel.findById(req.params.id);
   try {
     if (!check) {
@@ -170,6 +173,7 @@ adminCategories.delete = asyncHandler(async (req, res) => {
 });
 
 adminCategories.getById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
   const categoryDetail = await CategoryModel.findById(req.params.id);
 
   try {
@@ -191,6 +195,7 @@ adminCategories.getById = asyncHandler(async (req, res) => {
 });
 
 adminCategories.getAll = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
   const getall = await CategoryModel.find();
   try {
     if (!getall) {

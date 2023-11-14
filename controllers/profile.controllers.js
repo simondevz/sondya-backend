@@ -7,6 +7,7 @@ import handleUpload from "../utils/upload.js";
 const profile = {};
 
 profile.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
   const check = await UserModel.findById(req.params.id);
   const { first_name, last_name, username, email, password } = req.body;
   try {
@@ -77,6 +78,7 @@ profile.update = asyncHandler(async (req, res) => {
 });
 
 profile.getbyid = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
   const check = await UserModel.findById(req.params.id);
 
   try {

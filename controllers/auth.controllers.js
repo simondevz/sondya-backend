@@ -11,6 +11,7 @@ import tokenHandler from "../utils/handleToken.js";
 const auth = {};
 
 auth.register = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Authentication']
   const { first_name, last_name, username, email, password } = req.body;
   try {
     const emailTaken = await UserModel.findOne({ email });
@@ -55,6 +56,7 @@ auth.register = asyncHandler(async (req, res) => {
 });
 
 auth.login = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Authentication']
   const { email, password } = req.body;
 
   try {
@@ -87,6 +89,7 @@ auth.login = asyncHandler(async (req, res) => {
 });
 
 auth.forgotPassword = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Authentication']
   const { email } = req.body;
 
   try {
@@ -130,6 +133,7 @@ auth.forgotPassword = asyncHandler(async (req, res) => {
 });
 
 auth.verifyEmailCode = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Authentication']
   const email = req.params.email;
   const { code } = req.body;
 
@@ -159,6 +163,7 @@ auth.verifyEmailCode = asyncHandler(async (req, res) => {
 });
 
 auth.resetPassword = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Authentication']
   const email = req.params.email;
   const { password, confirm_password } = req.body;
 

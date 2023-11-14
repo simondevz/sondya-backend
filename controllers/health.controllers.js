@@ -7,6 +7,7 @@ const config = load(readFileSync("config.yaml", "utf8"));
 const health = {};
 
 health.Get = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Health']
   if (!config) {
     res.status(400);
     throw new Error("getting yaml file error");
@@ -25,6 +26,7 @@ health.Get = asyncHandler(async (req, res) => {
 });
 
 health.Post = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Health']
   res.send("Post: Hello World!");
 });
 

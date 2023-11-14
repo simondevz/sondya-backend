@@ -7,6 +7,7 @@ import handleUpload from "../../utils/upload.js";
 const adminProducts = {};
 
 adminProducts.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Products']
   const {
     name,
     owner,
@@ -94,6 +95,7 @@ adminProducts.create = asyncHandler(async (req, res) => {
 });
 
 adminProducts.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Products']
   const check = await ProductModel.findById(req.params.id);
   const {
     name,
@@ -193,6 +195,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
 });
 
 adminProducts.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Products']
   const check = await ProductModel.findById(req.params.id);
 
   try {
@@ -228,6 +231,7 @@ adminProducts.delete = asyncHandler(async (req, res) => {
 });
 
 adminProducts.getById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Products']
   const productDetails = await ProductModel.findById(req.params.id);
 
   try {
@@ -249,6 +253,7 @@ adminProducts.getById = asyncHandler(async (req, res) => {
 });
 
 adminProducts.getAll = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Products']
   const getall = await ProductModel.find();
   try {
     if (!getall) {

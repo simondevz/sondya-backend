@@ -7,6 +7,7 @@ import handleUpload from "../../utils/upload.js";
 const SellerServices = {};
 
 SellerServices.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Services']
   const {
     name,
     owner,
@@ -107,6 +108,7 @@ SellerServices.create = asyncHandler(async (req, res) => {
 });
 
 SellerServices.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Services']
   const check = await ServiceModel.findById(req.params.id);
 
   const {
@@ -221,6 +223,7 @@ SellerServices.update = asyncHandler(async (req, res) => {
 });
 
 SellerServices.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Services']
   const check = await ServiceModel.findById(req.params.id);
 
   try {
@@ -255,6 +258,7 @@ SellerServices.delete = asyncHandler(async (req, res) => {
 });
 
 SellerServices.getById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Services']
   const serviceDetails = await ServiceModel.findById(req.params.id);
 
   try {
@@ -276,6 +280,7 @@ SellerServices.getById = asyncHandler(async (req, res) => {
 });
 
 SellerServices.getAll = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Services']
   const getall = await ServiceModel.find({ owner: { id: req.params.userId } });
   try {
     if (!getall) {

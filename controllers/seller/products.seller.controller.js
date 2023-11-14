@@ -7,6 +7,7 @@ import handleUpload from "../../utils/upload.js";
 const SellerProducts = {};
 
 SellerProducts.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Products']
   const {
     name,
     owner,
@@ -94,6 +95,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Products']
   const check = await ProductModel.findById(req.params.id);
   const {
     name,
@@ -195,6 +197,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.delete = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Products']
   const check = await ProductModel.findById(req.params.id);
 
   try {
@@ -230,6 +233,7 @@ SellerProducts.delete = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.getById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Products']
   const productDetails = await ProductModel.findById(req.params.id);
 
   try {
@@ -251,6 +255,7 @@ SellerProducts.getById = asyncHandler(async (req, res) => {
 });
 
 SellerProducts.getAll = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Products']
   const getall = await ProductModel.find({ owner: { id: req.params.userId } });
   try {
     if (!getall) {
