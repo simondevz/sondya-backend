@@ -1,4 +1,4 @@
-import testimonial from "../controllers/testimonials.controllers.js";
+import testimonial from "../../controllers/user/testimonials.controllers.js";
 
 import express from "express";
 const testimonialRoutes = express.Router();

@@ -33,7 +33,7 @@ import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
-import testimonialRoutes from "./routes/testimonials.routes.js";
+import testimonialRoutes from "./routes/user/testimonials.routes.js";
 
 // Running routes
 app.use(cors());

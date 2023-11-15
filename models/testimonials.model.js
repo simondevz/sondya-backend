@@ -14,9 +14,6 @@ const testimonialSchema = Schema(
     content: {
       type: String,
     },
-    date: {
-      type: String,
-    },
   },
   { timestamps: true }
 );
