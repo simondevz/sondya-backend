@@ -40,6 +40,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/api/v1/", healthRoutes);
+app.use("/api/v1/", testimonialRoutes);
 app.use("/api/v1/", authRoutes);
 
 //swagger inititailization
@@ -52,7 +53,6 @@ app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", profileRoutes);
-app.use("/api/v1/", testimonialRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
