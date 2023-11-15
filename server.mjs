@@ -33,6 +33,7 @@ import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
 
 import profileRoutes from "./routes/profile.routes.js";
+import testimonialRoutes from "./routes/user/testimonials.routes.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import contactusRoutes from "./routes/contactus.routes.js";
@@ -64,6 +65,7 @@ app.use("/api/v1/", SellerServicesRoutes);
 
 // user protected
 app.use("/api/v1/", profileRoutes);
+app.use("/api/v1/", testimonialRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
