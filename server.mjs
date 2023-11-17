@@ -28,6 +28,7 @@ import AuthMiddleware from "./middleware/userMiddleware.js";
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
+import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
@@ -58,6 +59,7 @@ app.use("/api/v1/", AdminUsersRoutes);
 app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
+app.use("/api/v1/", AdminTestimonialRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);

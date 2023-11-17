@@ -3,7 +3,8 @@ import { Schema, model } from "mongoose";
 const testimonialSchema = Schema(
   {
     user_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
     name: {
       type: String,
@@ -13,6 +14,10 @@ const testimonialSchema = Schema(
     },
     content: {
       type: String,
+    },
+    status: {
+      type: String, // approved or not approved
+      default: "not approved",
     },
   },
   { timestamps: true }
