@@ -101,7 +101,7 @@ adminTestimonial.delete = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Id not found");
     }
-    // todo: find out what dis returns
+
     const deleteTestimonial = await TestimonialModel.findByIdAndDelete(
       req.params.id
     );
@@ -126,7 +126,6 @@ adminTestimonial.delete = asyncHandler(async (req, res) => {
 adminTestimonial.getUnapproved = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Testimonial Route']
   try {
-    // todo: find out what dis returns
     const testimonials = await TestimonialModel.find({
       status: "not approved",
     }).populate("user_id", "image");
