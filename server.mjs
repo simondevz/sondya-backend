@@ -58,6 +58,7 @@ app.use("/api/v1/", AdminUsersRoutes);
 app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
+app.use("/api/v1/", AdminTestimonialRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
@@ -69,6 +70,7 @@ app.use("/api/v1/", testimonialRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
+import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
 
 //Not found URL middleware
 app.use(errorMiddleware.notFound);

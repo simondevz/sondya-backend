@@ -52,4 +52,27 @@ testimonial.create = asyncHandler(async (req, res) => {
   }
 });
 
+testimonial.getApproved = asyncHandler(async (req, res) => {
+  try {
+    const testimonials = await TestimonialModel.find({
+      status: "approved",
+    }).populate("user_id", "image");
+
+    if (!testimonials) {
+      res.status(500);
+      throw new Error("could not retrieve Testimonial");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "Approved Testimonials retrieved successfully.",
+        testimonials
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default testimonial;
