@@ -27,7 +27,7 @@ adminProducts.create = asyncHandler(async (req, res) => {
   } = req.body;
 
   try {
-    const productTaken = await ProductModel.findOne({ name: name.trim() });
+    const productTaken = await ProductModel.findOne({ name: name });
     if (productTaken) {
       res.status(400);
       throw new Error("product name is taken");

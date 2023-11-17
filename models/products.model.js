@@ -38,16 +38,16 @@ const productsSchema = Schema(
     },
     // prices
     old_price: {
-      type: String,
+      type: Number,
     }, // pricebefore
     current_price: {
       type: Number,
     }, // price now
     discount_percentage: {
-      type: String,
+      type: Number,
     },
     vat_percentage: {
-      type: String,
+      type: Number,
     },
 
     // product status
