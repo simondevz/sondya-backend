@@ -14,11 +14,11 @@ profile.update = asyncHandler(async (req, res) => {
     last_name,
     username,
     email,
-    password,
     phone_number,
     state,
     country,
     zip_code,
+    website_url,
   } = req.body;
   try {
     if (!check) {
@@ -66,11 +66,11 @@ profile.update = asyncHandler(async (req, res) => {
         last_name: last_name,
         username: username,
         email: email,
-        password: password,
         phone_number: phone_number,
         state: state,
         country: country,
         zip_code: zip_code,
+        website_url: website_url,
         image: imageUrl,
       },
       {

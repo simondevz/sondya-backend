@@ -73,6 +73,10 @@ const userSchema = Schema(
     },
 
     // social media
+    website_url: {
+      type: String,
+    },
+    // social media
     facebook_url: {
       type: String,
     },
