@@ -61,8 +61,9 @@ SellerProducts.create = asyncHandler(async (req, res) => {
 
     const newProducts = await ProductModel.create({
       name: name,
-      owner: owner,
-      category: category,
+      owner: owner !== undefined && JSON.parse(owner),
+      category: "product",
+      sub_category: category,
       description: description,
       total_stock: total_stock,
       tag: tag,
@@ -99,7 +100,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
   const check = await ProductModel.findById(req.params.id);
   const {
     name,
-    owner,
+    // owner,
     category,
     description,
     total_stock,
@@ -158,7 +159,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name,
-        owner: owner,
+        // owner: owner,
         category: category,
         description: description,
         total_stock: total_stock,
@@ -256,7 +257,7 @@ SellerProducts.getById = asyncHandler(async (req, res) => {
 
 SellerProducts.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Products']
-  const getall = await ProductModel.find({ owner: { id: req.params.userId } });
+  const getall = await ProductModel.find({ "owner.id": req.params.userId });
   try {
     if (!getall) {
       res.status(404);

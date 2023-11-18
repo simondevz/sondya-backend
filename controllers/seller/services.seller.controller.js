@@ -67,8 +67,9 @@ SellerServices.create = asyncHandler(async (req, res) => {
 
     const newService = await ServiceModel.create({
       name: name,
-      owner: owner,
-      category: category,
+      owner: JSON.parse(owner),
+      category: "service",
+      sub_category: category,
       brief_description: brief_description,
       description: description,
       service_status: service_status,
@@ -281,7 +282,10 @@ SellerServices.getById = asyncHandler(async (req, res) => {
 
 SellerServices.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Services']
-  const getall = await ServiceModel.find({ owner: { id: req.params.userId } });
+
+  const getall = await ServiceModel.find({
+    "owner.id": req.params.userId,
+  });
   try {
     if (!getall) {
       res.status(404);

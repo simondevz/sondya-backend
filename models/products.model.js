@@ -8,6 +8,9 @@ const productsSchema = Schema(
     category: {
       type: String,
     },
+    sub_category: {
+      type: String,
+    },
     description: {
       type: String,
     }, // body
@@ -38,21 +41,21 @@ const productsSchema = Schema(
     },
     // prices
     old_price: {
-      type: String,
+      type: Number,
     }, // pricebefore
     current_price: {
       type: Number,
     }, // price now
     discount_percentage: {
-      type: String,
+      type: Number,
     },
     vat_percentage: {
-      type: String,
+      type: Number,
     },
 
     // product status
     product_status: {
-      type: String, // available | hot | sold |
+      type: String, // available | hot | sold | draft
     },
     hot_products: {
       type: Boolean,

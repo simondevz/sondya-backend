@@ -67,15 +67,16 @@ adminServices.create = asyncHandler(async (req, res) => {
 
     const newService = await ServiceModel.create({
       name: name,
-      owner: owner,
-      category: category,
+      owner: JSON.parse(owner),
+      category: "service",
+      sub_category: category,
       brief_description: brief_description,
       description: description,
       service_status: service_status,
       currency: currency,
-      old_price: old_price,
-      current_price: current_price,
-      percentage_price_off: percentage_price_off,
+      old_price: Number(old_price),
+      current_price: Number(current_price),
+      percentage_price_off: Number(percentage_price_off),
       duration: duration,
 
       location_description: location_description,
@@ -177,7 +178,7 @@ adminServices.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name,
-        category: category,
+        sub_category: category,
         brief_description: brief_description,
         description: description,
         service_status: service_status,
