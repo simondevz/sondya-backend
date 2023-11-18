@@ -29,7 +29,7 @@ profile.update = asyncHandler(async (req, res) => {
     // start of upload images
     let imageUrl;
 
-    if (req.files) {
+    if (req.files.length) {
       // upload images to cloudinary
       let files = req?.files;
       let multiplePicturePromise = files.map(async (picture, index) => {
