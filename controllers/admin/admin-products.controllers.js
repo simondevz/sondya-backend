@@ -61,8 +61,9 @@ adminProducts.create = asyncHandler(async (req, res) => {
 
     const newProducts = await ProductModel.create({
       name: name,
-      owner: owner,
-      category: category,
+      owner: owner !== undefined && JSON.parse(owner),
+      category: "product",
+      sub_category: category,
       description: description,
       total_stock: total_stock,
       tag: tag,
@@ -157,7 +158,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
       req.params.id,
       {
         name: name,
-        category: category,
+        sub_category: category,
         description: description,
         total_stock: total_stock,
         tag: tag,

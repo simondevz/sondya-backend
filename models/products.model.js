@@ -8,6 +8,9 @@ const productsSchema = Schema(
     category: {
       type: String,
     },
+    sub_category: {
+      type: String,
+    },
     description: {
       type: String,
     }, // body
@@ -52,7 +55,7 @@ const productsSchema = Schema(
 
     // product status
     product_status: {
-      type: String, // available | hot | sold |
+      type: String, // available | hot | sold | draft
     },
     hot_products: {
       type: Boolean,

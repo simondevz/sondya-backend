@@ -1,11 +1,11 @@
 import asyncHandler from "express-async-handler";
-import responseHandle from "../../utils/handleResponse.js";
 import TestimonialModel from "../../models/testimonials.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const adminTestimonial = {};
 
 adminTestimonial.update = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Admin Testimonial Route']
+  // #swagger.tags = ['Admin Testimonial']
   const { name, title, content, _id } = req.body;
   const check = await TestimonialModel.findById(_id);
   const contentTaken = await TestimonialModel.findOne({ content: content });
@@ -60,7 +60,7 @@ adminTestimonial.update = asyncHandler(async (req, res) => {
 });
 
 adminTestimonial.approve = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Admin Testimonial Route']
+  // #swagger.tags = ['Admin Testimonial']
   const check = await TestimonialModel.findById(req.params.id);
 
   try {
@@ -94,7 +94,7 @@ adminTestimonial.approve = asyncHandler(async (req, res) => {
 });
 
 adminTestimonial.delete = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Admin Testimonial Route']
+  // #swagger.tags = ['Admin Testimonial']
   const check = await TestimonialModel.findById(req.params.id);
   try {
     if (!check) {
@@ -124,7 +124,7 @@ adminTestimonial.delete = asyncHandler(async (req, res) => {
 });
 
 adminTestimonial.getUnapproved = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Admin Testimonial Route']
+  // #swagger.tags = ['Admin Testimonial']
   try {
     const testimonials = await TestimonialModel.find({
       status: "not approved",

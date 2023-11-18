@@ -2,6 +2,9 @@ import { Schema, model } from "mongoose";
 
 const categoriesSchema = Schema(
   {
+    category: {
+      type: String,
+    },
     name: {
       type: String,
     },
