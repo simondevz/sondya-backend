@@ -8,6 +8,9 @@ const servicesSchema = Schema(
     category: {
       type: String,
     },
+    sub_category: {
+      type: String,
+    },
     brief_description: {
       type: String,
     },
@@ -42,7 +45,7 @@ const servicesSchema = Schema(
       type: Number,
     }, // price now
     percentage_price_off: {
-      type: String,
+      type: Number,
     },
 
     // products ratings

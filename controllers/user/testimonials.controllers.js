@@ -5,6 +5,7 @@ import responseHandle from "../../utils/handleResponse.js";
 const testimonial = {};
 
 testimonial.create = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['User Testimonial']
   const { user_id, name, title, content } = req.body;
   try {
     const contentTaken = await TestimonialModel.findOne({ content: content });
@@ -53,6 +54,7 @@ testimonial.create = asyncHandler(async (req, res) => {
 });
 
 testimonial.getApproved = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['User Testimonial']
   try {
     const testimonials = await TestimonialModel.find({
       status: "approved",
