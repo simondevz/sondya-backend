@@ -133,6 +133,7 @@ adminServices.update = asyncHandler(async (req, res) => {
     state,
     city,
     map_location_link,
+    deleteImageId,
   } = req.body;
 
   try {
@@ -142,7 +143,7 @@ adminServices.update = asyncHandler(async (req, res) => {
     }
 
     // start of upload images
-    let imageUrl;
+    let imageUrl = [];
 
     if (req.files) {
       // upload images to cloudinary
@@ -155,13 +156,6 @@ adminServices.update = asyncHandler(async (req, res) => {
         return cldRes;
       });
 
-      // delete previously uploaded images from cloudinary
-      const initialImageArray = [];
-      check.image.forEach((image) => {
-        initialImageArray.push(image.public_id);
-      });
-      deleteUploads(initialImageArray);
-
       // get url of uploaded images
       const imageResponse = await Promise.all(multiplePicturePromise);
 
@@ -173,6 +167,16 @@ adminServices.update = asyncHandler(async (req, res) => {
       });
     }
     // end of uploaded images
+
+    //delete initialy uploaded images
+    let deleteImageId1 = JSON.parse(deleteImageId);
+    if (deleteImageId1 !== undefined && deleteImageId1.length > 0) {
+      deleteUploads(deleteImageId1);
+      deleteImageId1.forEach((id) => check.image.splice(id, 1));
+    }
+
+    imageUrl = [...imageUrl, ...check.image];
+    //delete initialy uploaded images ends
 
     const updatedServices = await ServiceModel.findByIdAndUpdate(
       req.params.id,
@@ -197,7 +201,7 @@ adminServices.update = asyncHandler(async (req, res) => {
         state: state,
         city: city,
         map_location_link: map_location_link,
-        image: imageUrl,
+        image: imageUrl.length > 0 && imageUrl,
       },
       {
         new: true,
