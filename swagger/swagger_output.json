@@ -804,6 +804,9 @@
                 },
                 "total_variants": {
                   "example": "any"
+                },
+                "deleteImageId": {
+                  "example": "any"
                 }
               }
             }
@@ -1084,6 +1087,9 @@
                   "example": "any"
                 },
                 "map_location_link": {
+                  "example": "any"
+                },
+                "deleteImageId": {
                   "example": "any"
                 }
               }
@@ -1467,6 +1473,9 @@
                 },
                 "total_variants": {
                   "example": "any"
+                },
+                "deleteImageId": {
+                  "example": "any"
                 }
               }
             }
@@ -1701,9 +1710,6 @@
                 "name": {
                   "example": "any"
                 },
-                "owner": {
-                  "example": "any"
-                },
                 "category": {
                   "example": "any"
                 },
@@ -1756,6 +1762,9 @@
                   "example": "any"
                 },
                 "map_location_link": {
+                  "example": "any"
+                },
+                "deleteImageId": {
                   "example": "any"
                 }
               }

@@ -174,7 +174,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
-        image: imageUrl.length > 0 && imageUrl,
+        image: imageUrl.length > 0 ? imageUrl : [],
       },
       {
         new: true,

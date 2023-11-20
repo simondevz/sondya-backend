@@ -201,7 +201,7 @@ SellerServices.update = asyncHandler(async (req, res) => {
         state: state,
         city: city,
         map_location_link: map_location_link,
-        image: imageUrl.length > 0 && imageUrl,
+        image: imageUrl.length > 0 ? imageUrl : [],
       },
       {
         new: true,

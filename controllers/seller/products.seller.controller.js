@@ -136,13 +136,6 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         return cldRes;
       });
 
-      // // delete previously uploaded images from cloudinary
-      // const initialImageArray = [];
-      // check.image.forEach((image) => {
-      //   initialImageArray.push(image.public_id);
-      // });
-      // deleteUploads(initialImageArray);
-
       // get url of uploaded images
       const imageResponse = await Promise.all(multiplePicturePromise);
 
@@ -182,7 +175,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
-        image: imageUrl.length > 0 && imageUrl,
+        image: imageUrl.length > 0 ? imageUrl : [],
       },
       {
         new: true,
