@@ -9,6 +9,11 @@ AdminGroupChatRoutes.post(
   upload.array("image"),
   adminGroupChat.create
 );
+AdminGroupChatRoutes.put(
+  "/admin/groupchat/update",
+  upload.array("image"),
+  adminGroupChat.update
+);
 AdminGroupChatRoutes.get(
   "/admin/groupchat/list/:id", // Id of the admin that created the group chats we are getting
   adminGroupChat.getChats

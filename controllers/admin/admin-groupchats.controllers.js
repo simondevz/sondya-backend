@@ -9,18 +9,9 @@ const adminGroupChat = {};
 
 adminGroupChat.create = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Group chat']
-  console.log("running..........");
   const { name, description, admin_id } = req.body;
-  console.log(req.body);
-
   try {
-    const check = await UserModel.findById(admin_id);
     const nametaken = await GroupChatModel.findOne({ name });
-    if (!check) {
-      res.status(404);
-      throw new Error("Admin User not found");
-    }
-
     if (nametaken) {
       res.status(403);
       throw new Error("Group name already exists");
@@ -29,6 +20,85 @@ adminGroupChat.create = asyncHandler(async (req, res) => {
     if (!description) {
       res.status(400);
       throw new Error("Please provide a description for the Group");
+    }
+
+    // start of upload images
+    let imageUrl;
+
+    if (req.files?.length) {
+      // upload images to cloudinary
+      let files = req?.files;
+      let multiplePicturePromise = files.map(async (picture, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(picture.buffer).toString("base64");
+        let dataURI = "data:" + picture.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI, index);
+        return cldRes;
+      });
+
+      // get url of uploaded images
+      const imageResponse = await Promise.all(multiplePicturePromise);
+
+      imageUrl = imageResponse.map((image) => {
+        const url = image.secure_url;
+        const public_id = image.public_id;
+        const folder = image.folder;
+        return { url, public_id, folder };
+      });
+    }
+    // end of uploaded images
+
+    const createdGropChat = await GroupChatModel.create({
+      admin_id,
+      name,
+      description,
+      status: "active",
+      image: imageUrl,
+    });
+
+    if (!createdGropChat) {
+      res.status(500);
+      throw new Error("Could not create Group Chat");
+    } else {
+      responseHandle.successResponse(
+        res,
+        201,
+        "Group Chat created successfully.",
+        createdGropChat
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
+
+adminGroupChat.update = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Group chat']
+  let { name, description, _id } = req.body;
+  console.log(req.body);
+  try {
+    const check = await GroupChatModel.findById(_id);
+    if (!check) {
+      res.status(404);
+      throw new Error("Group id not found");
+    }
+
+    const nametaken = await GroupChatModel.findOne({ name });
+    if (nametaken && name !== check.name) {
+      res.status(403);
+      throw new Error("Group name already exists");
+    }
+
+    if (!name) {
+      res.status(400);
+      throw new Error("No name provided");
+    }
+
+    if (!description) {
+      res.status(400);
+      throw new Error("No description provided");
     }
 
     // start of upload images
@@ -64,24 +134,25 @@ adminGroupChat.create = asyncHandler(async (req, res) => {
     }
     // end of uploaded images
 
-    const createdGropChat = await GroupChatModel.create({
-      admin_id,
-      name,
-      description,
-      status: "active",
-      image: imageUrl,
-    });
+    const updatedGropChat = await GroupChatModel.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        description,
+        image: imageUrl,
+      },
+      { new: true }
+    );
 
-    if (!createdGropChat) {
+    if (!updatedGropChat) {
       res.status(500);
-      throw new Error("Could not create Group Chat");
+      throw new Error("Could not update Group Chat");
     } else {
-      console.log(createdGropChat);
       responseHandle.successResponse(
         res,
         201,
-        "Group Chat created successfully.",
-        createdGropChat
+        "Group Chat updated successfully.",
+        updatedGropChat
       );
     }
   } catch (error) {
@@ -105,16 +176,12 @@ adminGroupChat.getChats = asyncHandler(async (req, res) => {
     const numberOfGroupchats = await GroupChatModel.countDocuments({
       admin_id,
     });
-    const groupChats = await GroupChatModel.find({ admin_id }).populate(
-      "admin_id",
-      "image"
-    );
+    const groupChats = await GroupChatModel.find({ admin_id });
 
     if (!groupChats) {
       res.status(500);
       throw new Error("Could not get Group Chats");
     } else {
-      console.log(groupChats);
       responseHandle.successResponse(
         res,
         201,
