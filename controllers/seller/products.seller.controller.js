@@ -100,7 +100,6 @@ SellerProducts.update = asyncHandler(async (req, res) => {
   const check = await ProductModel.findById(req.params.id);
   const {
     name,
-    // owner,
     category,
     description,
     total_stock,
@@ -114,6 +113,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    deleteImageId,
   } = req.body;
 
   try {
@@ -123,7 +123,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
     }
 
     // start of upload images
-    let imageUrl;
+    let imageUrl = [];
 
     if (req.files) {
       // upload images to cloudinary
@@ -135,13 +135,6 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         const cldRes = await handleUpload(dataURI, index);
         return cldRes;
       });
-
-      // delete previously uploaded images from cloudinary
-      const initialImageArray = [];
-      check.image.forEach((image) => {
-        initialImageArray.push(image.public_id);
-      });
-      deleteUploads(initialImageArray);
 
       // get url of uploaded images
       const imageResponse = await Promise.all(multiplePicturePromise);
@@ -155,11 +148,20 @@ SellerProducts.update = asyncHandler(async (req, res) => {
     }
     // end of uploaded images
 
+    //delete initialy uploaded images
+    let deleteImageId1 = JSON.parse(deleteImageId);
+    if (deleteImageId1 !== undefined && deleteImageId1.length > 0) {
+      deleteUploads(deleteImageId1);
+      deleteImageId1.forEach((id) => check.image.splice(id, 1));
+    }
+
+    imageUrl = [...imageUrl, ...check.image];
+    //delete initialy uploaded images ends
+
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       req.params.id,
       {
         name: name,
-        // owner: owner,
         category: category,
         description: description,
         total_stock: total_stock,
@@ -173,7 +175,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
-        image: imageUrl,
+        image: imageUrl.length > 0 ? imageUrl : [],
       },
       {
         new: true,
