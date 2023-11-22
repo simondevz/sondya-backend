@@ -26,6 +26,7 @@ import AuthMiddleware from "./middleware/userMiddleware.js";
 
 // importing Routes
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
+import AdminGroupChatRoutes from "./routes/admin/groupchat.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
@@ -60,6 +61,7 @@ app.use("/api/v1/", AdminCategoriesRoutes);
 app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", AdminTestimonialRoutes);
+app.use("/api/v1/", AdminGroupChatRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
