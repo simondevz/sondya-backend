@@ -36,6 +36,9 @@ groupMessages.getMessages = asyncHandler(async (req, res) => {
         },
       },
       {
+        $sort: { createdAt: -1 },
+      },
+      {
         $limit: 50,
       },
       {

@@ -11,7 +11,24 @@ wsController.use = (path, app) =>
         if (!error) {
           throw new Error("check data params");
         }
-        wsUtil.sendMessage(data, ws);
+
+        if (data.meta) {
+          switch (data.meta) {
+            case "get_online_users":
+              wsUtil.getOnlineUsers(data, ws);
+              break;
+
+            case "join_conversation":
+              wsUtil.joinRoom(data, ws);
+              break;
+
+            default:
+              wsUtil.joinRoom(data, ws);
+              break;
+          }
+        } else {
+          wsUtil.sendMessage(data, ws);
+        }
       });
 
       ws.on("close", () => {

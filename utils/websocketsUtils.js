@@ -37,9 +37,7 @@ wsUtil.userExistInRoom = (room_id, user_id) => {
   const room = wsUtil.rooms[room_id];
   for (let i = 0; i < room.length; i++) {
     let user = room[i];
-    console.log(user);
     for (const key in user) {
-      // if(ws == temp[obj]){
       if (user_id === key) {
         status = true;
         break;
@@ -63,6 +61,25 @@ wsUtil.createRoom = (data, ws) => {
     return ws;
   } catch (error) {
     throw new Error("ws error: Could not create room");
+  }
+};
+
+// get list of people in room
+wsUtil.getOnlineUsers = (data, ws) => {
+  try {
+    const room = wsUtil.rooms[data?.room_id];
+    if (!room) return [];
+
+    const online = room.map((user) => Object.keys(user)[0]);
+    ws.send(
+      JSON.stringify({
+        meta: "users_online",
+        online,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    throw new Error("ws error: Could not get users in room");
   }
 };
 
