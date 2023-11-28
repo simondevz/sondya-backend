@@ -77,7 +77,7 @@ adminGroupChat.create = asyncHandler(async (req, res) => {
 adminGroupChat.update = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Group chat']
   let { name, description, _id } = req.body;
-  console.log(req.body);
+
   try {
     const check = await GroupChatModel.findById(_id);
     if (!check) {
@@ -278,7 +278,6 @@ adminGroupChat.delete = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Group chat']
   const id = req.params.id;
   const check = await GroupChatModel.findById(id);
-  console.log(check);
 
   try {
     if (!check) {
@@ -298,7 +297,6 @@ adminGroupChat.delete = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error("Could not Delete Gruop Chat");
     } else {
-      console.log("deleted");
       responseHandle.successResponse(
         res,
         200,
