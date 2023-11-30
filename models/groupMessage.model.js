@@ -13,6 +13,19 @@ const groupMessageSchema = Schema(
     message: {
       type: String,
     },
+    image: [
+      {
+        url: {
+          type: String,
+        },
+        public_id: {
+          type: String,
+        },
+        folder: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
