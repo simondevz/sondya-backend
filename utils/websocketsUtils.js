@@ -2,6 +2,7 @@ import GroupMessageModel from "../models/groupMessage.model.js";
 import GroupChatModel from "../models/groupchat.model.js";
 import asyncHandler from "express-async-handler";
 import UserModel from "../models/users.model.js";
+import handleUpload from "./upload.js";
 
 const wsUtil = {};
 
@@ -112,7 +113,7 @@ wsUtil.joinRoom = (data, ws) => {
 
 // send message
 wsUtil.sendMessage = asyncHandler(async (data, ws) => {
-  const { room_id, message, user_id } = data;
+  const { room_id, message, images, user_id } = data;
   try {
     const check = await GroupChatModel.findById(room_id);
     if (!check) {
@@ -124,14 +125,20 @@ wsUtil.sendMessage = asyncHandler(async (data, ws) => {
       throw new Error("User not found");
     }
 
-    if (!message) {
+    if (!message && !images.length) {
       throw new Error("No message");
+    }
+
+    let imageUrl = [];
+    if (images?.length > 0) {
+      imageUrl = await wsUtil.uploadImages(images);
     }
 
     let groupMessage = await GroupMessageModel.create({
       group_id: room_id,
       message,
       sender_id: user_id,
+      image: imageUrl,
     });
 
     if (!groupMessage) {
@@ -155,9 +162,40 @@ wsUtil.sendMessage = asyncHandler(async (data, ws) => {
     }
   } catch (error) {
     console.log(error);
-    throw new Error(error);
+    ws.send(
+      JSON.stringify({
+        meta: "error_occured",
+        error: error.message,
+      })
+    );
   }
 });
+
+// image upload
+wsUtil.uploadImages = async (images) => {
+  try {
+    // upload images to cloudinary
+    let multiplePicturePromise = images.map(async (image, index) => {
+      const cldRes = await handleUpload(image.fileContent, index);
+      return cldRes;
+    });
+
+    // get url of uploaded images
+    const imageResponse = await Promise.all(multiplePicturePromise);
+    const imageUrl = imageResponse.map((image) => {
+      const url = image.secure_url;
+      const public_id = image.public_id;
+      const folder = image.folder;
+      return { url, public_id, folder };
+    });
+    // end of uploaded images
+
+    return imageUrl;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+};
 
 wsUtil.leaveRoom = (data) => {
   try {

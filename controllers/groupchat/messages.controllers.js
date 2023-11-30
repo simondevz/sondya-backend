@@ -46,6 +46,7 @@ groupMessages.getMessages = asyncHandler(async (req, res) => {
           message: 1,
           group_id: 1,
           sender_id: 1,
+          image: 1,
           createdAt: 1, // Include createdAt field
           likes: "$likes.user_id", // Extract user_ids from the 'likes' array
         },
