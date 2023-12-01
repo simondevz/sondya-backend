@@ -1,7 +1,7 @@
 import GroupChatModel from "../../models/groupchat.model.js";
 import responseHandle from "../../utils/handleResponse.js";
 import asyncHandler from "express-async-handler";
-import GroupMembershipModel from "../../models/groupMembership.js";
+import GroupMembershipModel from "../../models/groupMembership.model.js";
 import UserModel from "../../models/users.model.js";
 
 const groupMembers = {};
