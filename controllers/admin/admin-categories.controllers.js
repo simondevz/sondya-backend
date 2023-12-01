@@ -8,7 +8,7 @@ const adminCategories = {};
 
 adminCategories.create = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Categories']
-  const { name, description } = req.body;
+  const { name, description, category } = req.body;
 
   try {
     const categoryTaken = await CategoryModel.findOne({ name: name.trim() });
@@ -20,7 +20,7 @@ adminCategories.create = asyncHandler(async (req, res) => {
     // start of upload images
     let imageUrl;
 
-    if (req.files) {
+    if (req.files?.length) {
       // upload images to cloudinary
       let files = req?.files;
       let multiplePicturePromise = files.map(async (picture, index) => {
@@ -46,6 +46,7 @@ adminCategories.create = asyncHandler(async (req, res) => {
     const newCategories = await CategoryModel.create({
       name: name.trim(),
       description: description.trim(),
+      category: category,
       image: imageUrl,
     });
 
@@ -69,7 +70,7 @@ adminCategories.update = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Categories']
   const check = await CategoryModel.findById(req.params.id);
 
-  const { name, description } = req.body;
+  const { name, description, category } = req.body;
   try {
     if (!check) {
       res.status(404);
@@ -114,6 +115,7 @@ adminCategories.update = asyncHandler(async (req, res) => {
       {
         name: name,
         description: description,
+        category: category,
         image: imageUrl,
       },
       {
