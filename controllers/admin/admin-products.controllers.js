@@ -258,7 +258,28 @@ adminProducts.getById = asyncHandler(async (req, res) => {
 
 adminProducts.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Products']
-  const getall = await ProductModel.find();
+
+  //  for a regex search pattern
+  const searchRegex = new RegExp(req.query.search, "i");
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const getall = await ProductModel.find({
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+    ],
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const total = await ProductModel.countDocuments({
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+    ],
+  });
+
   try {
     if (!getall) {
       res.status(404);
@@ -268,7 +289,11 @@ adminProducts.getAll = asyncHandler(async (req, res) => {
         res,
         200,
         "products found successfully.",
-        getall
+        {
+          data: getall,
+          count: total,
+        }
+        // getall
       );
     }
   } catch (error) {
