@@ -18,5 +18,9 @@ AdminCategoriesRoutes.put(
 AdminCategoriesRoutes.get("/admin/category/:id", adminCategories.getById);
 AdminCategoriesRoutes.delete("/admin/category/:id", adminCategories.delete);
 AdminCategoriesRoutes.get("/admin/categories", adminCategories.getAll);
+AdminCategoriesRoutes.get(
+  "/admin/categories/:category",
+  adminCategories.getCategory
+);
 
 export default AdminCategoriesRoutes;
