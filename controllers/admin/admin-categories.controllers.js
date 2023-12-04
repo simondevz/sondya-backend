@@ -62,6 +62,7 @@ adminCategories.create = asyncHandler(async (req, res) => {
     );
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });
@@ -209,6 +210,28 @@ adminCategories.getAll = asyncHandler(async (req, res) => {
         200,
         "category found successfully.",
         getall
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+adminCategories.getCategory = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Categories']
+  const category = req.params.category;
+  const getCategory = await CategoryModel.find({ category }).sort({ name: 1 });
+  try {
+    if (!getCategory) {
+      res.status(404);
+      throw new Error("Id not found");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "category found successfully.",
+        getCategory
       );
     }
   } catch (error) {

@@ -65,6 +65,8 @@ adminServices.create = asyncHandler(async (req, res) => {
     }
     // end of uploaded images
 
+    // this is undefined
+    console.log(percentage_price_off);
     const newService = await ServiceModel.create({
       name: name,
       owner: JSON.parse(owner),
@@ -76,7 +78,9 @@ adminServices.create = asyncHandler(async (req, res) => {
       currency: currency,
       old_price: Number(old_price),
       current_price: Number(current_price),
-      percentage_price_off: Number(percentage_price_off),
+      percentage_price_off: percentage_price_off
+        ? Number(percentage_price_off)
+        : null,
       duration: duration,
 
       location_description: location_description,
@@ -104,6 +108,7 @@ adminServices.create = asyncHandler(async (req, res) => {
     );
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });
@@ -221,6 +226,7 @@ adminServices.update = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });
