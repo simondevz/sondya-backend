@@ -173,10 +173,28 @@ adminGroupChat.getChats = asyncHandler(async (req, res) => {
       throw new Error("Admin User not found");
     }
 
+    //  for a regex search pattern
+    const searchRegex = new RegExp(req.query.search, "i");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+
+    const groupChats = await GroupChatModel.find({
+      admin_id: admin_id,
+      $or: [
+        { name: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+      ],
+    })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
     const numberOfGroupchats = await GroupChatModel.countDocuments({
-      admin_id,
+      admin_id: admin_id,
+      $or: [
+        { name: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+      ],
     });
-    const groupChats = await GroupChatModel.find({ admin_id });
 
     if (!groupChats) {
       res.status(500);
