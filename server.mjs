@@ -39,19 +39,20 @@ import AdminGroupChatRoutes from "./routes/admin/groupchat.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
-import testimonialRoutes from "./routes/user/testimonials.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
+import testimonialRoutes from "./routes/user/testimonials.routes.js";
 
 import profileRoutes from "./routes/profile.routes.js";
 
 import authRoutes from "./routes/auth.routes.js";
 import contactusRoutes from "./routes/contactus.routes.js";
-import healthRoutes from "./routes/health.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
+import healthRoutes from "./routes/health.routes.js";
+import homeRoutes from "./routes/home.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 
@@ -59,6 +60,7 @@ import ServicesRoutes from "./routes/user/services.routes.js";
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use("/api/v1/", homeRoutes);
 app.use("/api/v1/", contactusRoutes);
 app.use("/api/v1/", healthRoutes);
 app.use("/api/v1/", authRoutes);
