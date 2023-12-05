@@ -51,9 +51,11 @@ const servicesSchema = Schema(
     // products ratings
     rating: {
       type: Number,
+      default: 0,
     },
     total_rating: {
       type: Number,
+      default: 0,
     },
 
     // service status

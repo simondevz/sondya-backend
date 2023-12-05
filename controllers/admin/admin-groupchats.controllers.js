@@ -176,7 +176,7 @@ adminGroupChat.getChats = asyncHandler(async (req, res) => {
     //  for a regex search pattern
     const searchRegex = new RegExp(req.query.search, "i");
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) || 10;
 
     const groupChats = await GroupChatModel.find({
       admin_id: admin_id,

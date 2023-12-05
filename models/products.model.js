@@ -42,6 +42,7 @@ const productsSchema = Schema(
     // prices
     old_price: {
       type: Number,
+      default: 0,
     }, // pricebefore
     current_price: {
       type: Number,
@@ -64,9 +65,11 @@ const productsSchema = Schema(
     // products ratings
     rating: {
       type: Number,
+      default: 0,
     },
     total_rating: {
       type: Number,
+      default: 0,
     },
 
     // variants
