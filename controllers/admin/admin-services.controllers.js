@@ -290,18 +290,38 @@ adminServices.getById = asyncHandler(async (req, res) => {
 
 adminServices.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Services']
-  const getall = await ServiceModel.find();
+
+  //  for a regex search pattern
+  const searchRegex = new RegExp(req.query.search, "i");
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const getall = await ServiceModel.find({
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+    ],
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const total = await ServiceModel.countDocuments({
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+    ],
+  });
+
   try {
     if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "services found successfully.",
-        getall
-      );
+      responseHandle.successResponse(res, 200, "services found successfully.", {
+        data: getall,
+        count: total,
+      });
     }
   } catch (error) {
     res.status(500);

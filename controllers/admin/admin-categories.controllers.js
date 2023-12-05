@@ -199,18 +199,48 @@ adminCategories.getById = asyncHandler(async (req, res) => {
 
 adminCategories.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Categories']
-  const getall = await CategoryModel.find();
+
+  //  for a regex search pattern
+  const searchRegex = new RegExp(req.query.search, "i");
+  const categoryRegex = new RegExp(req.query.category, "i");
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const getall = await CategoryModel.find({
+    $and: [
+      { category: { $regex: categoryRegex } },
+      {
+        $or: [
+          { name: { $regex: searchRegex } },
+          { description: { $regex: searchRegex } },
+        ],
+      },
+    ],
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const total = await CategoryModel.countDocuments({
+    $and: [
+      { category: { $regex: categoryRegex } },
+      {
+        $or: [
+          { name: { $regex: searchRegex } },
+          { description: { $regex: searchRegex } },
+        ],
+      },
+    ],
+  });
   try {
     if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "category found successfully.",
-        getall
-      );
+      responseHandle.successResponse(res, 200, "category found successfully.", {
+        data: getall,
+        count: total,
+      });
     }
   } catch (error) {
     res.status(500);
