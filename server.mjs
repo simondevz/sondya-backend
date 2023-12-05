@@ -52,6 +52,8 @@ import healthRoutes from "./routes/health.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
+import productsRoutes from "./routes/user/products.routes.js";
+import ServicesRoutes from "./routes/user/services.routes.js";
 
 // Running routes
 app.use(cors());
@@ -61,6 +63,8 @@ app.use("/api/v1/", contactusRoutes);
 app.use("/api/v1/", healthRoutes);
 app.use("/api/v1/", authRoutes);
 app.use("/api/v1/", groupchatRoutes);
+app.use("/api/v1/", productsRoutes);
+app.use("/api/v1/", ServicesRoutes);
 app.use("/api/v1/", groupMembersRoutes.unprotected);
 app.use("/api/v1/", groupMessagesRoutes.unprotected);
 

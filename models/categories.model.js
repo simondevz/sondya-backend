@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const categoriesSchema = Schema(
   {
     category: {
-      type: String,
+      type: String, // "Service" or "Product"
     },
     name: {
       type: String,
