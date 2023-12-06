@@ -187,7 +187,28 @@ users.getbyid = asyncHandler(async (req, res) => {
 
 users.getall = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Users']
-  const getall = await UserModel.find();
+  // const getall = await UserModel.find();
+
+  /** my edit */
+  const searchRegex = new RegExp(req.query.search, 'i');
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+  const getall = await UserModel.find({
+    $or: [
+      { username: { $regex: searchRegex } },
+      { email: { $regex: searchRegex } },
+      { type: { $regex: searchRegex } },
+    ],
+  }).skip((page - 1) * limit).limit(limit)
+
+  const totalUsers = await UserModel.countDocuments({
+    $or: [
+      { username: { $regex: searchRegex } },
+      { email: { $regex: searchRegex } },
+      { type: { $regex: searchRegex } },
+    ],
+  })
 
   try {
     if (!getall) {
@@ -198,7 +219,10 @@ users.getall = asyncHandler(async (req, res) => {
         res,
         200,
         "Users found successfully.",
-        getall
+        {
+          data: getall,
+          count: totalUsers
+        }
       );
     }
   } catch (error) {
