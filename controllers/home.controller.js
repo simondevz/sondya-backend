@@ -15,20 +15,14 @@ homeList.getAllProducts = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
 
-  const getall = await ServiceModel.find({
-    $or: [
-      { name: { $regex: searchRegex } },
-      { description: { $regex: searchRegex } },
-    ],
+  const getall = await ProductModel.find({
+    sub_category: { $regex: searchRegex },
   })
     .skip((page - 1) * limit)
     .limit(limit);
 
-  const total = await ServiceModel.countDocuments({
-    $or: [
-      { name: { $regex: searchRegex } },
-      { description: { $regex: searchRegex } },
-    ],
+  const total = await ProductModel.countDocuments({
+    sub_category: { $regex: searchRegex },
   });
 
   try {
@@ -56,22 +50,14 @@ homeList.getAllServices = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
 
-  const getall = await ProductModel.find({
-    $or: [
-      { name: { $regex: searchRegex } },
-      { brief_description: { $regex: searchRegex } },
-      { description: { $regex: searchRegex } },
-    ],
+  const getall = await ServiceModel.find({
+    sub_category: { $regex: searchRegex },
   })
     .skip((page - 1) * limit)
     .limit(limit);
 
-  const total = await ProductModel.countDocuments({
-    $or: [
-      { name: { $regex: searchRegex } },
-      { brief_description: { $regex: searchRegex } },
-      { description: { $regex: searchRegex } },
-    ],
+  const total = await ServiceModel.countDocuments({
+    sub_category: { $regex: searchRegex },
   });
 
   try {
@@ -94,18 +80,14 @@ homeList.getAllCategories = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
 
   //  for a regex search pattern
-  const searchRegex = new RegExp(req.query.search, "i");
+  const searchRegex = new RegExp(req.query.category, "i");
 
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 5;
+  const limit = parseInt(req.query.limit) || 15;
 
-  const getall = await CategoryModel.find({ name: { $regex: searchRegex } })
+  const getall = await CategoryModel.find({ category: { $regex: searchRegex } })
     .skip((page - 1) * limit)
     .limit(limit);
-
-  const total = await CategoryModel.countDocuments({
-    name: { $regex: searchRegex },
-  });
 
   try {
     if (!getall) {
@@ -116,10 +98,7 @@ homeList.getAllCategories = asyncHandler(async (req, res) => {
         res,
         200,
         "categories found successfully.",
-        {
-          data: getall,
-          count: total,
-        }
+        getall
       );
     }
   } catch (error) {
