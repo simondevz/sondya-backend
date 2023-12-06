@@ -13,6 +13,7 @@ userServices.getServices = asyncHandler(async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
     const subcategory = req.query.subcategory || null;
+    const popularBrands = req.query.popularBrands || null;
     const priceRange = req.query.priceRange || null;
     const [minPrice, maxPrice] = priceRange
       ? priceRange.split("_")
@@ -34,6 +35,11 @@ userServices.getServices = asyncHandler(async (req, res) => {
         { brand: { $regex: searchRegex } },
         { model: { $regex: searchRegex } },
       ],
+      [popularBrands?.length ? "$or" : null]: popularBrands?.length
+        ? popularBrands?.split(",").map((brand) => {
+            return { brand };
+          })
+        : null,
     })
       .skip((page - 1) * limit)
       .limit(limit);
@@ -54,6 +60,11 @@ userServices.getServices = asyncHandler(async (req, res) => {
         { brand: { $regex: searchRegex } },
         { model: { $regex: searchRegex } },
       ],
+      [popularBrands?.length ? "$or" : null]: popularBrands?.length
+        ? popularBrands?.split(",").map((brand) => {
+            return { brand };
+          })
+        : null,
     });
 
     if (!services) {
