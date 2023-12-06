@@ -62,7 +62,7 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
       ],
       [popularBrands?.length ? "$or" : null]: popularBrands?.length
         ? popularBrands?.split(",").map((brand) => {
-            return { brand };
+            return { brand: new RegExp("\\b" + brand + "\\b", "gi") };
           })
         : null,
     });
