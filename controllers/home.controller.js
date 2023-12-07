@@ -78,7 +78,7 @@ homeList.getAllServices = asyncHandler(async (req, res) => {
 homeList.getProductById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
 
-  const OriginalString = req.params.name.replace(/_/g, " ");
+  const OriginalString = req.params.name.replace(/-/g, " ");
 
   //  for a regex search pattern
   const productDetails = await ProductModel.findOne({
@@ -107,7 +107,7 @@ homeList.getProductById = asyncHandler(async (req, res) => {
 homeList.getServiceById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
 
-  const OriginalString = req.params.name.replace(/_/g, " ");
+  const OriginalString = req.params.name.replace(/-/g, " ");
 
   //  for a regex search pattern
   const serviceDetails = await ServiceModel.findOne({
