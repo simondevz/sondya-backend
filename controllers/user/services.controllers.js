@@ -12,6 +12,7 @@ userServices.getServices = asyncHandler(async (req, res) => {
     const searchRegex = new RegExp(req.query.search, "i");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
+    const sortBy = req.query.sortBy || "latest";
     const subcategory = req.query.subcategory || null;
     const popularBrands = req.query.popularBrands || null;
     const priceRange = req.query.priceRange || null;
@@ -41,6 +42,23 @@ userServices.getServices = asyncHandler(async (req, res) => {
           })
         : null,
     })
+      .collation({ locale: "en", strength: 2 })
+      .sort({
+        [sortBy === "a-z" || sortBy === "z-a"
+          ? "name"
+          : sortBy === "latest" || sortBy === "oldest"
+          ? "createdAt"
+          : null]:
+          sortBy === "a-z"
+            ? 1
+            : sortBy === "z-a"
+            ? -1
+            : sortBy === "latest"
+            ? -1
+            : sortBy === "oldest"
+            ? 1
+            : null,
+      })
       .skip((page - 1) * limit)
       .limit(limit);
 

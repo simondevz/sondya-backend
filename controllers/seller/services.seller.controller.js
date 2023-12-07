@@ -33,12 +33,6 @@ SellerServices.create = asyncHandler(async (req, res) => {
   } = req.body;
 
   try {
-    const serviceTaken = await ServiceModel.findOne({ name: name.trim() });
-    if (serviceTaken) {
-      res.status(400);
-      throw new Error("service name is taken");
-    }
-
     // start of upload images
     let imageUrl;
 
@@ -284,21 +278,45 @@ SellerServices.getById = asyncHandler(async (req, res) => {
 
 SellerServices.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Services']
+  const searchRegex = new RegExp(req.query.search, "i");
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
 
   const getall = await ServiceModel.find({
     "owner.id": req.params.userId,
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { sub_category: { $regex: searchRegex } },
+      { tag: { $regex: searchRegex } },
+      { brand: { $regex: searchRegex } },
+      { model: { $regex: searchRegex } },
+    ],
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const count = await ServiceModel.countDocuments({
+    "owner.id": req.params.userId,
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { sub_category: { $regex: searchRegex } },
+      { tag: { $regex: searchRegex } },
+      { brand: { $regex: searchRegex } },
+      { model: { $regex: searchRegex } },
+    ],
   });
+
   try {
     if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "services found successfully.",
-        getall
-      );
+      responseHandle.successResponse(res, 200, "services found successfully.", {
+        services: getall,
+        count,
+      });
     }
   } catch (error) {
     res.status(500);
