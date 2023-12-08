@@ -198,7 +198,6 @@ users.getall = asyncHandler(async (req, res) => {
     $or: [
       { username: { $regex: searchRegex } },
       { email: { $regex: searchRegex } },
-      { type: { $regex: searchRegex } },
     ],
   }).skip((page - 1) * limit).limit(limit)
 
@@ -206,7 +205,6 @@ users.getall = asyncHandler(async (req, res) => {
     $or: [
       { username: { $regex: searchRegex } },
       { email: { $regex: searchRegex } },
-      { type: { $regex: searchRegex } },
     ],
   })
 
