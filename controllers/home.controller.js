@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import CategoryModel from "../models/categories.model.js";
 import ProductModel from "../models/products.model.js";
 import ServiceModel from "../models/services.model.js";
 import responseHandle from "../utils/handleResponse.js";
@@ -76,29 +75,56 @@ homeList.getAllServices = asyncHandler(async (req, res) => {
   }
 });
 
-homeList.getAllCategories = asyncHandler(async (req, res) => {
+homeList.getProductById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
 
+  const OriginalString = req.params.name.replace(/-/g, " ");
+
   //  for a regex search pattern
-  const searchRegex = new RegExp(req.query.category, "i");
-
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 15;
-
-  const getall = await CategoryModel.find({ category: { $regex: searchRegex } })
-    .skip((page - 1) * limit)
-    .limit(limit);
+  const productDetails = await ProductModel.findOne({
+    _id: req.params.id,
+    name: new RegExp(OriginalString, "i"),
+  });
 
   try {
-    if (!getall) {
+    if (!productDetails) {
       res.status(404);
-      throw new Error("Id not found");
+      throw new Error("product not found");
     } else {
       responseHandle.successResponse(
         res,
         200,
-        "categories found successfully.",
-        getall
+        "products found successfully.",
+        productDetails
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+homeList.getServiceById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['home']
+
+  const OriginalString = req.params.name.replace(/-/g, " ");
+
+  //  for a regex search pattern
+  const serviceDetails = await ServiceModel.findOne({
+    _id: req.params.id,
+    name: new RegExp(OriginalString, "i"),
+  });
+
+  try {
+    if (!serviceDetails) {
+      res.status(404);
+      throw new Error("services not found");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "services found successfully.",
+        serviceDetails
       );
     }
   } catch (error) {
