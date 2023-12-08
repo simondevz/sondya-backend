@@ -14,6 +14,8 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
     const limit = parseInt(req.query.limit) || 20;
     const subcategory = req.query.subcategory || null;
     const priceRange = req.query.priceRange || null;
+    const sortBy = req.query.sortBy || "latest";
+    const popularBrands = req.query.popularBrands || null;
     const [minPrice, maxPrice] = priceRange
       ? priceRange.split("_")
       : ["0", "0"];
@@ -34,7 +36,29 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
         { brand: { $regex: searchRegex } },
         { model: { $regex: searchRegex } },
       ],
+      [popularBrands?.length ? "$or" : null]: popularBrands?.length
+        ? popularBrands?.split(",").map((brand) => {
+            return { brand: new RegExp("\\b" + brand + "\\b", "gi") };
+          })
+        : null,
     })
+      .collation({ locale: "en", strength: 2 })
+      .sort({
+        [sortBy === "a-z" || sortBy === "z-a"
+          ? "name"
+          : sortBy === "latest" || sortBy === "oldest"
+          ? "createdAt"
+          : null]:
+          sortBy === "a-z"
+            ? 1
+            : sortBy === "z-a"
+            ? -1
+            : sortBy === "latest"
+            ? -1
+            : sortBy === "oldest"
+            ? 1
+            : null,
+      })
       .skip((page - 1) * limit)
       .limit(limit);
 
@@ -54,6 +78,11 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
         { brand: { $regex: searchRegex } },
         { model: { $regex: searchRegex } },
       ],
+      [popularBrands?.length ? "$or" : null]: popularBrands?.length
+        ? popularBrands?.split(",").map((brand) => {
+            return { brand: new RegExp("\\b" + brand + "\\b", "gi") };
+          })
+        : null,
     });
 
     if (!products) {
