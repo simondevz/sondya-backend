@@ -27,12 +27,6 @@ SellerProducts.create = asyncHandler(async (req, res) => {
   } = req.body;
 
   try {
-    const productTaken = await ProductModel.findOne({ name: name.trim() });
-    if (productTaken) {
-      res.status(400);
-      throw new Error("product name is taken");
-    }
-
     // start of upload images
     let imageUrl;
 
@@ -238,7 +232,6 @@ SellerProducts.delete = asyncHandler(async (req, res) => {
 SellerProducts.getById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Products']
   const productDetails = await ProductModel.findById(req.params.id);
-
   try {
     if (!productDetails) {
       res.status(404);
@@ -259,21 +252,48 @@ SellerProducts.getById = asyncHandler(async (req, res) => {
 
 SellerProducts.getAll = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Products']
-  const getall = await ProductModel.find({ "owner.id": req.params.userId });
+  const searchRegex = new RegExp(req.query.search, "i");
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
+  const getall = await ProductModel.find({
+    "owner.id": req.params.userId,
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { sub_category: { $regex: searchRegex } },
+      { tag: { $regex: searchRegex } },
+      { brand: { $regex: searchRegex } },
+      { model: { $regex: searchRegex } },
+    ],
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  const count = await ProductModel.countDocuments({
+    "owner.id": req.params.userId,
+    $or: [
+      { name: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { sub_category: { $regex: searchRegex } },
+      { tag: { $regex: searchRegex } },
+      { brand: { $regex: searchRegex } },
+      { model: { $regex: searchRegex } },
+    ],
+  });
   try {
     if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "products found successfully.",
-        getall
-      );
+      responseHandle.successResponse(res, 200, "products found successfully.", {
+        products: getall,
+        count,
+      });
     }
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });
