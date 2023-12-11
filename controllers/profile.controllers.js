@@ -16,6 +16,10 @@ profile.update = asyncHandler(async (req, res) => {
     email,
     phone_number,
     state,
+    city,
+    address,
+    currency,
+    language,
     country,
     zip_code,
     website_url,
@@ -68,6 +72,10 @@ profile.update = asyncHandler(async (req, res) => {
         email: email,
         phone_number: phone_number,
         state: state,
+        city: city,
+        address: address,
+        currency: currency,
+        language: language,
         country: country,
         zip_code: zip_code,
         website_url: website_url,
@@ -127,6 +135,43 @@ profile.updateSocialMedia = asyncHandler(async (req, res) => {
         res,
         201,
         "profile Social handles updated successfully.",
+        updatedUser
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+profile.updateCompanyDetails = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
+  const check = await UserModel.findById(req.params.id);
+  const { company_details } = req.body;
+  try {
+    if (!check) {
+      res.status(404);
+      throw new Error("Id not found");
+    }
+
+    // console.log(JSON.parse(JSON.stringify(company_details)));
+    // const company_detail2 = JSON.stringify(company_details);
+
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.params.id,
+      {
+        company_details:
+          company_details !== undefined && JSON.parse(company_details),
+      },
+      {
+        new: true,
+      }
+    );
+    if (updatedUser) {
+      responseHandle.successResponse(
+        res,
+        201,
+        "company details handles updated successfully.",
         updatedUser
       );
     }
