@@ -42,6 +42,15 @@ const userSchema = Schema(
     zip_code: {
       type: String,
     },
+    city: {
+      type: String,
+    },
+    currency: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
     type: {
       type: String, // admin or user
     },
@@ -63,6 +72,24 @@ const userSchema = Schema(
       },
     ],
 
+    // company details
+    company_details: {
+      company_name: {
+        type: String,
+      },
+      company_website: {
+        type: String,
+      },
+      company_email: {
+        type: String,
+      },
+      contact_person_name: {
+        type: String,
+      },
+      contact_person_number: {
+        type: String,
+      },
+    },
     // online activity
     last_online: {
       type: String, // active or blocked

@@ -72,6 +72,11 @@ users.update = asyncHandler(async (req, res) => {
     instagram_url,
     twitter_url,
     tiktok_url,
+
+    //new
+    city,
+    currency,
+    language,
   } = req.body;
 
   let password;
@@ -107,6 +112,11 @@ users.update = asyncHandler(async (req, res) => {
         instagram_url: instagram_url,
         twitter_url: twitter_url,
         tiktok_url: tiktok_url,
+
+        //new
+        city: city,
+        currency: currency,
+        language: language,
       },
       {
         new: true,
@@ -190,7 +200,7 @@ users.getall = asyncHandler(async (req, res) => {
   // const getall = await UserModel.find();
 
   /** my edit */
-  const searchRegex = new RegExp(req.query.search, 'i');
+  const searchRegex = new RegExp(req.query.search, "i");
 
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
@@ -199,29 +209,26 @@ users.getall = asyncHandler(async (req, res) => {
       { username: { $regex: searchRegex } },
       { email: { $regex: searchRegex } },
     ],
-  }).skip((page - 1) * limit).limit(limit)
+  })
+    .skip((page - 1) * limit)
+    .limit(limit);
 
   const totalUsers = await UserModel.countDocuments({
     $or: [
       { username: { $regex: searchRegex } },
       { email: { $regex: searchRegex } },
     ],
-  })
+  });
 
   try {
     if (!getall) {
       res.status(404);
       throw new Error("Id not found");
     } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "Users found successfully.",
-        {
-          data: getall,
-          count: totalUsers
-        }
-      );
+      responseHandle.successResponse(res, 200, "Users found successfully.", {
+        data: getall,
+        count: totalUsers,
+      });
     }
   } catch (error) {
     res.status(500);
