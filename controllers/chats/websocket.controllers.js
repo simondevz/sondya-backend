@@ -1,8 +1,8 @@
 import wsUtil from "../../utils/websocketsUtils.js";
 
-const wsGroupChatController = {};
+const wsChatController = {};
 
-wsGroupChatController.use = (path, app) =>
+wsChatController.use = (path, app) =>
   app.ws(path, (ws) => {
     try {
       ws.on("message", (recieveData) => {
@@ -14,20 +14,26 @@ wsGroupChatController.use = (path, app) =>
 
         if (data.meta) {
           switch (data.meta) {
-            case "get_online_users":
+            case "user_online_check":
               wsUtil.getOnlineUsers(data, ws);
               break;
 
             case "join_conversation":
-              wsUtil.joinRoom(data, ws);
+              wsUtil.joinRoom(
+                { room_id: data.room_id, user_id: data.sender_id },
+                ws
+              );
               break;
 
             default:
-              wsUtil.joinRoom(data, ws);
+              wsUtil.joinRoom(
+                { room_id: data.room_id, user_id: data.sender_id },
+                ws
+              );
               break;
           }
         } else {
-          wsUtil.sendMessage(data, ws);
+          wsUtil.sendChatMessage(data, ws);
         }
       });
 
@@ -46,7 +52,7 @@ wsGroupChatController.use = (path, app) =>
   });
 
 // ping to check if user is stil online
-wsGroupChatController.ping = (wss) =>
+wsChatController.ping = (wss) =>
   setInterval(() => {
     wss.clients.forEach(function each(ws) {
       if (ws.isAlive === false) {
@@ -59,7 +65,7 @@ wsGroupChatController.ping = (wss) =>
   }, 600000); // 10 minutes interval
 
 // Interval searches for empty rooms to remove
-wsGroupChatController.clearUnused = () =>
+wsChatController.clearUnused = () =>
   setInterval(() => {
     var removeKey = [];
     for (const room_id in wsUtil.rooms) {
@@ -72,4 +78,4 @@ wsGroupChatController.clearUnused = () =>
     }
   }, 50000);
 
-export default wsGroupChatController;
+export default wsChatController;

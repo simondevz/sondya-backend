@@ -5,6 +5,30 @@ import CategoryModel from "../../models/categories.model.js";
 
 const userServices = {};
 
+userServices.getServiceById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Services']
+  try {
+    const id = req.params.id;
+    const service = await ServicesModel.findById(id);
+
+    if (!service) {
+      res.status(500);
+      throw new Error("Could not get service");
+    } else {
+      responseHandle.successResponse(
+        res,
+        201,
+        "services gotten successfully.",
+        service
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
+
 userServices.getServices = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Services']
   try {

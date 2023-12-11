@@ -201,4 +201,32 @@ profile.getbyid = asyncHandler(async (req, res) => {
   }
 });
 
+profile.getUsers = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Users']
+  try {
+    const searchRegex = new RegExp(req.query.search, "i");
+    const limit = parseInt(req.query.limit) || 20;
+
+    const users = await UserModel.find({
+      $or: [
+        { first_name: { $regex: searchRegex } },
+        { last_name: { $regex: searchRegex } },
+        { username: { $regex: searchRegex } },
+        { email: { $regex: searchRegex } },
+        { website_url: { $regex: searchRegex } },
+      ],
+    }).limit(limit);
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "found users successfully.",
+      users
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default profile;

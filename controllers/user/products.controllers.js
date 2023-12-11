@@ -5,6 +5,30 @@ import CategoryModel from "../../models/categories.model.js";
 
 const userProducts = {};
 
+userProducts.getProductById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Services']
+  try {
+    const id = req.params.id;
+    const product = await ProductModel.findById(id);
+
+    if (!product) {
+      res.status(500);
+      throw new Error("Could not get product");
+    } else {
+      responseHandle.successResponse(
+        res,
+        201,
+        "product gotten successfully.",
+        product
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
+
 userProducts.getProducts = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Products']
   try {

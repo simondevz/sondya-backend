@@ -1,5 +1,7 @@
 import GroupMessageModel from "../models/groupMessage.model.js";
+import ChatMessageModel from "../models/chatMessage.model.js";
 import GroupChatModel from "../models/groupchat.model.js";
+import ChatModel from "../models/chat.model.js";
 import asyncHandler from "express-async-handler";
 import UserModel from "../models/users.model.js";
 import handleUpload from "./upload.js";
@@ -14,7 +16,11 @@ wsUtil.rooms = {};
 
 wsUtil.paramsExist = (data) => {
   try {
-    if ("room_id" in data && "user_id" in data && "message" in data) {
+    if (
+      "room_id" in data &&
+      ("user_id" in data || "sender_id" in data) &&
+      "message" in data
+    ) {
       return true;
     } else {
       return false;
@@ -87,7 +93,7 @@ wsUtil.getOnlineUsers = (data, ws) => {
 // join room
 wsUtil.joinRoom = (data, ws) => {
   try {
-    var { room_id, user_id } = data;
+    let { room_id, user_id } = data;
     // check if room exist or not
     const roomExist = wsUtil.roomExist(room_id);
     if (!roomExist) {
@@ -171,6 +177,101 @@ wsUtil.sendMessage = asyncHandler(async (data, ws) => {
   }
 });
 
+// send message
+wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
+  const {
+    room_id,
+    message,
+    images,
+    sender_id,
+    receiver_id,
+    product_id,
+    service_id,
+  } = data;
+  try {
+    const sender = await UserModel.findById(sender_id).lean();
+    if (!sender?._id) {
+      throw new Error(
+        "The ID of the person sending this message was not found"
+      );
+    }
+
+    const receiver = await UserModel.findById(receiver_id).lean();
+    if (!receiver?._id) {
+      throw new Error(
+        "The ID of the person recieving this message was not found"
+      );
+    }
+
+    let chat = await ChatModel.findOne({
+      $or: [
+        { user1: sender_id, user2: receiver_id },
+        { user1: receiver_id, user2: sender_id },
+      ],
+    })
+      .populate("user1", ["username", "first_name", "last_name", "email"])
+      .populate("user2", ["username", "first_name", "last_name", "email"]);
+
+    if (!chat) {
+      chat = await ChatModel.create({
+        user1: sender_id,
+        user2: receiver_id,
+      });
+    }
+
+    if (!message && !images.length) {
+      throw new Error("No message");
+    }
+
+    let imageUrl = [];
+    if (images?.length > 0) {
+      imageUrl = await wsUtil.uploadImages(images);
+    }
+
+    let chatMessage = await ChatMessageModel.create({
+      chat_id: chat?._id,
+      message,
+      sender_id: sender_id,
+      image: imageUrl,
+      product_id,
+      service_id,
+    });
+
+    if (!chatMessage) {
+      throw new Error("could not send message");
+    }
+
+    wsUtil.joinRoom({ room_id, user_id: sender_id }, ws);
+    const room = wsUtil.rooms[room_id];
+    for (let i = 0; i < room.length; i++) {
+      let user = room[i];
+      for (let key in user) {
+        let wsClient = user[key];
+        wsClient.send(
+          JSON.stringify({
+            ...chatMessage._doc,
+            sender: {
+              username: sender?.username,
+              first_name: sender?.first_name,
+              last_name: sender?.last_name,
+              email: sender?.email,
+              image: sender?.image,
+            },
+          })
+        );
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    ws.send(
+      JSON.stringify({
+        meta: "error_occured",
+        error: error.message,
+      })
+    );
+  }
+});
+
 // image upload
 wsUtil.uploadImages = async (images) => {
   try {
@@ -217,7 +318,6 @@ wsUtil.leaveRoom = (data) => {
     if (index != null) {
       // remove the user using the index
       wsUtil.rooms[room_id].splice(index, 1);
-      console.log(wsUtil.rooms[room_id].length);
     }
   } catch (error) {
     throw new Error("ws error: could not leave room");

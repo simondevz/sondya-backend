@@ -7,10 +7,16 @@ const app = express();
 const wss = expressWs(app).getWss();
 
 // WebSockets
-import wsController from "./controllers/groupchat/websocket.controllers.js";
-wsController.use("/api/v1/ws/chat", app);
-wsController.ping(wss);
-wsController.clearUnused();
+import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
+import wsChatController from "./controllers/chats/websocket.controllers.js";
+
+wsGroupChatController.use("/api/v1/ws/group/chat", app);
+wsGroupChatController.ping(wss);
+wsGroupChatController.clearUnused();
+
+wsChatController.use("/api/v1/ws/personal/chat", app);
+wsChatController.ping(wss);
+wsChatController.clearUnused();
 
 // importing swagger ui
 import { readFileSync } from "fs";
@@ -51,6 +57,8 @@ import contactusRoutes from "./routes/contactus.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
+import chatMessagesRoutes from "./routes/chats/messages.routes.js";
+import chatRoutes from "./routes/chats/chats.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
@@ -91,6 +99,8 @@ app.use("/api/v1/", SellerServicesRoutes);
 // user protected
 app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", testimonialRoutes);
+app.use("/api/v1/", chatRoutes);
+app.use("/api/v1/", chatMessagesRoutes);
 app.use("/api/v1/", groupMembersRoutes.protected);
 app.use("/api/v1/", groupMessagesRoutes.protected);
 
