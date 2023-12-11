@@ -250,7 +250,7 @@ wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
         wsClient.send(
           JSON.stringify({
             ...chatMessage._doc,
-            sender: {
+            sender_id: {
               username: sender?.username,
               first_name: sender?.first_name,
               last_name: sender?.last_name,
