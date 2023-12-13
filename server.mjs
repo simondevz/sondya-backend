@@ -42,6 +42,7 @@ import AuthMiddleware from "./middleware/userMiddleware.js";
 // importing Routes
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
 import AdminGroupChatRoutes from "./routes/admin/groupchat.routes.js";
+import AdminOrderRoutes from "./routes/admin/orders.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
@@ -61,6 +62,7 @@ import chatMessagesRoutes from "./routes/chats/messages.routes.js";
 import chatRoutes from "./routes/chats/chats.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
+import orderRoutes from "./routes/user/order.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 
@@ -91,6 +93,7 @@ app.use("/api/v1/", AdminProductsRoutes);
 app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", AdminTestimonialRoutes);
 app.use("/api/v1/", AdminGroupChatRoutes);
+app.use("/api/v1/", AdminOrderRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
@@ -103,6 +106,7 @@ app.use("/api/v1/", chatRoutes);
 app.use("/api/v1/", chatMessagesRoutes);
 app.use("/api/v1/", groupMembersRoutes.protected);
 app.use("/api/v1/", groupMessagesRoutes.protected);
+app.use("/api/v1/", orderRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
