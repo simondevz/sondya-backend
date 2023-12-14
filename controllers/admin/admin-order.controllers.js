@@ -51,4 +51,34 @@ AdminOrder.AdminGetProductOrderById = asyncHandler(async (req, res) => {
   }
 });
 
+AdminOrder.AdmindeleteProductOrder = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Order']
+
+  const check = await ProductOrderModel.findById(req.params.id);
+  try {
+    if (!check) {
+      res.status(404);
+      throw new Error("Id not found");
+    }
+    const deleteProductOrder = await ProductOrderModel.findByIdAndDelete(
+      req.params.id
+    );
+
+    if (!deleteProductOrder) {
+      res.status(500);
+      throw new Error("could not delete product order");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "product order deleted successfully.",
+        "product order deleted"
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default AdminOrder;
