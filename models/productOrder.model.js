@@ -13,96 +13,106 @@ const productOrderSchema = Schema(
         type: String,
       },
     },
-    checkoutItems: [
-      {
-        _id: {
-          type: String,
-        },
-        name: {
-          type: String,
-        },
-        category: {
-          type: String,
-        },
-        description: {
-          type: String,
-        },
-        total_stock: {
-          type: Number,
-        },
-        tag: {
-          type: String,
-        },
-        brand: {
-          type: String,
-        },
-        model: {
-          type: String,
-        },
-        current_price: {
-          type: Number,
-        },
-        product_status: {
-          type: String,
-        },
-        old_price: {
-          type: Number,
-        },
-        discount_percentage: {
-          type: Number,
-        },
-        vat_percentage: {
-          type: Number,
-        },
-        total_variants: {
-          type: Number,
-        },
-        quantity: {
-          type: Number,
-        },
-        product_id: {
-          type: String,
-        },
-        Order_quantity: {
-          type: Number,
-        },
-        total_price: {
-          type: Number,
-        },
-        image: [
-          {
-            url: {
-              type: String,
-            },
-            public_id: {
-              type: String,
-            },
-            folder: {
-              type: String,
-            },
-          },
-        ],
+    batch_id: {
+      type: String, // 6 digits
+    },
+    order_id: {
+      type: String, // 6 digits
+    },
+    checkout_items: {
+      _id: {
+        type: String,
       },
-    ],
-    subTotal: {
-      type: Number,
+      name: {
+        type: String,
+      },
+      category: {
+        type: String,
+      },
+      sub_category: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      // owner
+      owner: {
+        id: {
+          type: String,
+        },
+        username: {
+          type: String,
+        },
+        email: {
+          type: String,
+        },
+        country: {
+          type: String,
+        },
+      },
+      total_stock: {
+        type: Number,
+      },
+      tag: {
+        type: String,
+      },
+      brand: {
+        type: String,
+      },
+      model: {
+        type: String,
+      },
+      current_price: {
+        type: Number,
+      },
+      product_status: {
+        type: String,
+      },
+      old_price: {
+        type: Number,
+      },
+      discount_percentage: {
+        type: Number,
+      },
+      vat_percentage: {
+        type: Number,
+      },
+      total_variants: {
+        type: Number,
+      },
+      Order_quantity: {
+        type: Number,
+      },
+      sub_total: {
+        type: Number,
+      },
+      shipping_fee: {
+        type: Number,
+      },
+      tax: {
+        type: Number,
+      },
+      discount: {
+        type: Number,
+      },
+      total_price: {
+        type: Number,
+      },
+      image: [
+        {
+          url: {
+            type: String,
+          },
+          public_id: {
+            type: String,
+          },
+          folder: {
+            type: String,
+          },
+        },
+      ],
     },
-    shippingFee: {
-      type: Number,
-    },
-    tax: {
-      type: Number,
-    },
-    discount: {
-      type: Number,
-    },
-    totalAmount: {
-      type: Number,
-    },
-    currency: {
-      type: String,
-    },
-    ShippingDestination: {
+    shipping_destination: {
       _id: {
         type: String,
       },
@@ -125,19 +135,16 @@ const productOrderSchema = Schema(
         type: String,
       },
     },
-    paymentMethod: {
+    total_amount: {
+      type: Number,
+    },
+    payment_id: {
       type: String,
     },
-    paymentStatus: {
+    payment_status: {
       type: String,
     },
-    Category: {
-      type: String,
-    },
-    orderStatus: {
-      type: String,
-    },
-    callback_url: {
+    order_status: {
       type: String,
     },
   },

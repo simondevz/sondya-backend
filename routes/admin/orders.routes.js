@@ -9,5 +9,9 @@ AdminOrderRoutes.get(
   "/admin/order/product/:id",
   AdminOrder.AdminGetProductOrderById
 );
+AdminOrderRoutes.delete(
+  "/admin/order/products/:id",
+  AdminOrder.AdmindeleteProductOrder
+);
 
 export default AdminOrderRoutes;
