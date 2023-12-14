@@ -201,23 +201,34 @@ users.getall = asyncHandler(async (req, res) => {
 
   /** my edit */
   const searchRegex = new RegExp(req.query.search, "i");
+  const statusRegex = new RegExp(req.query.status, "i");
 
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const getall = await UserModel.find({
-    $or: [
-      { username: { $regex: searchRegex } },
-      { email: { $regex: searchRegex } },
-    ],
+    $and: [
+      { status: { $regex: statusRegex } },
+      {
+        $or: [
+          { username: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
+        ]
+      }
+    ]
   })
     .skip((page - 1) * limit)
     .limit(limit);
 
   const totalUsers = await UserModel.countDocuments({
-    $or: [
-      { username: { $regex: searchRegex } },
-      { email: { $regex: searchRegex } },
-    ],
+    $and: [
+      { status: { $regex: statusRegex } },
+      {
+        $or: [
+          { username: { $regex: searchRegex } },
+          { email: { $regex: searchRegex } },
+        ]
+      }
+    ]
   });
 
   try {
