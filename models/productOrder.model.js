@@ -80,7 +80,7 @@ const productOrderSchema = Schema(
       total_variants: {
         type: Number,
       },
-      Order_quantity: {
+      order_quantity: {
         type: Number,
       },
       sub_total: {

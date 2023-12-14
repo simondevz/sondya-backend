@@ -20,6 +20,9 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
     total_amount,
     shipping_destination,
     order_status,
+    total_tax,
+    total_shipping_fee,
+    total_discount,
   } = req.body;
 
   // Generate a 8-digit order
@@ -47,6 +50,9 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
       payment_id: payment_id,
       currency: currency,
       callback_url: callback_url,
+      total_tax: total_tax,
+      total_shipping_fee: total_shipping_fee,
+      total_discount: total_discount,
       total_amount: total_amount,
       order_id: order_id,
       batch_id: batch_id,
@@ -115,6 +121,7 @@ Order.getProductOrderById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
   const id = req.params.id;
+
   const getProductOrder = await ProductOrderModel.findById(id);
   try {
     if (!getProductOrder) {

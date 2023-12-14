@@ -78,7 +78,7 @@ const productOrderPaymentSchema = Schema(
         total_variants: {
           type: Number,
         },
-        Order_quantity: {
+        order_quantity: {
           type: Number,
         },
         sub_total: {
@@ -128,6 +128,15 @@ const productOrderPaymentSchema = Schema(
     },
     callback_url: {
       type: String,
+    },
+    total_tax: {
+      type: Number,
+    },
+    total_shipping_fee: {
+      type: Number,
+    },
+    total_discount: {
+      type: Number,
     },
   },
   { timestamps: true }
