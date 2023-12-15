@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 
 import randomstring from "randomstring";
 import ProductOrderModel from "../../models/productOrder.model.js";
-import ProductOrderPaymentModel from "../../models/productOrderPayment.model.js";
+import OrderPaymentModel from "../../models/productOrderPayment.model.js";
 import responseHandle from "../../utils/handleResponse.js";
 
 const Order = {};
@@ -42,7 +42,7 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
   });
 
   try {
-    const newProductsOrderPayment = await ProductOrderPaymentModel.create({
+    const newProductsOrderPayment = await OrderPaymentModel.create({
       buyer: buyer,
       checkout_items: checkout_items,
       payment_method: payment_method,
@@ -133,54 +133,6 @@ Order.getProductOrderById = asyncHandler(async (req, res) => {
         200,
         "Products order found successfully.",
         getProductOrder
-      );
-    }
-  } catch (error) {
-    res.status(500);
-    throw new Error(error);
-  }
-});
-
-Order.getProductsPaymentsOrder = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Order']
-
-  const getProductsPaymentsOrder = await ProductOrderPaymentModel.find({
-    "buyer.id": req.params.userId,
-  });
-
-  try {
-    if (!getProductsPaymentsOrder) {
-      res.status(404);
-      throw new Error("error getting order");
-    } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "Products payments order found successfully.",
-        getProductsPaymentsOrder
-      );
-    }
-  } catch (error) {
-    res.status(500);
-    throw new Error(error);
-  }
-});
-
-Order.getProductPaymentsOrderById = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Order']
-
-  const id = req.params.id;
-  const getProductPaymentsOrder = await ProductOrderPaymentModel.findById(id);
-  try {
-    if (!getProductPaymentsOrder) {
-      res.status(404);
-      throw new Error("Id not found");
-    } else {
-      responseHandle.successResponse(
-        res,
-        200,
-        "Products payments order found successfully.",
-        getProductPaymentsOrder
       );
     }
   } catch (error) {

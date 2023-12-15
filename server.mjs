@@ -41,6 +41,7 @@ import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
+import SellerOrderRoutes from "./routes/seller/orders.seller.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
 import testimonialRoutes from "./routes/user/testimonials.routes.js";
@@ -55,6 +56,7 @@ import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import orderRoutes from "./routes/user/order.routes.js";
+import PaymentOrderRoutes from "./routes/user/payments.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 
@@ -90,13 +92,16 @@ app.use("/api/v1/", AdminOrderRoutes);
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
 app.use("/api/v1/", SellerServicesRoutes);
+app.use("/api/v1/", SellerOrderRoutes);
 
 // user protected
+app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", testimonialRoutes);
 app.use("/api/v1/", groupMembersRoutes.protected);
 app.use("/api/v1/", groupMessagesRoutes.protected);
 app.use("/api/v1/", orderRoutes);
+app.use("/api/v1/", PaymentOrderRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
