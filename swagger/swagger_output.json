@@ -259,6 +259,12 @@
                 },
                 "password": {
                   "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "referrer": {
+                  "example": "any"
                 }
               }
             }
@@ -496,6 +502,27 @@
         }
       }
     },
+    "/api/v1/user/product/{id}": {
+      "get": {
+        "tags": [
+          "Services"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/user/products/categories": {
       "get": {
         "tags": [
@@ -552,6 +579,27 @@
           {
             "name": "priceRange",
             "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/service/{id}": {
+      "get": {
+        "tags": [
+          "Services"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -810,6 +858,11 @@
           },
           {
             "name": "search",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "status",
             "in": "query",
             "type": "string"
           },
@@ -1130,6 +1183,21 @@
                 },
                 "total_variants": {
                   "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "zip_code": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
                 }
               }
             }
@@ -1212,6 +1280,21 @@
                   "example": "any"
                 },
                 "deleteImageId": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "zip_code": {
+                  "example": "any"
+                },
+                "address": {
                   "example": "any"
                 }
               }
@@ -2106,6 +2189,64 @@
         }
       }
     },
+    "/api/v1/admin/payments": {
+      "get": {
+        "tags": [
+          "Admin Payments"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/payments/details/{id}": {
+      "get": {
+        "tags": [
+          "Admin Payments"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/seller/product/create": {
       "post": {
         "tags": [
@@ -2164,6 +2305,21 @@
                   "example": "any"
                 },
                 "total_variants": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "zip_code": {
+                  "example": "any"
+                },
+                "address": {
                   "example": "any"
                 }
               }
@@ -2244,6 +2400,21 @@
                   "example": "any"
                 },
                 "deleteImageId": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "zip_code": {
+                  "example": "any"
+                },
+                "address": {
                   "example": "any"
                 }
               }
@@ -2770,6 +2941,71 @@
         }
       }
     },
+    "/api/v1/profile/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/profile/user/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/profile/get/{id}": {
       "get": {
         "tags": [
@@ -3095,6 +3331,106 @@
           {
             "name": "authorization",
             "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/chats/{user_id}": {
+      "get": {
+        "tags": [
+          "Group Chat Handlers"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/chat": {
+      "get": {
+        "tags": [
+          "Group Chat Handlers"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "sender_id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "receiver_id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/chat/messages": {
+      "get": {
+        "tags": [
+          "Group Chat Handlers"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "sender_id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "receiver_id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "service_id",
+            "in": "query",
             "type": "string"
           }
         ],

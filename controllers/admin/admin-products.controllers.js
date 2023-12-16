@@ -24,6 +24,12 @@ adminProducts.create = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+
+    country,
+    state,
+    city,
+    zip_code,
+    address,
   } = req.body;
 
   try {
@@ -77,6 +83,12 @@ adminProducts.create = asyncHandler(async (req, res) => {
       vat_percentage: vat_percentage,
       total_variants: total_variants,
       image: imageUrl,
+
+      country: country,
+      state: state,
+      city: city,
+      zip_code: zip_code,
+      address: address,
     });
 
     if (!newProducts) {
@@ -115,6 +127,12 @@ adminProducts.update = asyncHandler(async (req, res) => {
     vat_percentage,
     total_variants,
     deleteImageId,
+
+    country,
+    state,
+    city,
+    zip_code,
+    address,
   } = req.body;
   try {
     if (!check) {
@@ -176,6 +194,12 @@ adminProducts.update = asyncHandler(async (req, res) => {
         vat_percentage: vat_percentage,
         total_variants: total_variants,
         image: imageUrl.length > 0 ? imageUrl : [],
+
+        country: country,
+        state: state,
+        city: city,
+        zip_code: zip_code,
+        address: address,
       },
       {
         new: true,

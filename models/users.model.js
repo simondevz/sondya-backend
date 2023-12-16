@@ -30,7 +30,7 @@ const userSchema = Schema(
       type: String,
       // required: true,
     },
-    referral: {
+    referrer: {
       type: String,
     },
     country: {
