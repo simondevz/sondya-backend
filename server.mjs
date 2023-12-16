@@ -7,8 +7,8 @@ const app = express();
 const wss = expressWs(app).getWss();
 
 // WebSockets
-import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
 import wsChatController from "./controllers/chats/websocket.controllers.js";
+import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
 
 wsGroupChatController.use("/api/v1/ws/group/chat", app);
 wsGroupChatController.ping(wss);
@@ -43,6 +43,7 @@ import AuthMiddleware from "./middleware/userMiddleware.js";
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
 import AdminGroupChatRoutes from "./routes/admin/groupchat.routes.js";
 import AdminOrderRoutes from "./routes/admin/orders.routes.js";
+import AdminPaymentOrderRoutes from "./routes/admin/payments.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
@@ -55,12 +56,12 @@ import testimonialRoutes from "./routes/user/testimonials.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 
 import authRoutes from "./routes/auth.routes.js";
+import chatRoutes from "./routes/chats/chats.routes.js";
+import chatMessagesRoutes from "./routes/chats/messages.routes.js";
 import contactusRoutes from "./routes/contactus.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
-import chatMessagesRoutes from "./routes/chats/messages.routes.js";
-import chatRoutes from "./routes/chats/chats.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import orderRoutes from "./routes/user/order.routes.js";
@@ -96,6 +97,7 @@ app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", AdminTestimonialRoutes);
 app.use("/api/v1/", AdminGroupChatRoutes);
 app.use("/api/v1/", AdminOrderRoutes);
+app.use("/api/v1/", AdminPaymentOrderRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);

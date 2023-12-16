@@ -12,7 +12,15 @@ const auth = {};
 
 auth.register = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Authentication']
-  const { first_name, last_name, username, email, password } = req.body;
+  const {
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+    country,
+    referrer,
+  } = req.body;
   try {
     const emailTaken = await UserModel.findOne({ email });
     if (emailTaken) {
@@ -34,6 +42,8 @@ auth.register = asyncHandler(async (req, res) => {
       email: email.trim(),
       username: username.trim(),
       password: password.trim(),
+      country: country.trim(),
+      referrer: referrer.trim(),
       type: "user",
     });
 
