@@ -68,6 +68,8 @@ import orderRoutes from "./routes/user/order.routes.js";
 import PaymentOrderRoutes from "./routes/user/payments.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
+import reviewsRoutes from "./routes/user/reviews.routes.js";
+import reviewResponseRoutes from "./routes/seller/reviewResponse.routes.js";
 
 // Running routes
 app.use(cors());
@@ -82,6 +84,7 @@ app.use("/api/v1/", productsRoutes);
 app.use("/api/v1/", ServicesRoutes);
 app.use("/api/v1/", groupMembersRoutes.unprotected);
 app.use("/api/v1/", groupMessagesRoutes.unprotected);
+app.use("/api/v1/", reviewsRoutes.unprotected);
 
 //swagger inititailization
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -102,6 +105,7 @@ app.use("/api/v1/", AdminPaymentOrderRoutes);
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
 app.use("/api/v1/", SellerServicesRoutes);
+app.use("/api/v1/", reviewResponseRoutes);
 app.use("/api/v1/", SellerOrderRoutes);
 
 // user protected
@@ -114,6 +118,7 @@ app.use("/api/v1/", groupMembersRoutes.protected);
 app.use("/api/v1/", groupMessagesRoutes.protected);
 app.use("/api/v1/", orderRoutes);
 app.use("/api/v1/", PaymentOrderRoutes);
+app.use("/api/v1/", reviewsRoutes.protected);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";

@@ -42,7 +42,7 @@ wsUtil.roomExist = (room_id) => {
 wsUtil.userExistInRoom = (room_id, user_id) => {
   let status = false;
   const room = wsUtil.rooms[room_id];
-  for (let i = 0; i < room.length; i++) {
+  for (let i = 0; i < room?.length; i++) {
     let user = room[i];
     for (const key in user) {
       if (user_id === key) {
@@ -57,7 +57,8 @@ wsUtil.userExistInRoom = (room_id, user_id) => {
 // create room
 wsUtil.createRoom = (data, ws) => {
   try {
-    let { room_id, user_id } = data;
+    let { room_id, user_id, recipient_id, chat } = data;
+
     wsUtil.rooms[room_id] = [];
     const user = {};
     user[user_id] = ws;
@@ -65,6 +66,9 @@ wsUtil.createRoom = (data, ws) => {
     wsUtil.rooms[room_id].push(user);
     ws["room_id"] = room_id;
     ws["user_id"] = user_id;
+    if (recipient_id) ws["recipient_id"] = recipient_id;
+    if (chat) ws["chat"] = chat;
+
     return ws;
   } catch (error) {
     throw new Error("ws error: Could not create room");
@@ -74,10 +78,10 @@ wsUtil.createRoom = (data, ws) => {
 // get list of people in room
 wsUtil.getOnlineUsers = (data, ws) => {
   try {
+    if (!data?.room_id) throw new Error("no room id passed");
     const room = wsUtil.rooms[data?.room_id];
-    if (!room) return [];
+    const online = room?.map((user) => Object.keys(user)[0]);
 
-    const online = room.map((user) => Object.keys(user)[0]);
     ws.send(
       JSON.stringify({
         meta: "users_online",
@@ -86,21 +90,86 @@ wsUtil.getOnlineUsers = (data, ws) => {
     );
   } catch (error) {
     console.log(error);
-    throw new Error("ws error: Could not get users in room");
+    throw new Error(error?.message || "ws error: Could not get users in room");
+  }
+};
+
+wsUtil.echoPayload = (receiver_id, payload, ws) => {
+  const { sender_id, chat_id } = payload;
+
+  // Add the person sending the message to the room
+  const senderInRoom = wsUtil.userExistInRoom(chat_id, sender_id);
+  if (!senderInRoom)
+    wsUtil.joinRoom(
+      {
+        room_id: chat_id,
+        user_id: sender_id,
+        recipient_id: receiver_id,
+      },
+      ws
+    );
+
+  // add the person recieving the message to the room
+  const receiverInRoom = wsUtil.userExistInRoom(chat_id, receiver_id);
+  if (!receiverInRoom)
+    wsUtil.joinRoom(
+      {
+        room_id: chat_id,
+        user_id: receiver_id,
+        recipient_id: sender_id,
+      },
+      ws
+    );
+  const room = wsUtil.rooms[chat_id];
+  for (let i = 0; i < room.length; i++) {
+    let user = room[i];
+    for (let key in user) {
+      let wsClient = user[key];
+      wsClient.send(JSON.stringify(payload));
+    }
+  }
+};
+
+// Check if a user got a message in a room he is not in yet
+wsUtil.newRoomCheck = (data, ws) => {
+  try {
+    const { user_id } = data;
+    let newChats = [];
+
+    for (const room_id in wsUtil.rooms) {
+      const room = wsUtil.rooms[room_id];
+
+      if (room[0]?.recipient_id === user_id && room?.length === 1) {
+        newChats = [...newChats, room[0].chat];
+      }
+    }
+
+    ws.send(
+      JSON.stringify({
+        meta: "new_room",
+        chats: newChats,
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    throw new Error("ws error: Could not find new rooms");
   }
 };
 
 // join room
 wsUtil.joinRoom = (data, ws) => {
   try {
-    let { room_id, user_id } = data;
+    let { room_id, user_id, recipient_id, chat } = data;
     // check if room exist or not
+
     const roomExist = wsUtil.roomExist(room_id);
+
     if (!roomExist) {
       return wsUtil.createRoom(data, ws);
     }
 
     const inRoom = wsUtil.userExistInRoom(room_id, user_id);
+
     if (inRoom) {
       return;
     } else {
@@ -110,10 +179,24 @@ wsUtil.joinRoom = (data, ws) => {
 
       ws["room_id"] = room_id;
       ws["user_id"] = user_id;
+      if (recipient_id) ws["recipient_id"] = recipient_id;
+      if (chat) ws["chat"] = chat;
+
       return ws;
     }
   } catch (error) {
     throw new Error("ws error: Could not join room");
+  }
+};
+
+// join multiple rooms
+wsUtil.joinRooms = (data, ws) => {
+  try {
+    let { room_ids, user_id } = data;
+    room_ids?.map((room_id) => wsUtil.joinRoom({ room_id, user_id }, ws));
+  } catch (error) {
+    console.log(error);
+    throw new Error("ws error: Could not join some rooms");
   }
 };
 
@@ -137,7 +220,7 @@ wsUtil.sendMessage = asyncHandler(async (data, ws) => {
 
     let imageUrl = [];
     if (images?.length > 0) {
-      imageUrl = await wsUtil.uploadImages(images);
+      imageUrl = await wsUtil.handleUpload(images);
     }
 
     let groupMessage = await GroupMessageModel.create({
@@ -180,13 +263,13 @@ wsUtil.sendMessage = asyncHandler(async (data, ws) => {
 // send message
 wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
   const {
-    room_id,
     message,
-    images,
+    file_attachments,
     sender_id,
     receiver_id,
     product_id,
     service_id,
+    meta,
   } = data;
   try {
     const sender = await UserModel.findById(sender_id).lean();
@@ -219,50 +302,97 @@ wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
       });
     }
 
-    if (!message && !images.length) {
-      throw new Error("No message");
-    }
+    // Add the person sending the message to the room
+    const senderInRoom = wsUtil.userExistInRoom(chat?._id, sender_id);
+    if (!senderInRoom)
+      wsUtil.joinRoom(
+        {
+          room_id: chat?._id,
+          user_id: sender_id,
+          recipient_id: receiver_id,
+          chat,
+          fromChatMessage: true,
+        },
+        ws
+      );
 
-    let imageUrl = [];
-    if (images?.length > 0) {
-      imageUrl = await wsUtil.uploadImages(images);
-    }
+    // add the person recieving the message to the room
+    const receiverInRoom = wsUtil.userExistInRoom(chat?._id, receiver_id);
+    if (!receiverInRoom)
+      wsUtil.joinRoom(
+        {
+          room_id: chat?._id,
+          user_id: receiver_id,
+          recipient_id: sender_id,
+          chat,
+          fromChatMessage: true,
+        },
+        ws
+      );
+    const room = wsUtil.rooms[chat?._id];
 
-    let chatMessage = await ChatMessageModel.create({
-      chat_id: chat?._id,
-      message,
-      sender_id: sender_id,
-      image: imageUrl,
-      product_id,
-      service_id,
-    });
+    if (
+      !(meta === "testing_connection" || meta === "testing_connections_inbox")
+    ) {
+      if (!message && !file_attachments?.length) {
+        throw new Error("No message");
+      }
 
-    if (!chatMessage) {
-      throw new Error("could not send message");
-    }
+      let file_attachmentsUrls = [];
+      if (file_attachments?.length > 0) {
+        file_attachmentsUrls = await wsUtil.handleUpload(file_attachments);
+      }
 
-    wsUtil.joinRoom({ room_id, user_id: sender_id }, ws);
-    const room = wsUtil.rooms[room_id];
-    for (let i = 0; i < room.length; i++) {
-      let user = room[i];
-      for (let key in user) {
-        let wsClient = user[key];
-        wsClient.send(
-          JSON.stringify({
-            ...chatMessage._doc,
-            sender_id: {
-              username: sender?.username,
-              first_name: sender?.first_name,
-              last_name: sender?.last_name,
-              email: sender?.email,
-              image: sender?.image,
-            },
-          })
-        );
+      let chatMessage = await ChatMessageModel.create({
+        chat_id: chat?._id,
+        message,
+        sender_id: sender_id,
+        file_attachments: file_attachmentsUrls,
+        product_id,
+        service_id,
+      });
+
+      if (!chatMessage) {
+        throw new Error("could not send message");
+      }
+
+      for (let i = 0; i < room.length; i++) {
+        let user = room[i];
+        for (let key in user) {
+          let wsClient = user[key];
+          wsClient.send(
+            JSON.stringify({
+              ...chatMessage._doc,
+              sender_id: {
+                _id: sender?._id,
+                username: sender?.username,
+                first_name: sender?.first_name,
+                last_name: sender?.last_name,
+                email: sender?.email,
+                image: sender?.image,
+              },
+            })
+          );
+        }
+      }
+    } else {
+      for (let i = 0; i < room.length; i++) {
+        let user = room[i];
+        for (let key in user) {
+          let wsClient = user[key];
+
+          wsClient.send(
+            JSON.stringify({
+              meta: "connection_tested",
+              message: "say, hi",
+            })
+          );
+        }
       }
     }
   } catch (error) {
     console.log(error);
+    console.log("running.....");
     ws.send(
       JSON.stringify({
         meta: "error_occured",
@@ -273,28 +403,34 @@ wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
 });
 
 // image upload
-wsUtil.uploadImages = async (images) => {
+wsUtil.handleUpload = async (file_attachments) => {
   try {
-    // upload images to cloudinary
-    let multiplePicturePromise = images.map(async (image, index) => {
-      const cldRes = await handleUpload(image.fileContent, index);
-      return cldRes;
-    });
+    // upload file_attachments to cloudinary
+    let multiplePicturePromise = file_attachments.map(
+      async (file_attachment, index) => {
+        const cldRes = await handleUpload(file_attachment.fileContent, index);
+        return cldRes;
+      }
+    );
 
-    // get url of uploaded images
-    const imageResponse = await Promise.all(multiplePicturePromise);
-    const imageUrl = imageResponse.map((image) => {
-      const url = image.secure_url;
-      const public_id = image.public_id;
-      const folder = image.folder;
-      return { url, public_id, folder };
-    });
-    // end of uploaded images
+    // get url of uploaded file_attachments
+    const file_attachmentsResponse = await Promise.all(multiplePicturePromise);
+    const file_attachmentsUrl = file_attachmentsResponse.map(
+      (file_attachment) => {
+        console.log(file_attachment);
+        const url = file_attachment.secure_url;
+        const public_id = file_attachment.public_id;
+        const folder = file_attachment.folder;
+        const format = file_attachment.format;
+        return { url, public_id, folder, format };
+      }
+    );
+    // end of uploaded file_attachments
 
-    return imageUrl;
+    return file_attachmentsUrl;
   } catch (error) {
     console.log(error);
-    throw new Error(error);
+    throw error;
   }
 };
 

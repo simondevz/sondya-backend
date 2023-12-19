@@ -7,15 +7,18 @@ wsChatController.use = (path, app) =>
     try {
       ws.on("message", (recieveData) => {
         let data = JSON.parse(recieveData);
-        const error = wsUtil.paramsExist(data);
-        if (!error) {
-          throw new Error("check data params");
-        }
 
         if (data.meta) {
           switch (data.meta) {
+            case "echo_payload":
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
+              break;
             case "user_online_check":
               wsUtil.getOnlineUsers(data, ws);
+              break;
+
+            case "new_room_check":
+              wsUtil.newRoomCheck(data, ws);
               break;
 
             case "join_conversation":
@@ -23,6 +26,23 @@ wsChatController.use = (path, app) =>
                 { room_id: data.room_id, user_id: data.sender_id },
                 ws
               );
+              break;
+
+            case "join_conversations":
+              wsUtil.joinRooms(data, ws);
+              break;
+
+            case "testing_connection":
+              wsUtil.sendChatMessage(data, ws);
+              break;
+
+            case "testing_connections_inbox":
+              for (const receiver_id of data.receiver_ids) {
+                wsUtil.sendChatMessage(
+                  { receiver_id, sender_id: data.sender_id, meta: data.meta },
+                  ws
+                );
+              }
               break;
 
             default:
