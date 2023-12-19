@@ -30,6 +30,9 @@ const chatMessageSchema = Schema(
         folder: {
           type: String,
         },
+        filename: {
+          type: String,
+        },
         format: {
           type: String,
         },

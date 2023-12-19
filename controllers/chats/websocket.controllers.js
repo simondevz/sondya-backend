@@ -7,13 +7,12 @@ wsChatController.use = (path, app) =>
     try {
       ws.on("message", (recieveData) => {
         let data = JSON.parse(recieveData);
-        const error = wsUtil.paramsExist(data);
-        if (!error) {
-          throw new Error("check data params");
-        }
 
         if (data.meta) {
           switch (data.meta) {
+            case "echo_payload":
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
+              break;
             case "user_online_check":
               wsUtil.getOnlineUsers(data, ws);
               break;

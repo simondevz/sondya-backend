@@ -42,7 +42,7 @@ wsUtil.roomExist = (room_id) => {
 wsUtil.userExistInRoom = (room_id, user_id) => {
   let status = false;
   const room = wsUtil.rooms[room_id];
-  for (let i = 0; i < room.length; i++) {
+  for (let i = 0; i < room?.length; i++) {
     let user = room[i];
     for (const key in user) {
       if (user_id === key) {
@@ -91,6 +91,42 @@ wsUtil.getOnlineUsers = (data, ws) => {
   } catch (error) {
     console.log(error);
     throw new Error(error?.message || "ws error: Could not get users in room");
+  }
+};
+
+wsUtil.echoPayload = (receiver_id, payload, ws) => {
+  const { sender_id, chat_id } = payload;
+
+  // Add the person sending the message to the room
+  const senderInRoom = wsUtil.userExistInRoom(chat_id, sender_id);
+  if (!senderInRoom)
+    wsUtil.joinRoom(
+      {
+        room_id: chat_id,
+        user_id: sender_id,
+        recipient_id: receiver_id,
+      },
+      ws
+    );
+
+  // add the person recieving the message to the room
+  const receiverInRoom = wsUtil.userExistInRoom(chat_id, receiver_id);
+  if (!receiverInRoom)
+    wsUtil.joinRoom(
+      {
+        room_id: chat_id,
+        user_id: receiver_id,
+        recipient_id: sender_id,
+      },
+      ws
+    );
+  const room = wsUtil.rooms[chat_id];
+  for (let i = 0; i < room.length; i++) {
+    let user = room[i];
+    for (let key in user) {
+      let wsClient = user[key];
+      wsClient.send(JSON.stringify(payload));
+    }
   }
 };
 
@@ -266,16 +302,33 @@ wsUtil.sendChatMessage = asyncHandler(async (data, ws) => {
       });
     }
 
-    wsUtil.joinRoom(
-      {
-        room_id: chat?._id,
-        user_id: sender_id,
-        recipient_id: receiver_id,
-        chat,
-        fromChatMessage: true,
-      },
-      ws
-    );
+    // Add the person sending the message to the room
+    const senderInRoom = wsUtil.userExistInRoom(chat?._id, sender_id);
+    if (!senderInRoom)
+      wsUtil.joinRoom(
+        {
+          room_id: chat?._id,
+          user_id: sender_id,
+          recipient_id: receiver_id,
+          chat,
+          fromChatMessage: true,
+        },
+        ws
+      );
+
+    // add the person recieving the message to the room
+    const receiverInRoom = wsUtil.userExistInRoom(chat?._id, receiver_id);
+    if (!receiverInRoom)
+      wsUtil.joinRoom(
+        {
+          room_id: chat?._id,
+          user_id: receiver_id,
+          recipient_id: sender_id,
+          chat,
+          fromChatMessage: true,
+        },
+        ws
+      );
     const room = wsUtil.rooms[chat?._id];
 
     if (
