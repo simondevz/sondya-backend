@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const productOrderPaymentSchema = Schema(
+const OrderPaymentSchema = Schema(
   {
     buyer: {
       id: {
@@ -54,12 +54,7 @@ const productOrderPaymentSchema = Schema(
         tag: {
           type: String,
         },
-        brand: {
-          type: String,
-        },
-        model: {
-          type: String,
-        },
+
         current_price: {
           type: Number,
         },
@@ -84,9 +79,7 @@ const productOrderPaymentSchema = Schema(
         sub_total: {
           type: Number,
         },
-        shipping_fee: {
-          type: Number,
-        },
+
         tax: {
           type: Number,
         },
@@ -96,19 +89,6 @@ const productOrderPaymentSchema = Schema(
         total_price: {
           type: Number,
         },
-        image: [
-          {
-            url: {
-              type: String,
-            },
-            public_id: {
-              type: String,
-            },
-            folder: {
-              type: String,
-            },
-          },
-        ],
       },
     ],
     payment_method: {
@@ -142,8 +122,5 @@ const productOrderPaymentSchema = Schema(
   { timestamps: true }
 );
 
-const ProductOrderPayment = model(
-  "product_order_payment",
-  productOrderPaymentSchema
-);
-export default ProductOrderPayment;
+const OrderPayment = model("order_payment", OrderPaymentSchema);
+export default OrderPayment;

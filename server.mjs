@@ -7,8 +7,8 @@ const app = express();
 const wss = expressWs(app).getWss();
 
 // WebSockets
-import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
 import wsChatController from "./controllers/chats/websocket.controllers.js";
+import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
 
 wsGroupChatController.use("/api/v1/ws/group/chat", app);
 wsGroupChatController.ping(wss);
@@ -43,10 +43,12 @@ import AuthMiddleware from "./middleware/userMiddleware.js";
 import AdminCategoriesRoutes from "./routes/admin/categories.routes.js";
 import AdminGroupChatRoutes from "./routes/admin/groupchat.routes.js";
 import AdminOrderRoutes from "./routes/admin/orders.routes.js";
+import AdminPaymentOrderRoutes from "./routes/admin/payments.routes.js";
 import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
+import SellerOrderRoutes from "./routes/seller/orders.seller.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
 import testimonialRoutes from "./routes/user/testimonials.routes.js";
@@ -54,15 +56,16 @@ import testimonialRoutes from "./routes/user/testimonials.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 
 import authRoutes from "./routes/auth.routes.js";
+import chatRoutes from "./routes/chats/chats.routes.js";
+import chatMessagesRoutes from "./routes/chats/messages.routes.js";
 import contactusRoutes from "./routes/contactus.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
-import chatMessagesRoutes from "./routes/chats/messages.routes.js";
-import chatRoutes from "./routes/chats/chats.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import orderRoutes from "./routes/user/order.routes.js";
+import PaymentOrderRoutes from "./routes/user/payments.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 import reviewsRoutes from "./routes/user/reviews.routes.js";
@@ -97,13 +100,16 @@ app.use("/api/v1/", AdminServicesRoutes);
 app.use("/api/v1/", AdminTestimonialRoutes);
 app.use("/api/v1/", AdminGroupChatRoutes);
 app.use("/api/v1/", AdminOrderRoutes);
+app.use("/api/v1/", AdminPaymentOrderRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
 app.use("/api/v1/", SellerServicesRoutes);
 app.use("/api/v1/", reviewResponseRoutes);
+app.use("/api/v1/", SellerOrderRoutes);
 
 // user protected
+app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", testimonialRoutes);
 app.use("/api/v1/", chatRoutes);
@@ -111,6 +117,7 @@ app.use("/api/v1/", chatMessagesRoutes);
 app.use("/api/v1/", groupMembersRoutes.protected);
 app.use("/api/v1/", groupMessagesRoutes.protected);
 app.use("/api/v1/", orderRoutes);
+app.use("/api/v1/", PaymentOrderRoutes);
 app.use("/api/v1/", reviewsRoutes.protected);
 
 // Error Middlewares
