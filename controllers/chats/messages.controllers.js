@@ -35,8 +35,8 @@ chatMessages.getMessages = asyncHandler(async (req, res) => {
       chat_id: chat._id,
       [service_id ? "service_id" : null]: service_id ? service_id : null,
     })
-      .sort({ createAt: -1 })
       .limit(50)
+      .sort({ createAt: -1 })
       .populate("sender_id", ["username", "first_name", "last_name", "email"]);
 
     if (!chatMessages) {

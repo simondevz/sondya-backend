@@ -14,6 +14,12 @@ const ModelSchema = Schema(
       type: Schema.Types.ObjectId,
       ref: "services",
     },
+    responses: [
+      {
+        type: String,
+        ref: "response",
+      },
+    ],
     review: {
       type: String,
     },

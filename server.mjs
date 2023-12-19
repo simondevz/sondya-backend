@@ -66,6 +66,7 @@ import orderRoutes from "./routes/user/order.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 import reviewsRoutes from "./routes/user/reviews.routes.js";
+import reviewResponseRoutes from "./routes/seller/reviewResponse.routes.js";
 
 // Running routes
 app.use(cors());
@@ -100,6 +101,7 @@ app.use("/api/v1/", AdminOrderRoutes);
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
 app.use("/api/v1/", SellerServicesRoutes);
+app.use("/api/v1/", reviewResponseRoutes);
 
 // user protected
 app.use("/api/v1/", profileRoutes);

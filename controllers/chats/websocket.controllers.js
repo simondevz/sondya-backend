@@ -18,11 +18,32 @@ wsChatController.use = (path, app) =>
               wsUtil.getOnlineUsers(data, ws);
               break;
 
+            case "new_room_check":
+              wsUtil.newRoomCheck(data, ws);
+              break;
+
             case "join_conversation":
               wsUtil.joinRoom(
                 { room_id: data.room_id, user_id: data.sender_id },
                 ws
               );
+              break;
+
+            case "join_conversations":
+              wsUtil.joinRooms(data, ws);
+              break;
+
+            case "testing_connection":
+              wsUtil.sendChatMessage(data, ws);
+              break;
+
+            case "testing_connections_inbox":
+              for (const receiver_id of data.receiver_ids) {
+                wsUtil.sendChatMessage(
+                  { receiver_id, sender_id: data.sender_id, meta: data.meta },
+                  ws
+                );
+              }
               break;
 
             default:

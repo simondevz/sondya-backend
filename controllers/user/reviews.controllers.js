@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import responseHandle from "../../utils/handleResponse.js";
 import ReviewModel from "../../models/reviews.model.js";
 import UserModel from "../../models/users.model.js";
+import responseModel from "../../models/reviewResponse.model.js";
 
 const userReviews = {};
 
@@ -123,8 +124,15 @@ userReviews.listReviews = asyncHandler(async (req, res) => {
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
-      .populate("user_id", ["username", "email", "image"]);
-    console.log(reviews);
+      .populate("user_id", ["username", "email", "image"])
+      .lean();
+
+    await Promise.all(
+      reviews.map(async (review) => {
+        const responses = await responseModel.find({ review_id: review?._id });
+        review.responses = responses;
+      })
+    );
 
     responseHandle.successResponse(
       res,

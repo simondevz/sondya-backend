@@ -19,7 +19,7 @@ const chatMessageSchema = Schema(
     service_id: {
       type: String,
     },
-    image: [
+    file_attachments: [
       {
         url: {
           type: String,
@@ -28,6 +28,9 @@ const chatMessageSchema = Schema(
           type: String,
         },
         folder: {
+          type: String,
+        },
+        format: {
           type: String,
         },
       },
