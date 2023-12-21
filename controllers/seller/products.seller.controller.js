@@ -24,6 +24,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
 
     country,
     state,
@@ -76,6 +77,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
       discount_percentage: discount_percentage,
       vat_percentage: vat_percentage,
       total_variants: total_variants,
+      variants: JSON.parse(variants),
       image: imageUrl,
 
       country: country,
@@ -201,8 +203,6 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    console.log(" variants ===> ", variants);
-    console.log("updated product ====> ", updatedProduct);
 
     if (!updatedProduct) {
       res.status(500);
