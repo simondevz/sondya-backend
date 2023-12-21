@@ -15,9 +15,11 @@ const productOrderSchema = Schema(
     },
     batch_id: {
       type: String, // 6 digits
+      unique: true,
     },
     order_id: {
       type: String, // 6 digits
+      unique: true,
     },
     checkout_items: {
       _id: {
