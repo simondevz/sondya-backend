@@ -99,6 +99,7 @@ const OrderPaymentSchema = Schema(
     },
     payment_id: {
       type: String,
+      unique: true,
     },
     total_amount: {
       type: Number,
