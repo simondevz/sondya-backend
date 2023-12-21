@@ -76,13 +76,7 @@ const productsSchema = Schema(
     total_variants: {
       type: Number,
     },
-    variants: [
-      {
-        name: {
-          type: String,
-        },
-      },
-    ],
+    variants: Schema.Types.Mixed,
 
     country: {
       type: String,

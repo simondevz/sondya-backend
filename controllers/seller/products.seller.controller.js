@@ -24,6 +24,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
 
     country,
     state,
@@ -76,6 +77,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
       discount_percentage: discount_percentage,
       vat_percentage: vat_percentage,
       total_variants: total_variants,
+      variants: JSON.parse(variants),
       image: imageUrl,
 
       country: country,
@@ -119,6 +121,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
     deleteImageId,
 
     country,
@@ -187,6 +190,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
+        variants: JSON.parse(variants),
         image: imageUrl.length > 0 ? imageUrl : [],
 
         country: country,
