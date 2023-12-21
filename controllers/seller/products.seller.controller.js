@@ -119,6 +119,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
     deleteImageId,
 
     country,
@@ -187,6 +188,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
+        variants: JSON.parse(variants),
         image: imageUrl.length > 0 ? imageUrl : [],
 
         country: country,
@@ -199,6 +201,8 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         new: true,
       }
     );
+    console.log(" variants ===> ", variants);
+    console.log("updated product ====> ", updatedProduct);
 
     if (!updatedProduct) {
       res.status(500);
