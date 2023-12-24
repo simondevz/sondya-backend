@@ -107,7 +107,7 @@ const OrderPaymentSchema = Schema(
     currency: {
       type: String,
     },
-    callback_url: {
+    redirect_url: {
       type: String,
     },
     total_tax: {
