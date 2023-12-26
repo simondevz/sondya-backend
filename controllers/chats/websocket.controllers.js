@@ -10,6 +10,12 @@ wsChatController.use = (path, app) =>
 
         if (data.meta) {
           switch (data.meta) {
+            case "Test_echo_terms":
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
+              break;
+            case "echo_terms":
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
+              break;
             case "echo_payload":
               wsUtil.echoPayload(data.receiver_id, data.payload, ws);
               break;
@@ -22,6 +28,13 @@ wsChatController.use = (path, app) =>
               break;
 
             case "join_conversation":
+              wsUtil.joinRoom(
+                { room_id: data.room_id, user_id: data.sender_id },
+                ws
+              );
+              break;
+
+            case "join_review_terms_room":
               wsUtil.joinRoom(
                 { room_id: data.room_id, user_id: data.sender_id },
                 ws

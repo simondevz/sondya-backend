@@ -109,17 +109,6 @@ wsUtil.echoPayload = (receiver_id, payload, ws) => {
       ws
     );
 
-  // // add the person recieving the message to the room
-  // const receiverInRoom = wsUtil.userExistInRoom(chat_id, receiver_id);
-  // if (!receiverInRoom)
-  //   wsUtil.joinRoom(
-  //     {
-  //       room_id: chat_id,
-  //       user_id: receiver_id,
-  //       recipient_id: sender_id,
-  //     },
-  //     ws
-  //   );
   const room = wsUtil.rooms[chat_id];
   for (let i = 0; i < room.length; i++) {
     let user = room[i];

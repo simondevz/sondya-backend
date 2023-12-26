@@ -3,7 +3,10 @@ import asyncHandler from "express-async-handler";
 import randomstring from "randomstring";
 import ProductOrderModel from "../../models/productOrder.model.js";
 import OrderPaymentModel from "../../models/productOrderPayment.model.js";
+import ServiceOrderModel from "../../models/serviceOrder.model.js";
 import responseHandle from "../../utils/handleResponse.js";
+import ServiceModel from "../../models/services.model.js";
+import UserModel from "../../models/users.model.js";
 
 const Order = {};
 
@@ -135,6 +138,131 @@ Order.getProductOrderById = asyncHandler(async (req, res) => {
         getProductOrder
       );
     }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.createServiceOrder = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+
+  const { buyer, seller } = req.body;
+  const service_id = req.params.service_id;
+
+  try {
+    const check = await ServiceModel.exists({ _id: service_id });
+    if (!check) {
+      res.status(404);
+      throw new Error("Path not found");
+    }
+
+    const checkBuyer = await UserModel.exists({ _id: buyer.id });
+    if (!checkBuyer) {
+      res.status(400);
+      throw new Error("Can't find buyer");
+    }
+
+    const checkSeller = await UserModel.exists({ _id: seller.id });
+    if (!checkSeller) {
+      res.status(400);
+      throw new Error("Can't find seller");
+    }
+
+    const newServiceOrder = await ServiceOrderModel.create({
+      buyer,
+      seller,
+      service_id,
+      delivered: false,
+    });
+
+    if (!newServiceOrder) {
+      res.status(500);
+      throw new Error("could not create new service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      201,
+      "Service order created successfully.",
+      newServiceOrder
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.updateServiceOrderTerms = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+
+  const {
+    amount,
+    advance,
+    duration,
+    durationUnit,
+    acceptedByBuyer,
+    acceptedBySeller,
+    rejectedByBuyer,
+    rejectedBySeller,
+  } = req.body;
+  const order_id = req.params.order_id;
+  const terms = {
+    amount,
+    advance,
+    duration,
+    durationUnit,
+    acceptedByBuyer,
+    acceptedBySeller,
+    rejectedByBuyer,
+    rejectedBySeller,
+  };
+
+  try {
+    const updatedServiceOrder = await ServiceOrderModel.findByIdAndUpdate(
+      order_id,
+      {
+        delivered: false,
+        terms,
+      },
+      { new: true }
+    );
+
+    if (!updatedServiceOrder) {
+      res.status(500);
+      throw new Error("could not update service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order updated successfully.",
+      updatedServiceOrder.terms
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.getServiceOrderById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+  const order_id = req.params.order_id;
+
+  try {
+    const serviceOrder = await ServiceOrderModel.findById(order_id);
+
+    if (!serviceOrder) {
+      res.status(500);
+      throw new Error("could not get service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order gotten successfully.",
+      serviceOrder
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);

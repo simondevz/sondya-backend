@@ -6,5 +6,14 @@ const orderRoutes = express.Router();
 orderRoutes.post("/user/order/products/create", Order.createProductOrder);
 orderRoutes.get("/user/order/products/:userId", Order.getProductsOrder);
 orderRoutes.get("/user/order/products/details/:id", Order.getProductOrderById);
+orderRoutes.get("/user/order/services/:order_id", Order.getServiceOrderById);
+orderRoutes.post(
+  "/user/order/services/create/:service_id",
+  Order.createServiceOrder
+);
+orderRoutes.put(
+  "/user/order/services/update/:order_id",
+  Order.updateServiceOrderTerms
+);
 
 export default orderRoutes;
