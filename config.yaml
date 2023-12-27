@@ -1,2 +1,5 @@
 test:
   check: "yaml test is successfull"
+flutterwave:
+  pay: "https://api.flutterwave.com/v3/payments"
+  verify: "https://api.flutterwave.com/v3/transactions/verify_by_reference?tx_ref="
