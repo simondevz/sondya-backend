@@ -48,9 +48,13 @@ import AdminProductsRoutes from "./routes/admin/products.routes.js";
 import AdminServicesRoutes from "./routes/admin/services.routes.js";
 import AdminTestimonialRoutes from "./routes/admin/testimonials.routes.js";
 import AdminUsersRoutes from "./routes/admin/users.routes.js";
+import AdminWithdrawalRoutes from "./routes/admin/withdrawal.routes.js";
+
+import SellerAccountRoutes from "./routes/seller/account.seller.routes.js";
 import SellerOrderRoutes from "./routes/seller/orders.seller.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
+import SellerWithdrawalRoutes from "./routes/seller/withdrawal.seller.routes.js";
 import testimonialRoutes from "./routes/user/testimonials.routes.js";
 
 import profileRoutes from "./routes/profile.routes.js";
@@ -64,13 +68,13 @@ import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
+import reviewResponseRoutes from "./routes/seller/reviewResponse.routes.js";
 import TrackRoutes from "./routes/track.routes.js";
 import orderRoutes from "./routes/user/order.routes.js";
 import PaymentOrderRoutes from "./routes/user/payments.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
-import ServicesRoutes from "./routes/user/services.routes.js";
 import reviewsRoutes from "./routes/user/reviews.routes.js";
-import reviewResponseRoutes from "./routes/seller/reviewResponse.routes.js";
+import ServicesRoutes from "./routes/user/services.routes.js";
 
 // Running routes
 app.use(cors());
@@ -103,12 +107,15 @@ app.use("/api/v1/", AdminTestimonialRoutes);
 app.use("/api/v1/", AdminGroupChatRoutes);
 app.use("/api/v1/", AdminOrderRoutes);
 app.use("/api/v1/", AdminPaymentOrderRoutes);
+app.use("/api/v1/", AdminWithdrawalRoutes);
 
 // seller protected
 app.use("/api/v1/", SellerProductsRoutes);
 app.use("/api/v1/", SellerServicesRoutes);
 app.use("/api/v1/", reviewResponseRoutes);
 app.use("/api/v1/", SellerOrderRoutes);
+app.use("/api/v1/", SellerAccountRoutes);
+app.use("/api/v1/", SellerWithdrawalRoutes);
 
 // user protected
 app.use("/api/v1/", profileRoutes);

@@ -122,6 +122,52 @@ const userSchema = Schema(
     tiktok_url: {
       type: String,
     },
+
+    // transaction details
+    balance: {
+      type: Number,
+      default: 0,
+    },
+
+    bank_account: [
+      {
+        account_id: {
+          type: String,
+        },
+        account_name: {
+          type: String,
+        },
+        account_number: {
+          type: String,
+        },
+        bank_name: {
+          type: String,
+        },
+        routing_number: {
+          type: String,
+        },
+      },
+    ],
+    paypal_account: [
+      {
+        paypal_id: {
+          type: String,
+        },
+        email: {
+          type: String,
+        },
+      },
+    ],
+    payoneer_account: [
+      {
+        payoneer_id: {
+          type: String,
+        },
+        email: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
