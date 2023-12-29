@@ -16,5 +16,9 @@ SellerOrderRoutes.delete(
   "/seller/order/products/:id",
   SellerOrder.SellerdeleteProductOrder
 );
+SellerOrderRoutes.get(
+  "/seller/order/services/list/:seller_id",
+  SellerOrder.getServiceOrdersSeller
+);
 
 export default SellerOrderRoutes;

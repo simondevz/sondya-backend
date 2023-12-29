@@ -12,6 +12,9 @@ const serviceOrderSchema = Schema(
       email: {
         type: String,
       },
+      phone: {
+        type: String,
+      },
     },
     seller: {
       id: {
@@ -23,16 +26,17 @@ const serviceOrderSchema = Schema(
       email: {
         type: String,
       },
+      phone: {
+        type: String,
+      },
     },
     order_id: {
       type: String, // 6 digits
       unique: true,
     },
-    total_amount: {
-      type: Number,
-    },
     payment_id: {
       type: String,
+      unique: true,
     },
     payment_status: {
       type: String,
@@ -127,6 +131,12 @@ const serviceOrderSchema = Schema(
         type: String,
       },
       map_location_link: {
+        type: String,
+      },
+      total_price: {
+        type: Number,
+      },
+      delivery_time: {
         type: String,
       },
       terms: {

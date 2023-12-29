@@ -3,6 +3,8 @@ import responseHandle from "../../utils/handleResponse.js";
 import ReviewModel from "../../models/reviews.model.js";
 import UserModel from "../../models/users.model.js";
 import responseModel from "../../models/reviewResponse.model.js";
+import ProductModel from "../../models/products.model.js";
+import ServiceModel from "../../models/services.model.js";
 
 const userReviews = {};
 
@@ -34,6 +36,62 @@ userReviews.createReview = asyncHandler(async (req, res) => {
       product_id,
       service_id,
     });
+
+    if (product_id) {
+      const reviews = await ReviewModel.find({
+        product_id,
+      }).lean();
+      const totalReviews = reviews.length;
+      const average = (() => {
+        if (totalReviews === 0) return 0;
+        let sum = 0;
+        for (const review of reviews) {
+          sum += review.rating;
+        }
+        return (sum / totalReviews).toFixed(2);
+      })();
+
+      const updatedProduct = await ProductModel.findByIdAndUpdate(
+        product_id,
+        {
+          rating: average,
+          total_rating: totalReviews,
+        },
+        { new: true }
+      );
+      if (!updatedProduct) {
+        res.status(500);
+        throw new Error("Could not update product rating");
+      }
+    }
+
+    if (service_id) {
+      const reviews = await ReviewModel.find({
+        service_id,
+      }).lean();
+      const totalReviews = reviews.length;
+      const average = (() => {
+        if (totalReviews === 0) return 0;
+        let sum = 0;
+        for (const review of reviews) {
+          sum += review.rating;
+        }
+        return (sum / totalReviews).toFixed(2);
+      })();
+
+      const updatedService = await ServiceModel.findByIdAndUpdate(
+        service_id,
+        {
+          rating: average,
+          total_rating: totalReviews,
+        },
+        { new: true }
+      );
+      if (!updatedService) {
+        res.status(500);
+        throw new Error("Could not update service rating");
+      }
+    }
 
     const returnReview = {
       ...newReview?._doc,

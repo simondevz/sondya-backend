@@ -12,8 +12,16 @@ orderRoutes.post(
   Order.createServiceOrder
 );
 orderRoutes.put(
-  "/user/order/services/update/:order_id",
+  "/user/order/services/updateterms/:order_id",
   Order.updateServiceOrderTerms
+);
+orderRoutes.put(
+  "/user/order/services/update/:order_id",
+  Order.updateServiceOrder
+);
+orderRoutes.get(
+  "/user/order/services/list/:buyer_id",
+  Order.getServiceOrdersBuyer
 );
 
 export default orderRoutes;

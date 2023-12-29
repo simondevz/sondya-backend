@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 
 import ProductOrderModel from "../../models/productOrder.model.js";
 import responseHandle from "../../utils/handleResponse.js";
+import ServiceOrderModel from "../../models/serviceOrder.model.js";
 
 const SellerOrder = {};
 
@@ -77,6 +78,32 @@ SellerOrder.SellerdeleteProductOrder = asyncHandler(async (req, res) => {
         "product order deleted"
       );
     }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+SellerOrder.getServiceOrdersSeller = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Order']
+  const seller_id = req.params.seller_id;
+
+  try {
+    const serviceOrders = await ServiceOrderModel.find({
+      "seller.id": seller_id,
+    });
+
+    if (!serviceOrders) {
+      res.status(500);
+      throw new Error("could not get service orders");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service orders gotten successfully.",
+      serviceOrders
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);
