@@ -62,10 +62,25 @@ AdminWithdrawalInfo.getWithdrawalHistory = asyncHandler(async (req, res) => {
 
   try {
     const searchRegex = new RegExp(req.query.search, "i");
+    const statusRegex = new RegExp(req.query.status, "i");
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 20;
 
     const userWithdrawals = await WithdrawalModel.find({
+      $and: [
+        { withdrawal_status: { $regex: statusRegex } },
+        {
+          $or: [
+            { "user.username": { $regex: searchRegex } },
+            { "user.email": { $regex: searchRegex } },
+          ],
+        },
+      ],
+    })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const total = await WithdrawalModel.countDocuments({
       $or: [
         { "user.username": { $regex: searchRegex } },
         { "user.email": { $regex: searchRegex } },
@@ -78,7 +93,10 @@ AdminWithdrawalInfo.getWithdrawalHistory = asyncHandler(async (req, res) => {
       res,
       200,
       "found withdrawals successfully.",
-      userWithdrawals
+      {
+        data: userWithdrawals,
+        count: total,
+      }
     );
   } catch (error) {
     res.status(500);
@@ -108,11 +126,28 @@ AdminWithdrawalInfo.getPendingWithdrawals = asyncHandler(async (req, res) => {
       .skip((page - 1) * limit)
       .limit(limit);
 
+    const total = await WithdrawalModel.countDocuments({
+      $and: [
+        { withdrawal_status: "pending" },
+        {
+          $or: [
+            { "user.username": { $regex: searchRegex } },
+            { "user.email": { $regex: searchRegex } },
+          ],
+        },
+      ],
+    })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
     responseHandle.successResponse(
       res,
       200,
       "found pending withdrawals successfully.",
-      userWithdrawals
+      {
+        data: userWithdrawals,
+        count: total,
+      }
     );
   } catch (error) {
     res.status(500);
