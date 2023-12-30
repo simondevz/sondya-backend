@@ -4,9 +4,9 @@ import randomstring from "randomstring";
 import ProductOrderModel from "../../models/productOrder.model.js";
 import OrderPaymentModel from "../../models/productOrderPayment.model.js";
 import ServiceOrderModel from "../../models/serviceOrder.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import ServiceModel from "../../models/services.model.js";
 import UserModel from "../../models/users.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const Order = {};
 
@@ -83,6 +83,7 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
       res.status(500);
       throw new Error("could not create new product order");
     }
+
     responseHandle.successResponse(
       res,
       201,

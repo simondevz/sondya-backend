@@ -113,6 +113,59 @@ const productOrderSchema = Schema(
           },
         },
       ],
+      //location
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      address: {
+        type: String,
+      },
+      zip_code: {
+        type: String,
+      },
+      // track
+      track_distance_time: {
+        _id: {
+          type: String,
+        },
+        originCoordinates: {
+          lat: {
+            type: Number,
+          },
+          lng: {
+            type: Number,
+          },
+        },
+        destinationCoordinates: {
+          lat: {
+            type: Number,
+          },
+          lng: {
+            type: Number,
+          },
+        },
+        distance: {
+          type: Number,
+        },
+        timeShipping: {
+          type: String,
+        },
+        timeFlight: {
+          type: String,
+        },
+        deliveryDateShipping: {
+          type: String,
+        },
+        deliveryDateFlight: {
+          type: String,
+        },
+      },
     },
     shipping_destination: {
       _id: {
@@ -149,6 +202,25 @@ const productOrderSchema = Schema(
     order_status: {
       type: String,
     },
+    order_location: [
+      {
+        country: {
+          type: String,
+        },
+        state: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        address: {
+          type: String,
+        },
+        zip_code: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
