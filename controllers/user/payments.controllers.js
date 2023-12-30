@@ -43,7 +43,6 @@ OrderPayments.Pay = asyncHandler(async (req, res) => {
     );
 
     PaymentResponse.data.tx_ref = tx_ref;
-
     responseHandle.successResponse(
       res,
       201,
@@ -52,6 +51,7 @@ OrderPayments.Pay = asyncHandler(async (req, res) => {
     );
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });

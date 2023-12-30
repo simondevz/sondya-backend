@@ -72,6 +72,8 @@ userServices.getServices = asyncHandler(async (req, res) => {
           ? "name"
           : sortBy === "latest" || sortBy === "oldest"
           ? "createdAt"
+          : sortBy === "mostRated" || sortBy === "leastRated"
+          ? "rating"
           : null]:
           sortBy === "a-z"
             ? 1
@@ -80,6 +82,10 @@ userServices.getServices = asyncHandler(async (req, res) => {
             : sortBy === "latest"
             ? -1
             : sortBy === "oldest"
+            ? 1
+            : sortBy === "mostRated"
+            ? -1
+            : sortBy === "leastRated"
             ? 1
             : null,
       })

@@ -147,8 +147,19 @@ Order.getProductOrderById = asyncHandler(async (req, res) => {
 Order.createServiceOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
-  const { buyer, seller } = req.body;
+  const { serviceOrder } = req.body;
   const service_id = req.params.service_id;
+
+  // Generate a 8-digit order
+  serviceOrder.order_id = randomstring.generate({
+    length: 8,
+    charset: "numeric",
+  });
+
+  serviceOrder.payment_id = randomstring.generate({
+    length: 8,
+    charset: "numeric",
+  });
 
   try {
     const check = await ServiceModel.exists({ _id: service_id });
@@ -157,25 +168,21 @@ Order.createServiceOrder = asyncHandler(async (req, res) => {
       throw new Error("Path not found");
     }
 
-    const checkBuyer = await UserModel.exists({ _id: buyer.id });
+    const checkBuyer = await UserModel.exists({ _id: serviceOrder?.buyer.id });
     if (!checkBuyer) {
       res.status(400);
       throw new Error("Can't find buyer");
     }
 
-    const checkSeller = await UserModel.exists({ _id: seller.id });
+    const checkSeller = await UserModel.exists({
+      _id: serviceOrder?.seller.id,
+    });
     if (!checkSeller) {
       res.status(400);
       throw new Error("Can't find seller");
     }
 
-    const newServiceOrder = await ServiceOrderModel.create({
-      buyer,
-      seller,
-      service_id,
-      delivered: false,
-    });
-
+    const newServiceOrder = await ServiceOrderModel.create({ ...serviceOrder });
     if (!newServiceOrder) {
       res.status(500);
       throw new Error("could not create new service order");
@@ -198,7 +205,6 @@ Order.updateServiceOrderTerms = asyncHandler(async (req, res) => {
 
   const {
     amount,
-    advance,
     duration,
     durationUnit,
     acceptedByBuyer,
@@ -209,7 +215,6 @@ Order.updateServiceOrderTerms = asyncHandler(async (req, res) => {
   const order_id = req.params.order_id;
   const terms = {
     amount,
-    advance,
     duration,
     durationUnit,
     acceptedByBuyer,
@@ -219,11 +224,10 @@ Order.updateServiceOrderTerms = asyncHandler(async (req, res) => {
   };
 
   try {
-    const updatedServiceOrder = await ServiceOrderModel.findByIdAndUpdate(
-      order_id,
+    const updatedServiceOrder = await ServiceOrderModel.findOneAndUpdate(
+      { order_id },
       {
-        delivered: false,
-        terms,
+        "checkout_items.terms": terms,
       },
       { new: true }
     );
@@ -237,7 +241,37 @@ Order.updateServiceOrderTerms = asyncHandler(async (req, res) => {
       res,
       200,
       "Service order updated successfully.",
-      updatedServiceOrder.terms
+      updatedServiceOrder.checkout_items.terms
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.updateServiceOrder = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+
+  const serviceOrder = req.body.serviceOrder;
+  const order_id = req.params.order_id;
+
+  try {
+    const updatedServiceOrder = await ServiceOrderModel.findOneAndUpdate(
+      { order_id },
+      serviceOrder,
+      { new: true }
+    );
+
+    if (!updatedServiceOrder) {
+      res.status(500);
+      throw new Error("could not update service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order updated successfully.",
+      updatedServiceOrder
     );
   } catch (error) {
     res.status(500);
@@ -250,7 +284,7 @@ Order.getServiceOrderById = asyncHandler(async (req, res) => {
   const order_id = req.params.order_id;
 
   try {
-    const serviceOrder = await ServiceOrderModel.findById(order_id);
+    const serviceOrder = await ServiceOrderModel.findOne({ order_id });
 
     if (!serviceOrder) {
       res.status(500);
@@ -262,6 +296,32 @@ Order.getServiceOrderById = asyncHandler(async (req, res) => {
       200,
       "Service order gotten successfully.",
       serviceOrder
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.getServiceOrdersBuyer = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+  const buyer_id = req.params.buyer_id;
+
+  try {
+    const serviceOrders = await ServiceOrderModel.find({
+      "buyer.id": buyer_id,
+    });
+
+    if (!serviceOrders) {
+      res.status(500);
+      throw new Error("could not get service orders");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service orders gotten successfully.",
+      serviceOrders
     );
   } catch (error) {
     res.status(500);
