@@ -22,7 +22,6 @@ AccountInfo.SellerTopUpAccount = asyncHandler(async (req, res) => {
     }
 
     check.balance = check.balance + amount;
-    console.log(check.balance);
     const updateAmount = await check.save();
     if (!updateAmount) {
       res.status(400);
@@ -74,6 +73,11 @@ AccountInfo.AddBankAccount = asyncHandler(async (req, res) => {
     if (!check) {
       res.status(400);
       throw new Error("Id not found");
+    }
+
+    if (check.bank_account.length >= 3) {
+      res.status(400);
+      throw new Error("bank account limit reached, delete one to add another");
     }
 
     if (!account_name || !account_number || !bank_name) {
