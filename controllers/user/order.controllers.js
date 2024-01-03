@@ -99,6 +99,7 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
 Order.getProductsOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
+  console.log(req.params.userId);
   const getProductsOrder = await ProductOrderModel.find({
     "buyer.id": req.params.userId,
   });
@@ -127,6 +128,31 @@ Order.getProductOrderById = asyncHandler(async (req, res) => {
   const id = req.params.id;
 
   const getProductOrder = await ProductOrderModel.findById(id);
+  try {
+    if (!getProductOrder) {
+      res.status(404);
+      throw new Error("Id not found");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "Products order found successfully.",
+        getProductOrder
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.getProductOrderByOrderId = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+
+  const order_id = req.params.order_id;
+  console.log(order_id);
+
+  const getProductOrder = await ProductOrderModel.findOne({ order_id });
   try {
     if (!getProductOrder) {
       res.status(404);

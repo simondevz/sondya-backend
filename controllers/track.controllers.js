@@ -10,6 +10,7 @@ TrackDistanceTime.track = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Track Distance']
 
   const data2 = req.body;
+  console.log(data2);
 
   try {
     const responseArrayData = [];
@@ -85,6 +86,7 @@ TrackDistanceTime.track = asyncHandler(async (req, res) => {
     );
   } catch (error) {
     res.status(500);
+    console.log("error ==> ", error);
     throw new Error(error);
   }
 });
