@@ -219,6 +219,9 @@ const productOrderSchema = Schema(
         zip_code: {
           type: String,
         },
+        order_status: {
+          type: String,
+        },
       },
     ],
   },

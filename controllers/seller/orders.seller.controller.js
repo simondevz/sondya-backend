@@ -31,6 +31,39 @@ SellerOrder.SellerGetProductsOrder = asyncHandler(async (req, res) => {
   }
 });
 
+SellerOrder.SellerUpdateProductsOrder = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Order']
+
+  const productOrder = req.body;
+  console.log("productOrder ==>>", productOrder);
+  const updatedProductsOrder = await ProductOrderModel.findByIdAndUpdate(
+    productOrder?._id,
+    {
+      ...productOrder,
+    },
+    { new: true }
+  );
+  console.log("updatedProductsOrder ==>> ", updatedProductsOrder);
+
+  try {
+    if (!updatedProductsOrder) {
+      res.status(404);
+      throw new Error("error getting order");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "Products order updated successfully.",
+        updatedProductsOrder
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
+
 SellerOrder.SellerGetProductOrderById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Order']
 

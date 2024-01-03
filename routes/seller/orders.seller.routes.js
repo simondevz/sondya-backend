@@ -8,6 +8,10 @@ SellerOrderRoutes.get(
   "/seller/order/products/:userId",
   SellerOrder.SellerGetProductsOrder
 );
+SellerOrderRoutes.put(
+  "/seller/order/products/update",
+  SellerOrder.SellerUpdateProductsOrder
+);
 SellerOrderRoutes.get(
   "/seller/order/product/details/:id",
   SellerOrder.SellerGetProductOrderById
