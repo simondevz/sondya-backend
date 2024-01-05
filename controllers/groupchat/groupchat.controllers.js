@@ -7,6 +7,10 @@ const groupChat = {};
 groupChat.getChats = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Group Chat Handlers']
   try {
+    const searchRegex = new RegExp(req.query.search, "i");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+
     const groupChats = await GroupChatModel.aggregate([
       {
         $lookup: {
@@ -20,7 +24,24 @@ groupChat.getChats = asyncHandler(async (req, res) => {
           as: "messages",
         },
       },
+      {
+        $match: {
+          $or: [
+            { name: { $regex: searchRegex } },
+            { description: { $regex: searchRegex } },
+          ],
+        },
+      },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
     ]);
+
+    const count = await GroupChatModel.countDocuments({
+      $or: [
+        { name: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+      ],
+    });
 
     if (!groupChats) {
       res.status(500);
@@ -30,7 +51,7 @@ groupChat.getChats = asyncHandler(async (req, res) => {
         res,
         200,
         "Group Chats gotten successfully.",
-        groupChats
+        { groupChats, count }
       );
     }
   } catch (error) {
