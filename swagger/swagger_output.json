@@ -3149,6 +3149,32 @@
         }
       }
     },
+    "/api/v1/seller/order/products/update": {
+      "put": {
+        "tags": [
+          "Seller Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/seller/order/product/details/{id}": {
       "get": {
         "tags": [
@@ -4356,6 +4382,38 @@
         "parameters": [
           {
             "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/user/order/products/details/byorderid/{order_id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "order_id",
             "in": "path",
             "required": true,
             "type": "string"
