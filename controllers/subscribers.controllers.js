@@ -7,6 +7,7 @@ const Subscribers = {};
 
 Subscribers.getSubscribers = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Subcribe to Newsletter']
+
   try {
     const searchRegex = new RegExp(req.query.search, "i");
     const page = parseInt(req.query.page) || 1;
@@ -41,6 +42,7 @@ Subscribers.getSubscribers = asyncHandler(async (req, res) => {
 
 Subscribers.suscribe = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Subcribe to Newsletter']
+
   try {
     const email = req.body.email;
     if (!validate(email)) {

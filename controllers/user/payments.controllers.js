@@ -7,6 +7,7 @@ import { load } from "js-yaml";
 import { v4 as uuidv4 } from "uuid";
 import OrderPaymentModel from "../../models/productOrderPayment.model.js";
 import responseHandle from "../../utils/handleResponse.js";
+import { sendOrdersMadeEmail } from "../../services/orders.services.js";
 dotenv.config();
 
 const config = load(readFileSync("config.yaml", "utf8"));
@@ -79,6 +80,53 @@ OrderPayments.Verify = asyncHandler(async (req, res) => {
       201,
       "payments made successfully.",
       PaymentResponse.data
+    );
+  } catch (error) {
+    // console.log(error);
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+OrderPayments.notifyUser = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['User Payments']
+
+  const {
+    email,
+    username,
+    order_id,
+    order_status,
+    product,
+    service,
+    total_cost,
+    date_ordered,
+  } = req.body;
+
+  try {
+    const exists = await UserModel.findOne({
+      email: email.trim(),
+    });
+
+    if (!exists) {
+      res.status(400);
+      throw new Error("You are not a registered user");
+    }
+    const sendMailOptions = {
+      username,
+      order_id,
+      order_status,
+      product,
+      service,
+      total_cost,
+      date_ordered,
+    };
+    const message = sendOrdersMadeEmail(email, sendMailOptions);
+
+    responseHandle.successResponse(
+      res,
+      201,
+      "Order Notification sent! Please check spam if you didn't recieve the message.",
+      { message }
     );
   } catch (error) {
     // console.log(error);

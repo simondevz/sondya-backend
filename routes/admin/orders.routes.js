@@ -14,4 +14,14 @@ AdminOrderRoutes.delete(
   AdminOrder.AdmindeleteProductOrder
 );
 
+AdminOrderRoutes.get("/admin/order/service", AdminOrder.AdminGetServiceOrder);
+AdminOrderRoutes.get(
+  "/admin/order/service/:id",
+  AdminOrder.AdminGetServiceOrderById
+);
+AdminOrderRoutes.delete(
+  "/admin/order/service/:id",
+  AdminOrder.AdmindeleteServiceOrder
+);
+
 export default AdminOrderRoutes;
