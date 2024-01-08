@@ -5,8 +5,11 @@ const PaymentOrderRoutes = express.Router();
 
 //for payment order
 PaymentOrderRoutes.post("/user/payments/pay", PaymentOrder.Pay);
-
 PaymentOrderRoutes.get("/user/payments/verify/:tx_ref", PaymentOrder.Verify);
+PaymentOrderRoutes.post(
+  "/user/payments/email_notification",
+  PaymentOrder.notifyUser
+);
 
 PaymentOrderRoutes.get(
   "/user/payments/:userId",
