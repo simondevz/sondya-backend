@@ -4,6 +4,9 @@ import { deleteUploads } from "../utils/deleteupload.js";
 import responseHandle from "../utils/handleResponse.js";
 import handleUpload from "../utils/upload.js";
 
+import ProductOrderModel from "../models/productOrder.model.js";
+import ServiceOrderModel from "../models/serviceOrder.model.js";
+
 const profile = {};
 
 profile.update = asyncHandler(async (req, res) => {
@@ -227,12 +230,21 @@ profile.getbyid = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Users']
   const check = await UserModel.findById(req.params.id);
 
+  const OrderProductTotal = await ProductOrderModel.countDocuments({
+    "buyer.id": req.params.id,
+  });
+  const OrderServiceTotal = await ServiceOrderModel.countDocuments({
+    "buyer.id": req.params.id,
+  });
+
   try {
     if (!check) {
       res.status(404);
       throw new Error("Id not found");
     }
     if (check) {
+      check.order_total = OrderProductTotal + OrderServiceTotal;
+
       responseHandle.successResponse(
         res,
         200,

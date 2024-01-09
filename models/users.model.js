@@ -122,6 +122,9 @@ const userSchema = Schema(
     tiktok_url: {
       type: String,
     },
+    order_total: {
+      type: Number,
+    },
 
     // transaction details
     balance: {

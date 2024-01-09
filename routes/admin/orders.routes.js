@@ -24,4 +24,7 @@ AdminOrderRoutes.delete(
   AdminOrder.AdmindeleteServiceOrder
 );
 
+// get user orders
+AdminOrderRoutes.get("/admin/order/user/:id", AdminOrder.AdminGetUserOrders);
+
 export default AdminOrderRoutes;
