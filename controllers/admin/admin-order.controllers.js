@@ -246,4 +246,33 @@ AdminOrder.AdmindeleteServiceOrder = asyncHandler(async (req, res) => {
   }
 });
 
+AdminOrder.AdminGetUserOrders = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Order']
+
+  try {
+    const AdminGetProductOrder = await ProductOrderModel.find({
+      "buyer.id": req.params.id,
+    });
+    const AdminGetServiceOrder = await ServiceOrderModel.find({
+      "buyer.id": req.params.id,
+    });
+
+    if (!AdminGetProductOrder) {
+      res.status(404);
+      throw new Error("error getting product order");
+    }
+    if (!AdminGetServiceOrder) {
+      res.status(404);
+      throw new Error("error getting service order");
+    }
+    responseHandle.successResponse(res, 200, "orders found successfully.", {
+      ProductOrders: AdminGetProductOrder,
+      ServiceOrders: AdminGetServiceOrder,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default AdminOrder;

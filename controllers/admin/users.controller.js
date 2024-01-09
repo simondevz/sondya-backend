@@ -3,11 +3,15 @@ import UserModel from "../../models/users.model.js";
 import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
 
+import ProductOrderModel from "../../models/productOrder.model.js";
+import ServiceOrderModel from "../../models/serviceOrder.model.js";
+
 const users = {};
 
 users.create = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Users']
-  const { first_name, last_name, username, email, password } = req.body;
+  const { first_name, last_name, username, email, password, country } =
+    req.body;
 
   try {
     const emailTaken = await UserModel.findOne({ email: email.trim() });
@@ -31,6 +35,7 @@ users.create = asyncHandler(async (req, res) => {
       email: email.trim(),
       username: username.trim(),
       password: password.trim(),
+      country: country,
     });
 
     if (!newUser) {
@@ -77,7 +82,12 @@ users.update = asyncHandler(async (req, res) => {
     city,
     currency,
     language,
+
+    // company details
+    company_details,
   } = req.body;
+
+  // console.log(company_details);
 
   let password;
   if (req.body?.password) {
@@ -117,6 +127,9 @@ users.update = asyncHandler(async (req, res) => {
         city: city,
         currency: currency,
         language: language,
+
+        // company details
+        company_details: company_details,
       },
       {
         new: true,
@@ -177,11 +190,19 @@ users.getbyid = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Users']
   const userDetail = await UserModel.findById(req.params.id);
 
+  const OrderProductTotal = await ProductOrderModel.countDocuments({
+    "buyer.id": req.params.id,
+  });
+  const OrderServiceTotal = await ServiceOrderModel.countDocuments({
+    "buyer.id": req.params.id,
+  });
+
   try {
     if (!userDetail) {
       res.status(404);
       throw new Error("Id not found");
     } else {
+      userDetail.order_total = OrderProductTotal + OrderServiceTotal;
       responseHandle.successResponse(
         res,
         200,
@@ -212,9 +233,9 @@ users.getall = asyncHandler(async (req, res) => {
         $or: [
           { username: { $regex: searchRegex } },
           { email: { $regex: searchRegex } },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   })
     .skip((page - 1) * limit)
     .limit(limit);
@@ -226,9 +247,9 @@ users.getall = asyncHandler(async (req, res) => {
         $or: [
           { username: { $regex: searchRegex } },
           { email: { $regex: searchRegex } },
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   });
 
   try {
