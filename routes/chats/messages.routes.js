@@ -7,6 +7,6 @@ chatMessagesRoutes.get("/chat/messages", chatMessages.getMessages);
 chatMessagesRoutes.post(
   "/chat/send/message",
   upload.array("file_attachments"),
-  chatMessages.sendFiles
+  chatMessages.sendMessage
 );
 export default chatMessagesRoutes;

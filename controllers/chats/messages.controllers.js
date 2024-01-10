@@ -82,7 +82,7 @@ chatMessages.getMessages = asyncHandler(async (req, res) => {
   }
 });
 
-chatMessages.sendFiles = asyncHandler(async (req, res) => {
+chatMessages.sendMessage = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Chat File Handlers']
   const message_text = req.body?.message_text;
   const receiver_id = req.body?.receiver_id;
@@ -129,7 +129,8 @@ chatMessages.sendFiles = asyncHandler(async (req, res) => {
       });
     }
 
-    if (req.files.length) {
+    let fileUrl = "null";
+    if (req.files.length > 0) {
       // upload images to cloudinary
       let files = req?.files;
       console.log(files);
@@ -150,7 +151,7 @@ chatMessages.sendFiles = asyncHandler(async (req, res) => {
 
       // get url of uploaded images
       const fileResponse = await Promise.all(multipleFilePromise);
-      const fileUrl = fileResponse.map((file) => {
+      fileUrl = fileResponse.map((file) => {
         const url = file.secure_url;
         const public_id = file.public_id;
         const folder = file.folder;
@@ -162,33 +163,33 @@ chatMessages.sendFiles = asyncHandler(async (req, res) => {
           filename: file.custom_filename,
         };
       });
+    }
 
-      const message = await ChatMessageModel.create({
-        message: message_text,
-        chat_id: chat?.id,
-        sender_id,
-        file_attachments: fileUrl,
-        [product_id === "null" ? null : product_id]: product_id,
-        [service_id === "null" ? null : service_id]: service_id,
+    const message = await ChatMessageModel.create({
+      message: message_text,
+      chat_id: chat?.id,
+      sender_id,
+      [fileUrl === "null" ? null : "file_attachments"]: fileUrl,
+      [product_id === "null" ? null : product_id]: product_id,
+      [service_id === "null" ? null : service_id]: service_id,
+    });
+    console.log(message);
+
+    if (message) {
+      responseHandle.successResponse(res, 201, "Message sent successfully.", {
+        ...message._doc,
+        sender_id: {
+          _id: sender?._id,
+          username: sender?.username,
+          first_name: sender?.first_name,
+          last_name: sender?.last_name,
+          email: sender?.email,
+          image: sender?.image,
+        },
       });
-      console.log(message);
-
-      if (message) {
-        responseHandle.successResponse(res, 201, "Message sent successfully.", {
-          ...message._doc,
-          sender_id: {
-            _id: sender?._id,
-            username: sender?.username,
-            first_name: sender?.first_name,
-            last_name: sender?.last_name,
-            email: sender?.email,
-            image: sender?.image,
-          },
-        });
-      } else {
-        res.status(500);
-        throw new Error("could not send message");
-      }
+    } else {
+      res.status(500);
+      throw new Error("could not send message");
     }
   } catch (error) {
     res.status(500);

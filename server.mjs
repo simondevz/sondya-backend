@@ -9,6 +9,7 @@ const wss = expressWs(app).getWss();
 // WebSockets
 import wsChatController from "./controllers/chats/websocket.controllers.js";
 import wsGroupChatController from "./controllers/groupchat/websocket.controllers.js";
+import { wsNotificationController } from "./controllers/notifications.controller.js";
 
 wsGroupChatController.use("/api/v1/ws/group/chat", app);
 wsGroupChatController.ping(wss);
@@ -17,6 +18,10 @@ wsGroupChatController.clearUnused();
 wsChatController.use("/api/v1/ws/personal/chat", app);
 wsChatController.ping(wss);
 wsChatController.clearUnused();
+
+wsNotificationController.use("/api/v1/ws/notifications", app);
+wsNotificationController.ping(wss);
+wsNotificationController.clearUnused();
 
 // importing swagger ui
 import { readFileSync } from "fs";
@@ -76,6 +81,7 @@ import productsRoutes from "./routes/user/products.routes.js";
 import reviewsRoutes from "./routes/user/reviews.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
 import SubscribersRoute from "./routes/subscribers.routes.js";
+import NotificationsRoutes from "./routes/notifications.routes.js";
 
 // Running routes
 app.use(cors());
@@ -131,6 +137,7 @@ app.use("/api/v1/", groupMessagesRoutes.protected);
 app.use("/api/v1/", orderRoutes);
 app.use("/api/v1/", PaymentOrderRoutes);
 app.use("/api/v1/", reviewsRoutes.protected);
+app.use("/api/v1/", NotificationsRoutes);
 
 // Error Middlewares
 import errorMiddleware from "./middleware/errorMiddleware.js";
