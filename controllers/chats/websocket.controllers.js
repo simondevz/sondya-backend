@@ -46,16 +46,7 @@ wsChatController.use = (path, app) =>
               break;
 
             case "testing_connection":
-              wsUtil.sendChatMessage(data, ws);
-              break;
-
-            case "testing_connections_inbox":
-              for (const receiver_id of data.receiver_ids) {
-                wsUtil.sendChatMessage(
-                  { receiver_id, sender_id: data.sender_id, meta: data.meta },
-                  ws
-                );
-              }
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
               break;
 
             default:
@@ -65,8 +56,6 @@ wsChatController.use = (path, app) =>
               );
               break;
           }
-        } else {
-          wsUtil.sendChatMessage(data, ws);
         }
       });
 
