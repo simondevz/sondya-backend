@@ -39,11 +39,11 @@ auth.register = asyncHandler(async (req, res) => {
     const newUser = await UserModel.create({
       first_name: first_name.trim(),
       last_name: last_name.trim(),
-      email: email.trim(),
-      username: username.trim(),
+      email: email.trim().toLowerCase(),
+      username: username.trim().toLowerCase(),
       password: password.trim(),
       country: country.trim(),
-      referrer: referrer.trim(),
+      referrer: referrer.trim().toLowerCase(),
       type: "user",
     });
 
@@ -71,7 +71,7 @@ auth.login = asyncHandler(async (req, res) => {
 
   try {
     const exists = await UserModel.findOne({
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
     });
 
     if (!exists || (await exists.matchPassword(password)) === false) {
@@ -104,7 +104,7 @@ auth.forgotPassword = asyncHandler(async (req, res) => {
 
   try {
     const exists = await UserModel.findOne({
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
     });
 
     if (!exists) {
@@ -179,7 +179,7 @@ auth.resetPassword = asyncHandler(async (req, res) => {
 
   try {
     const exists = await UserModel.findOne({
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
     });
 
     // check if email exist

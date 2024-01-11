@@ -71,8 +71,8 @@ profile.update = asyncHandler(async (req, res) => {
       {
         first_name: first_name,
         last_name: last_name,
-        username: username,
-        email: email,
+        username: username.trim().toLowerCase(),
+        email: email.trim().toLowerCase(),
         phone_number: phone_number,
         state: state,
         city: city,

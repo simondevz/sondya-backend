@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import responseHandle from "../../utils/handleResponse.js";
-import ProductModel from "../../models/products.model.js";
 import CategoryModel from "../../models/categories.model.js";
+import ProductModel from "../../models/products.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const userProducts = {};
 
@@ -65,6 +65,8 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
             return { brand: new RegExp("\\b" + brand + "\\b", "gi") };
           })
         : null,
+      product_status: { $nin: ["sold", "draft"] },
+      total_stock: { $gt: 0 },
     })
       .collation({ locale: "en", strength: 2 })
       .sort({
@@ -107,6 +109,8 @@ userProducts.getProducts = asyncHandler(async (req, res) => {
             return { brand: new RegExp("\\b" + brand + "\\b", "gi") };
           })
         : null,
+      product_status: { $nin: ["sold", "draft"] },
+      total_stock: { $gt: 0 },
     });
 
     if (!products) {

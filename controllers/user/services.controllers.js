@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-import responseHandle from "../../utils/handleResponse.js";
-import ServicesModel from "../../models/services.model.js";
 import CategoryModel from "../../models/categories.model.js";
+import ServicesModel from "../../models/services.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const userServices = {};
 
@@ -65,6 +65,7 @@ userServices.getServices = asyncHandler(async (req, res) => {
             return { brand };
           })
         : null,
+      service_status: { $nin: ["draft", "suspended", "closed"] },
     })
       .collation({ locale: "en", strength: 2 })
       .sort({
@@ -113,6 +114,7 @@ userServices.getServices = asyncHandler(async (req, res) => {
             return { brand };
           })
         : null,
+      service_status: { $nin: ["draft", "suspended", "closed"] },
     });
 
     if (!services) {

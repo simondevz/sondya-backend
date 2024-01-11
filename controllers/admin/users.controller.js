@@ -32,8 +32,8 @@ users.create = asyncHandler(async (req, res) => {
     const newUser = await UserModel.create({
       first_name: first_name.trim(),
       last_name: last_name.trim(),
-      email: email.trim(),
-      username: username.trim(),
+      email: email.trim().toLowerCase(),
+      username: username.trim().toLowerCase(),
       password: password.trim(),
       country: country,
     });
@@ -104,8 +104,8 @@ users.update = asyncHandler(async (req, res) => {
       {
         first_name: first_name,
         last_name: last_name,
-        username: username,
-        email: email,
+        username: username.trim().toLowerCase(),
+        email: email.trim().toLowerCase(),
         status: status,
         password: password,
         type: type,
