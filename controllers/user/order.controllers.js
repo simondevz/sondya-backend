@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import randomstring from "randomstring";
 import ProductOrderModel from "../../models/productOrder.model.js";
 import OrderPaymentModel from "../../models/productOrderPayment.model.js";
+import ProductModel from "../../models/products.model.js";
 import ServiceOrderModel from "../../models/serviceOrder.model.js";
 import ServiceModel from "../../models/services.model.js";
 import UserModel from "../../models/users.model.js";
@@ -26,6 +27,7 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
     total_tax,
     total_shipping_fee,
     total_discount,
+    payment_id,
   } = req.body;
 
   // Generate a 8-digit order
@@ -39,10 +41,20 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
     charset: "numeric",
   });
 
-  const payment_id = randomstring.generate({
-    length: 8,
-    charset: "numeric",
+  // const payment_id = randomstring.generate({
+  //   length: 8,
+  //   charset: "numeric",
+  // });
+
+  // check if payment id exists
+  const checkPayment = await OrderPaymentModel.exists({
+    payment_id: payment_id,
   });
+
+  if (checkPayment) {
+    res.status(500);
+    throw new Error("Payment already made and id exists");
+  }
 
   try {
     const newProductsOrderPayment = await OrderPaymentModel.create({
@@ -77,6 +89,40 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
         res.status(500);
         throw new Error("could not create new product order");
       }
+
+      // update seller balance with own balance
+      const user = await UserModel.findById(checkout_item.owner.id);
+
+      if (!user) {
+        res.status(404);
+        throw new Error("user Id not found for updating balance");
+      }
+
+      user.balance = user.balance + checkout_item.sub_total;
+      const SaveUserBalance = await user.save();
+
+      if (!SaveUserBalance) {
+        res.status(500);
+        throw new Error("could not update user balance");
+      }
+      // update seller balance with own balance ends
+
+      // update product quantity
+      const productCheck = await ProductModel.findById(checkout_item._id);
+
+      if (!productCheck) {
+        res.status(404);
+        throw new Error("product Id not found for updating quantity");
+      }
+      productCheck.total_stock =
+        productCheck.total_stock - checkout_item.order_quantity;
+      const SaveTotalStock = await productCheck.save();
+
+      if (!SaveTotalStock) {
+        res.status(500);
+        throw new Error("could not update product quantity");
+      }
+      // update product quantity ends
     });
 
     if (!newProductsOrderPayment) {
@@ -99,7 +145,7 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
 Order.getProductsOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
-  console.log(req.params.userId);
+  // console.log(req.params.userId);
   const getProductsOrder = await ProductOrderModel.find({
     "buyer.id": req.params.userId,
   });
@@ -150,7 +196,7 @@ Order.getProductOrderByOrderId = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
   const order_id = req.params.order_id;
-  console.log(order_id);
+  // console.log(order_id);
 
   const getProductOrder = await ProductOrderModel.findOne({ order_id });
   try {

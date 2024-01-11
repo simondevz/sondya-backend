@@ -14,14 +14,23 @@ homeList.getAllProducts = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
 
-  const getall = await ProductModel.find({
-    sub_category: { $regex: searchRegex },
-  })
-    .skip((page - 1) * limit)
-    .limit(limit);
+  // this line of code helps to get all the products randomly without any filtering
+  const getall = await ProductModel.aggregate([
+    {
+      $match: {
+        sub_category: { $regex: searchRegex },
+        product_status: { $nin: ["sold", "draft"] },
+        total_stock: { $gt: 0 },
+      },
+    },
+    { $skip: (page - 1) * limit },
+    { $sample: { size: limit } },
+  ]);
 
   const total = await ProductModel.countDocuments({
     sub_category: { $regex: searchRegex },
+    product_status: { $nin: ["sold", "draft"] },
+    total_stock: { $gt: 0 },
   });
 
   try {
@@ -49,14 +58,21 @@ homeList.getAllServices = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
 
-  const getall = await ServiceModel.find({
-    sub_category: { $regex: searchRegex },
-  })
-    .skip((page - 1) * limit)
-    .limit(limit);
+  // this line of code helps to get all the services randomly without any filtering
+  const getall = await ServiceModel.aggregate([
+    {
+      $match: {
+        sub_category: { $regex: searchRegex },
+        service_status: { $nin: ["draft", "suspended", "closed"] },
+      },
+    },
+    { $skip: (page - 1) * limit },
+    { $sample: { size: limit } },
+  ]);
 
   const total = await ServiceModel.countDocuments({
     sub_category: { $regex: searchRegex },
+    service_status: { $nin: ["draft", "suspended", "closed"] },
   });
 
   try {
