@@ -11,5 +11,6 @@ profileRoutes.put("/profile/update/:id", upload.array("image"), profile.update);
 profileRoutes.put("/profile/update/password/:id", profile.changePassword);
 profileRoutes.put("/profile/update/socials/:id", profile.updateSocialMedia);
 profileRoutes.put("/profile/update/company/:id", profile.updateCompanyDetails);
+profileRoutes.get("/profile/data/:id", profile.getUserProfileData);
 
 export default profileRoutes;

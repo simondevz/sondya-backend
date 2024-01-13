@@ -1,8 +1,8 @@
 import asyncHandler from "express-async-handler";
 
 import ProductOrderModel from "../../models/productOrder.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import ServiceOrderModel from "../../models/serviceOrder.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const SellerOrder = {};
 
@@ -35,7 +35,7 @@ SellerOrder.SellerUpdateProductsOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Order']
 
   const productOrder = req.body;
-  console.log("productOrder ==>>", productOrder);
+  // console.log("productOrder ==>>", productOrder);
   const updatedProductsOrder = await ProductOrderModel.findByIdAndUpdate(
     productOrder?._id,
     {
@@ -43,7 +43,7 @@ SellerOrder.SellerUpdateProductsOrder = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
-  console.log("updatedProductsOrder ==>> ", updatedProductsOrder);
+  // console.log("updatedProductsOrder ==>> ", updatedProductsOrder);
 
   try {
     if (!updatedProductsOrder) {
@@ -59,7 +59,7 @@ SellerOrder.SellerUpdateProductsOrder = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     res.status(500);
-    console.log(error);
+    // console.log(error);
     throw new Error(error);
   }
 });

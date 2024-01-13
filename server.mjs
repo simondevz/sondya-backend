@@ -56,6 +56,7 @@ import AdminUsersRoutes from "./routes/admin/users.routes.js";
 import AdminWithdrawalRoutes from "./routes/admin/withdrawal.routes.js";
 
 import SellerAccountRoutes from "./routes/seller/account.seller.routes.js";
+import SellerAnalysisRoutes from "./routes/seller/analysis.seller.routes.js";
 import SellerOrderRoutes from "./routes/seller/orders.seller.routes.js";
 import SellerProductsRoutes from "./routes/seller/products.seller.routes.js";
 import SellerServicesRoutes from "./routes/seller/services.seller.routes.js";
@@ -73,15 +74,15 @@ import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
+import NotificationsRoutes from "./routes/notifications.routes.js";
 import reviewResponseRoutes from "./routes/seller/reviewResponse.routes.js";
+import SubscribersRoute from "./routes/subscribers.routes.js";
 import TrackRoutes from "./routes/track.routes.js";
 import orderRoutes from "./routes/user/order.routes.js";
 import PaymentOrderRoutes from "./routes/user/payments.routes.js";
 import productsRoutes from "./routes/user/products.routes.js";
 import reviewsRoutes from "./routes/user/reviews.routes.js";
 import ServicesRoutes from "./routes/user/services.routes.js";
-import SubscribersRoute from "./routes/subscribers.routes.js";
-import NotificationsRoutes from "./routes/notifications.routes.js";
 
 // Running routes
 app.use(cors());
@@ -125,6 +126,7 @@ app.use("/api/v1/", reviewResponseRoutes);
 app.use("/api/v1/", SellerOrderRoutes);
 app.use("/api/v1/", SellerAccountRoutes);
 app.use("/api/v1/", SellerWithdrawalRoutes);
+app.use("/api/v1/", SellerAnalysisRoutes);
 
 // user protected
 app.use("/api/v1/", profileRoutes);
