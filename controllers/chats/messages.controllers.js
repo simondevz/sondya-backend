@@ -170,8 +170,8 @@ chatMessages.sendMessage = asyncHandler(async (req, res) => {
       chat_id: chat?.id,
       sender_id,
       [fileUrl === "null" ? null : "file_attachments"]: fileUrl,
-      [product_id === "null" ? null : product_id]: product_id,
-      [service_id === "null" ? null : service_id]: service_id,
+      [product_id === "null" ? null : "product_id"]: product_id,
+      [service_id === "null" ? null : "service_id"]: service_id,
     });
     console.log(message);
 
