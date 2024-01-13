@@ -24,6 +24,7 @@ adminProducts.create = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
 
     country,
     state,
@@ -82,6 +83,7 @@ adminProducts.create = asyncHandler(async (req, res) => {
       discount_percentage: discount_percentage,
       vat_percentage: vat_percentage,
       total_variants: total_variants,
+      variants: JSON.parse(variants),
       image: imageUrl,
 
       country: country,
@@ -126,6 +128,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
     discount_percentage,
     vat_percentage,
     total_variants,
+    variants,
     deleteImageId,
 
     country,
@@ -134,6 +137,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
     zip_code,
     address,
   } = req.body;
+  console.log(req.body);
   try {
     if (!check) {
       res.status(404);
@@ -193,6 +197,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
+        variants: JSON.parse(variants),
         image: imageUrl.length > 0 ? imageUrl : [],
 
         country: country,
@@ -205,6 +210,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
         new: true,
       }
     );
+    console.log("updated product ==> ", updatedProduct);
 
     if (!updatedProduct) {
       res.status(500);
@@ -219,6 +225,7 @@ adminProducts.update = asyncHandler(async (req, res) => {
     }
   } catch (error) {
     res.status(500);
+    console.log(error);
     throw new Error(error);
   }
 });
