@@ -72,6 +72,7 @@ import contactusRoutes from "./routes/contactus.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
+import AdminAnalyticsRoutes from "./routes/admin/analytics.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import NotificationsRoutes from "./routes/notifications.routes.js";
@@ -117,6 +118,7 @@ app.use("/api/v1/", AdminGroupChatRoutes);
 app.use("/api/v1/", AdminOrderRoutes);
 app.use("/api/v1/", AdminPaymentOrderRoutes);
 app.use("/api/v1/", AdminWithdrawalRoutes);
+app.use("/api/v1/", AdminAnalyticsRoutes);
 app.use("/api/v1/", SubscribersRoute.protected);
 
 // seller protected

@@ -75,12 +75,10 @@ OrderPayments.Verify = asyncHandler(async (req, res) => {
 
     // PaymentResponse.data.tx_ref = tx_ref;
 
-    responseHandle.successResponse(
-      res,
-      201,
-      "payments made successfully.",
-      PaymentResponse.data
-    );
+    responseHandle.successResponse(res, 201, "payments made successfully.", {
+      ...PaymentResponse.data,
+      tx_ref,
+    });
   } catch (error) {
     // console.log(error);
     res.status(500);
