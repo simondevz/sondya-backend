@@ -4,7 +4,7 @@ import ProductOrderModel from "../../models/productOrder.model.js";
 import ServiceOrderModel from "../../models/serviceOrder.model.js";
 import ProductModel from "../../models/products.model.js";
 import ServiceModel from "../../models/services.model.js";
-// import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { format, sub } from "date-fns";
 
 const adminAnalytics = {};
@@ -432,7 +432,6 @@ adminAnalytics.revenueOrderAnalytics = asyncHandler(async (req, res) => {
       }
     });
 
-    console.log(returnedAnalytics);
     responseHandle.successResponse(
       res,
       200,
@@ -446,38 +445,139 @@ adminAnalytics.revenueOrderAnalytics = asyncHandler(async (req, res) => {
   }
 });
 
-// adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
-//   // #swagger.tags = ['Admin Analytics']
+adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Admin Analytics']
+  const endDate = new Date();
+  const oneMonthAgo = sub(endDate, { days: 2 });
+  const twoMonthAgo = sub(endDate, { days: 4 });
+  const threeMonthAgo = sub(endDate, { days: 6 });
+  const fourMonthAgo = sub(endDate, { days: 8 });
 
-//   try {
-//     const propertyId = "422952567";
-//     const analyticsDataClient = new BetaAnalyticsDataClient();
-//     const [response] = await analyticsDataClient.runReport({
-//       property: `properties/${propertyId}`,
-//       dateRanges: [
-//         {
-//           startDate: "2020-03-31",
-//           endDate: "today",
-//         },
-//       ],
-//       // dimensions: [
-//       //   {
-//       //     name: "city",
-//       //   },
-//       // ],
-//       metrics: [
-//         {
-//           name: "purchaseRevenue",
-//         },
-//       ],
-//     });
+  try {
+    const propertyId = "422952567";
+    const analyticsDataClient = new BetaAnalyticsDataClient();
+    const [response] = await analyticsDataClient.runReport({
+      property: `properties/${propertyId}`,
+      dateRanges: [
+        {
+          startDate: format(oneMonthAgo, "yyyy-MM-dd"),
+          endDate: "today",
+        },
+        {
+          startDate: format(twoMonthAgo, "yyyy-MM-dd"),
+          endDate: format(sub(oneMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+        },
+        {
+          startDate: format(threeMonthAgo, "yyyy-MM-dd"),
+          endDate: format(sub(twoMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+        },
+        {
+          startDate: format(fourMonthAgo, "yyyy-MM-dd"),
+          endDate: format(sub(threeMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+        },
+      ],
+      metrics: [{ name: "sessions" }, { name: "sessionConversionRate" }],
+    });
 
-//     console.log(response);
-//   } catch (error) {
-//     res.status(500);
-//     console.log(error);
-//     throw new Error(error);
-//   }
-// });
+    const returnedData = {
+      conversions: {
+        average: 0,
+        last_diff: 0,
+        graphData: new Array(4).fill(0),
+        graphDates: new Array(4),
+      },
+      visitors: {
+        total: 0,
+        last_diff: 0,
+        graphData: new Array(4).fill(0),
+        graphDates: new Array(4),
+      },
+    };
+
+    let total_conversion = 0;
+    let total_visitors = 0;
+    let conversion_1 = 0;
+    let conversion_2 = 0;
+    let visitors_1 = 0;
+    let visitors_2 = 0;
+
+    response.rows.forEach((row) => {
+      total_conversion += Number(row.metricValues[1].value);
+      total_visitors += Number(row.metricValues[0].value);
+
+      if (row.dimensionValues[0].value === "date_range_0") {
+        conversion_1 = Number(row.metricValues[1].value);
+        visitors_1 = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphData[3] = Number(
+          row.metricValues[1].value * 100
+        ).toFixed(4);
+        returnedData.visitors.graphData[3] = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphDates[3] = format(oneMonthAgo, "do MMMM");
+        returnedData.visitors.graphDates[3] = format(oneMonthAgo, "do MMMM");
+      }
+
+      if (row.dimensionValues[0].value === "date_range_1") {
+        conversion_2 = Number(row.metricValues[1].value);
+        visitors_2 = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphData[2] = Number(
+          row.metricValues[1].value * 100
+        ).toFixed(4);
+        returnedData.visitors.graphData[2] = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphDates[2] = format(twoMonthAgo, "do MMMM");
+        returnedData.visitors.graphDates[2] = format(twoMonthAgo, "do MMMM");
+      }
+
+      if (row.dimensionValues[0].value === "date_range_2") {
+        returnedData.conversions.graphData[1] = Number(
+          row.metricValues[1].value * 100
+        ).toFixed(4);
+        returnedData.visitors.graphData[1] = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphDates[1] = format(
+          threeMonthAgo,
+          "do MMMM"
+        );
+        returnedData.visitors.graphDates[1] = format(threeMonthAgo, "do MMMM");
+      }
+
+      if (row.dimensionValues[0].value === "date_range_3") {
+        returnedData.conversions.graphData[0] = Number(
+          row.metricValues[1].value * 100
+        ).toFixed(4);
+        returnedData.visitors.graphData[0] = Number(row.metricValues[0].value);
+
+        returnedData.conversions.graphDates[0] = format(
+          fourMonthAgo,
+          "do MMMM"
+        );
+        returnedData.visitors.graphDates[0] = format(fourMonthAgo, "do MMMM");
+      }
+    });
+
+    returnedData.conversions.average = Number(
+      (total_conversion / 4).toFixed(4)
+    );
+    returnedData.visitors.total = total_visitors;
+    returnedData.visitors.last_diff = visitors_1 - visitors_2;
+    returnedData.conversions.last_diff = Number(
+      (conversion_1 - conversion_2).toFixed(4)
+    );
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Analytics gotten successfully.",
+      returnedData
+    );
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
 
 export default adminAnalytics;
