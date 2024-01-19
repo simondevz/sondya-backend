@@ -3,6 +3,10 @@ import adminAnalytics from "../../controllers/admin/analytics.controller.js";
 const AdminAnalyticsRoutes = express.Router();
 
 AdminAnalyticsRoutes.get(
+  "/admin/analytics/visitorsandconversion",
+  adminAnalytics.visitorsAndConversions
+);
+AdminAnalyticsRoutes.get(
   "/admin/analytics/revenueandorder",
   adminAnalytics.revenueOrderAnalytics
 );
