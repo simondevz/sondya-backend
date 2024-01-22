@@ -6,6 +6,10 @@ const SellerWithdrawalRoutes = express.Router();
 // for seller withdrawal
 SellerWithdrawalRoutes.post("/seller/withdraw", WithdrawalInfo.makeWithrawal);
 SellerWithdrawalRoutes.get(
+  "/seller/withdrawal/stat/:user_id",
+  WithdrawalInfo.getWithdrawalStat
+);
+SellerWithdrawalRoutes.get(
   "/seller/withdrawals/:id",
   WithdrawalInfo.UserWithdrawals
 );

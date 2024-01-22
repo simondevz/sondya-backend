@@ -149,4 +149,45 @@ WithdrawalInfo.UserDeleteWithdrawalByID = asyncHandler(async (req, res) => {
   }
 });
 
+WithdrawalInfo.getWithdrawalStat = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Withdrawal']
+
+  const user_id = req.params.user_id;
+  const checkUser = await UserModel.findById(user_id);
+  try {
+    if (!checkUser) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    const withdrawals = await WithdrawalModel.find({ "user.id": user_id });
+    const withdrawalStat = {
+      pending: 0,
+      completed: 0,
+    };
+
+    withdrawals.forEach((withdrawal) => {
+      if (withdrawal.withdrawal_status === "pending")
+        withdrawalStat.pending += withdrawal.withdrawal_amount;
+      if (withdrawal.withdrawal_status === "success")
+        withdrawalStat.completed += withdrawal.withdrawal_amount;
+    });
+
+    if (!withdrawals) {
+      res.status(500);
+      throw new Error("could not get withdrawal stats");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "withdrawal ststs gotten successfully.",
+        withdrawalStat
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default WithdrawalInfo;

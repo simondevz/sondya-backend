@@ -448,10 +448,10 @@ adminAnalytics.revenueOrderAnalytics = asyncHandler(async (req, res) => {
 adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Admin Analytics']
   const endDate = new Date();
-  const oneMonthAgo = sub(endDate, { days: 2 });
-  const twoMonthAgo = sub(endDate, { days: 4 });
-  const threeMonthAgo = sub(endDate, { days: 6 });
-  const fourMonthAgo = sub(endDate, { days: 8 });
+  const oneMonthAgo = sub(endDate, { months: 1 });
+  const twoMonthAgo = sub(endDate, { months: 2 });
+  const threeMonthAgo = sub(endDate, { months: 3 });
+  const fourMonthAgo = sub(endDate, { months: 4 });
 
   try {
     const propertyId = "422952567";
@@ -465,15 +465,15 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
         },
         {
           startDate: format(twoMonthAgo, "yyyy-MM-dd"),
-          endDate: format(sub(oneMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+          endDate: format(oneMonthAgo, "yyyy-MM-dd"),
         },
         {
           startDate: format(threeMonthAgo, "yyyy-MM-dd"),
-          endDate: format(sub(twoMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+          endDate: format(twoMonthAgo, "yyyy-MM-dd"),
         },
         {
           startDate: format(fourMonthAgo, "yyyy-MM-dd"),
-          endDate: format(sub(threeMonthAgo, { days: 1 }), "yyyy-MM-dd"),
+          endDate: format(threeMonthAgo, "yyyy-MM-dd"),
         },
       ],
       metrics: [{ name: "sessions" }, { name: "sessionConversionRate" }],
@@ -484,13 +484,23 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
         average: 0,
         last_diff: 0,
         graphData: new Array(4).fill(0),
-        graphDates: new Array(4),
+        graphDates: [
+          format(threeMonthAgo, "do MMMM"),
+          format(twoMonthAgo, "do MMMM"),
+          format(oneMonthAgo, "do MMMM"),
+          format(endDate, "do MMMM"),
+        ],
       },
       visitors: {
         total: 0,
         last_diff: 0,
         graphData: new Array(4).fill(0),
-        graphDates: new Array(4),
+        graphDates: [
+          format(threeMonthAgo, "do MMMM"),
+          format(twoMonthAgo, "do MMMM"),
+          format(oneMonthAgo, "do MMMM"),
+          format(endDate, "do MMMM"),
+        ],
       },
     };
 
@@ -513,9 +523,6 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
           row.metricValues[1].value * 100
         ).toFixed(4);
         returnedData.visitors.graphData[3] = Number(row.metricValues[0].value);
-
-        returnedData.conversions.graphDates[3] = format(oneMonthAgo, "do MMMM");
-        returnedData.visitors.graphDates[3] = format(oneMonthAgo, "do MMMM");
       }
 
       if (row.dimensionValues[0].value === "date_range_1") {
@@ -526,9 +533,6 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
           row.metricValues[1].value * 100
         ).toFixed(4);
         returnedData.visitors.graphData[2] = Number(row.metricValues[0].value);
-
-        returnedData.conversions.graphDates[2] = format(twoMonthAgo, "do MMMM");
-        returnedData.visitors.graphDates[2] = format(twoMonthAgo, "do MMMM");
       }
 
       if (row.dimensionValues[0].value === "date_range_2") {
@@ -536,12 +540,6 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
           row.metricValues[1].value * 100
         ).toFixed(4);
         returnedData.visitors.graphData[1] = Number(row.metricValues[0].value);
-
-        returnedData.conversions.graphDates[1] = format(
-          threeMonthAgo,
-          "do MMMM"
-        );
-        returnedData.visitors.graphDates[1] = format(threeMonthAgo, "do MMMM");
       }
 
       if (row.dimensionValues[0].value === "date_range_3") {
@@ -549,12 +547,6 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
           row.metricValues[1].value * 100
         ).toFixed(4);
         returnedData.visitors.graphData[0] = Number(row.metricValues[0].value);
-
-        returnedData.conversions.graphDates[0] = format(
-          fourMonthAgo,
-          "do MMMM"
-        );
-        returnedData.visitors.graphDates[0] = format(fourMonthAgo, "do MMMM");
       }
     });
 
@@ -566,6 +558,8 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
     returnedData.conversions.last_diff = Number(
       (conversion_1 - conversion_2).toFixed(4)
     );
+
+    console.log(returnedData);
 
     responseHandle.successResponse(
       res,
