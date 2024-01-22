@@ -1234,6 +1234,9 @@
                 "total_variants": {
                   "example": "any"
                 },
+                "variants": {
+                  "example": "any"
+                },
                 "country": {
                   "example": "any"
                 },
@@ -1327,6 +1330,9 @@
                   "example": "any"
                 },
                 "total_variants": {
+                  "example": "any"
+                },
+                "variants": {
                   "example": "any"
                 },
                 "deleteImageId": {
@@ -2662,6 +2668,144 @@
         }
       }
     },
+    "/api/v1/admin/analytics/visitorsandconversion": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/revenueandorder": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/latestorders/services": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/latestorders/products": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/topservices": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/admin/analytics/topproducts": {
+      "get": {
+        "tags": [
+          "Admin Analytics"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/seller/product/create": {
       "post": {
         "tags": [
@@ -3847,6 +3991,38 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/withdrawal/stat/{user_id}": {
+      "get": {
+        "tags": [
+          "Seller Withdrawal"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
