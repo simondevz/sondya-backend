@@ -559,8 +559,6 @@ adminAnalytics.visitorsAndConversions = asyncHandler(async (req, res) => {
       (conversion_1 - conversion_2).toFixed(4)
     );
 
-    console.log(returnedData);
-
     responseHandle.successResponse(
       res,
       200,
