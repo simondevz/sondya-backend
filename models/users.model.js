@@ -17,6 +17,10 @@ const userSchema = Schema(
       type: String,
       unique: true,
     },
+    email_verified: {
+      type: Boolean,
+      default: false,
+    },
     phone_number: {
       type: String,
     },
@@ -57,6 +61,15 @@ const userSchema = Schema(
     status: {
       type: String, // active or blocked
       default: "active",
+    },
+    gender: {
+      type: String,
+    },
+    marital_status: {
+      type: String,
+    },
+    date_of_birth: {
+      type: String,
     },
     image: [
       {
@@ -167,6 +180,21 @@ const userSchema = Schema(
           type: String,
         },
         email: {
+          type: String,
+        },
+      },
+    ],
+
+    // kyc details
+    id_document: [
+      {
+        url: {
+          type: String,
+        },
+        public_id: {
+          type: String,
+        },
+        folder: {
           type: String,
         },
       },

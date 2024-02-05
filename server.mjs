@@ -64,7 +64,9 @@ import SellerWithdrawalRoutes from "./routes/seller/withdrawal.seller.routes.js"
 import testimonialRoutes from "./routes/user/testimonials.routes.js";
 
 import profileRoutes from "./routes/profile.routes.js";
+import kycRoutes from "./routes/user/kyc.routes.js";
 
+import AdminAnalyticsRoutes from "./routes/admin/analytics.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import chatRoutes from "./routes/chats/chats.routes.js";
 import chatMessagesRoutes from "./routes/chats/messages.routes.js";
@@ -72,7 +74,6 @@ import contactusRoutes from "./routes/contactus.routes.js";
 import groupchatRoutes from "./routes/groupchat/groupchat.routes.js";
 import groupMembersRoutes from "./routes/groupchat/members.routes.js";
 import groupMessagesRoutes from "./routes/groupchat/messages.routes.js";
-import AdminAnalyticsRoutes from "./routes/admin/analytics.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import homeRoutes from "./routes/home.routes.js";
 import NotificationsRoutes from "./routes/notifications.routes.js";
@@ -132,6 +133,7 @@ app.use("/api/v1/", SellerAnalysisRoutes);
 
 // user protected
 app.use("/api/v1/", profileRoutes);
+app.use("/api/v1/", kycRoutes);
 app.use("/api/v1/", profileRoutes);
 app.use("/api/v1/", testimonialRoutes);
 app.use("/api/v1/", chatRoutes);
