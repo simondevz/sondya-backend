@@ -91,6 +91,8 @@ auth.login = asyncHandler(async (req, res) => {
         },
         "1d"
       ),
+      email_verified: exists.email_verified,
+      kyc_completed: exists.kyc_completed,
     });
   } catch (error) {
     res.status(500);
