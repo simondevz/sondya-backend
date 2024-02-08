@@ -179,6 +179,7 @@ kyc.updateCompanyDetails = asyncHandler(async (req, res) => {
       req.params.id,
       {
         company_details: company_details !== undefined && company_details,
+        kyc_completed: true,
       },
       {
         new: true,
@@ -210,7 +211,8 @@ kyc.updateIdentificationDoc = asyncHandler(async (req, res) => {
     // start of upload images
     let imageUrl;
 
-    if (req.files.length) {
+    // if (req.files.length) {
+    if (req?.files) {
       // upload images to cloudinary
       let files = req?.files;
       let multiplePicturePromise = files.map(async (picture, index) => {
@@ -240,16 +242,28 @@ kyc.updateIdentificationDoc = asyncHandler(async (req, res) => {
     }
     // end of uploaded images
 
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        id_document: imageUrl,
-      },
-      {
-        new: true,
-      }
-    );
-    if (updatedUser) {
+    // check if no image
+    if (
+      imageUrl === undefined &&
+      req?.files === undefined &&
+      check.id_document <= 0
+    ) {
+      res.status(400);
+      throw new Error("No image uploaded for identification document");
+    }
+
+    // update user
+    if (imageUrl !== undefined && req?.files.length > 0) {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          id_document: imageUrl !== undefined && imageUrl,
+        },
+        {
+          new: true,
+        }
+      );
+
       responseHandle.successResponse(
         res,
         201,
@@ -257,6 +271,13 @@ kyc.updateIdentificationDoc = asyncHandler(async (req, res) => {
         updatedUser
       );
     }
+
+    responseHandle.successResponse(
+      res,
+      201,
+      "identification document updated successfully.",
+      "image"
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);
@@ -305,23 +326,42 @@ kyc.updateProfileDp = asyncHandler(async (req, res) => {
     }
     // end of uploaded images
 
-    const updatedUser = await UserModel.findByIdAndUpdate(
-      req.params.id,
-      {
-        image: imageUrl,
-      },
-      {
-        new: true,
-      }
-    );
-    if (updatedUser) {
+    // check if no image
+    if (
+      imageUrl === undefined &&
+      req?.files === undefined &&
+      check.image <= 0
+    ) {
+      res.status(400);
+      throw new Error("No image uploaded for identification document");
+    }
+
+    // update user
+    if (imageUrl !== undefined && req?.files.length > 0) {
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        req.params.id,
+        {
+          image: imageUrl !== undefined && imageUrl,
+        },
+        {
+          new: true,
+        }
+      );
+
       responseHandle.successResponse(
         res,
         201,
-        "profile picture updated successfully.",
+        "identification document updated successfully.",
         updatedUser
       );
     }
+
+    responseHandle.successResponse(
+      res,
+      201,
+      "identification document updated successfully.",
+      "image"
+    );
   } catch (error) {
     res.status(500);
     throw new Error(error);

@@ -21,6 +21,10 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
+    kyc_completed: {
+      type: Boolean,
+      default: false,
+    },
     phone_number: {
       type: String,
     },
