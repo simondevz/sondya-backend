@@ -27,6 +27,7 @@ auth.register = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error("Email is taken");
     }
+
     const usernameTaken = await UserModel.findOne({
       username: username.trim(),
     });
@@ -43,7 +44,7 @@ auth.register = asyncHandler(async (req, res) => {
       username: username.trim().toLowerCase(),
       password: password.trim(),
       country: country.trim(),
-      referrer: referrer.trim().toLowerCase(),
+      referrer: referrer && referrer.trim().toLowerCase(),
       type: "user",
     });
 
