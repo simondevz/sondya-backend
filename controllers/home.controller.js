@@ -94,12 +94,13 @@ homeList.getAllServices = asyncHandler(async (req, res) => {
 homeList.getProductById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
 
-  const OriginalString = req.params.name.replace(/-/g, " ");
+  // the slug name causes a bug
+  // const OriginalString = req.params.name.replace(//g, " ");
 
   //  for a regex search pattern
   const productDetails = await ProductModel.findOne({
     _id: req.params.id,
-    name: new RegExp(OriginalString, "i"),
+    // name: new RegExp(OriginalString, "i"),
   });
 
   try {
@@ -122,13 +123,13 @@ homeList.getProductById = asyncHandler(async (req, res) => {
 
 homeList.getServiceById = asyncHandler(async (req, res) => {
   // #swagger.tags = ['home']
-
-  const OriginalString = req.params.name.replace(/-/g, " ");
+  // the slug name causes a bug
+  // const OriginalString = req.params.name.replace(/-/g, " ");
 
   //  for a regex search pattern
   const serviceDetails = await ServiceModel.findOne({
     _id: req.params.id,
-    name: new RegExp(OriginalString, "i"),
+    // name: new RegExp(OriginalString, "i"),
   });
 
   try {

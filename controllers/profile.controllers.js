@@ -164,7 +164,8 @@ profile.updateCompanyDetails = asyncHandler(async (req, res) => {
       req.params.id,
       {
         company_details:
-          company_details !== undefined && JSON.parse(company_details),
+          // company_details !== undefined && JSON.parse(company_details),
+          company_details !== undefined && company_details,
       },
       {
         new: true,
