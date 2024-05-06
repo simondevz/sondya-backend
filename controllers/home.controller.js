@@ -150,4 +150,30 @@ homeList.getServiceById = asyncHandler(async (req, res) => {
   }
 });
 
+homeList.getProductPriceById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['home']
+
+  // search and get only value for current_price
+  const productPrice = await ProductModel.findOne({
+    _id: req.params.id,
+  }).select("current_price old_price");
+
+  try {
+    if (!productPrice) {
+      res.status(404);
+      throw new Error("price not found");
+    } else {
+      responseHandle.successResponse(
+        res,
+        200,
+        "price found successfully.",
+        productPrice
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default homeList;

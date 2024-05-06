@@ -9,6 +9,7 @@ const homeRoutes = Router.Router();
 homeRoutes.get("/products", homeList.getAllProducts);
 homeRoutes.get("/services", homeList.getAllServices);
 homeRoutes.get("/product/details/:id/:name", homeList.getProductById);
+homeRoutes.get("/product/price/:id/", homeList.getProductPriceById);
 homeRoutes.get("/service/details/:id/:name", homeList.getServiceById);
 
 //get categories
