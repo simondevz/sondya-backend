@@ -52,8 +52,14 @@ Order.createProductOrder = asyncHandler(async (req, res) => {
   });
 
   if (checkPayment) {
-    res.status(500);
-    throw new Error("Payment already made and id exists");
+    // res.status(500);
+    // throw new Error("Payment already made and id exists");
+    responseHandle.successResponse(
+      res,
+      201,
+      "Payment already made and id exists.",
+      checkPayment
+    );
   }
 
   try {

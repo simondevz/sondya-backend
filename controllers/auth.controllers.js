@@ -89,6 +89,7 @@ auth.login = asyncHandler(async (req, res) => {
           email: exists.email,
           type: exists.type,
           username: exists.username,
+          phone_number: exists.phone_number,
         },
         "1d"
       ),
