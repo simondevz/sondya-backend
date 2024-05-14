@@ -134,6 +134,30 @@
         }
       }
     },
+    "/api/v1/product/price/{id}/": {
+      "get": {
+        "tags": [
+          "home"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/service/details/{id}/{name}": {
       "get": {
         "tags": [
@@ -3585,6 +3609,135 @@
         "parameters": [
           {
             "name": "seller_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/order/services/updateterms/{order_id}": {
+      "put": {
+        "tags": [
+          "Seller Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "example": "any"
+                },
+                "duration": {
+                  "example": "any"
+                },
+                "durationUnit": {
+                  "example": "any"
+                },
+                "acceptedByBuyer": {
+                  "example": "any"
+                },
+                "acceptedBySeller": {
+                  "example": "any"
+                },
+                "rejectedByBuyer": {
+                  "example": "any"
+                },
+                "rejectedBySeller": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/order/services/update/{order_id}": {
+      "put": {
+        "tags": [
+          "Seller Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "serviceOrder": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/seller/order/services/{order_id}": {
+      "get": {
+        "tags": [
+          "Seller Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "order_id",
             "in": "path",
             "required": true,
             "type": "string"

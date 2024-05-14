@@ -25,4 +25,19 @@ SellerOrderRoutes.get(
   SellerOrder.getServiceOrdersSeller
 );
 
+SellerOrderRoutes.put(
+  "/seller/order/services/updateterms/:order_id",
+  SellerOrder.updateServiceOrderTerms
+);
+
+SellerOrderRoutes.put(
+  "/seller/order/services/update/:order_id",
+  SellerOrder.updateServiceOrder
+);
+
+SellerOrderRoutes.get(
+  "/seller/order/services/:order_id",
+  SellerOrder.getServiceOrderById
+);
+
 export default SellerOrderRoutes;
