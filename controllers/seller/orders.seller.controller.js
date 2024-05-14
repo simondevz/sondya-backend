@@ -143,4 +143,107 @@ SellerOrder.getServiceOrdersSeller = asyncHandler(async (req, res) => {
   }
 });
 
+SellerOrder.updateServiceOrderTerms = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Order']
+
+  const {
+    amount,
+    duration,
+    durationUnit,
+    acceptedByBuyer,
+    acceptedBySeller,
+    rejectedByBuyer,
+    rejectedBySeller,
+  } = req.body;
+  const order_id = req.params.order_id;
+  const terms = {
+    amount,
+    duration,
+    durationUnit,
+    acceptedByBuyer,
+    acceptedBySeller,
+    rejectedByBuyer,
+    rejectedBySeller,
+  };
+
+  try {
+    const updatedServiceOrder = await ServiceOrderModel.findOneAndUpdate(
+      { order_id },
+      {
+        "checkout_items.terms": terms,
+      },
+      { new: true }
+    );
+
+    if (!updatedServiceOrder) {
+      res.status(500);
+      throw new Error("could not update service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order updated successfully.",
+      updatedServiceOrder.checkout_items.terms
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+SellerOrder.updateServiceOrder = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Order']
+
+  const serviceOrder = req.body.serviceOrder;
+  const order_id = req.params.order_id;
+
+  try {
+    const updatedServiceOrder = await ServiceOrderModel.findOneAndUpdate(
+      { order_id },
+      serviceOrder,
+      { new: true }
+    );
+
+    if (!updatedServiceOrder) {
+      res.status(500);
+      throw new Error("could not update service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order updated successfully.",
+      updatedServiceOrder
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+SellerOrder.getServiceOrderById = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Seller Order']
+  const order_id = req.params.order_id;
+
+  try {
+    const serviceOrder = await ServiceOrderModel.findOne({ order_id });
+
+    if (!serviceOrder) {
+      res.status(500);
+      throw new Error("could not get service order");
+    }
+
+    responseHandle.successResponse(
+      res,
+      200,
+      "Service order gotten successfully.",
+      serviceOrder
+    );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
 export default SellerOrder;
