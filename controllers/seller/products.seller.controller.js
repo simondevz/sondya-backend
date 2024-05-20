@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import ProductModel from "../../models/products.model.js";
+import { processInput } from "../../utils/checkIfJsonOrString.js";
 import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
 import handleUpload from "../../utils/upload.js";
@@ -59,10 +60,9 @@ SellerProducts.create = asyncHandler(async (req, res) => {
       });
     }
     // end of uploaded images
-
     const newProducts = await ProductModel.create({
       name: name,
-      owner: owner !== undefined && JSON.parse(owner),
+      owner: processInput(owner),
       category: "product",
       sub_category: category,
       description: description,
@@ -77,7 +77,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
       discount_percentage: discount_percentage,
       vat_percentage: vat_percentage,
       total_variants: total_variants,
-      variants: JSON.parse(variants),
+      variants: processInput(variants),
       image: imageUrl,
 
       country: country,

@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import ServiceModel from "../../models/services.model.js";
+import { processInput } from "../../utils/checkIfJsonOrString.js";
 import { deleteUploads } from "../../utils/deleteupload.js";
 import responseHandle from "../../utils/handleResponse.js";
 import handleUpload from "../../utils/upload.js";
@@ -61,7 +62,7 @@ SellerServices.create = asyncHandler(async (req, res) => {
 
     const newService = await ServiceModel.create({
       name: name,
-      owner: JSON.parse(owner),
+      owner: processInput(owner),
       category: "service",
       sub_category: category,
       brief_description: brief_description,
