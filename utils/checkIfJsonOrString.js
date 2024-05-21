@@ -1,6 +1,6 @@
 export function processInput(value) {
   if (value !== undefined) {
-    if (typeof owner === "string") {
+    if (typeof value === "string") {
       try {
         return JSON.parse(value);
       } catch (e) {

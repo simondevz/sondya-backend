@@ -12,7 +12,8 @@ SellerProducts.create = asyncHandler(async (req, res) => {
   const {
     name,
     owner,
-    category,
+    // category,
+    sub_category,
     description,
     total_stock,
     tag,
@@ -64,7 +65,7 @@ SellerProducts.create = asyncHandler(async (req, res) => {
       name: name,
       owner: processInput(owner),
       category: "product",
-      sub_category: category,
+      sub_category: sub_category,
       description: description,
       total_stock: total_stock,
       tag: tag,
@@ -109,6 +110,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
   const {
     name,
     category,
+    sub_category,
     description,
     total_stock,
     tag,
@@ -178,6 +180,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
       {
         name: name,
         category: category,
+        sub_category: sub_category,
         description: description,
         total_stock: total_stock,
         tag: tag,
@@ -190,7 +193,7 @@ SellerProducts.update = asyncHandler(async (req, res) => {
         discount_percentage: discount_percentage,
         vat_percentage: vat_percentage,
         total_variants: total_variants,
-        variants: JSON.parse(variants),
+        variants: processInput(variants),
         image: imageUrl.length > 0 ? imageUrl : [],
 
         country: country,
