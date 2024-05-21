@@ -2854,7 +2854,7 @@
                 "owner": {
                   "example": "any"
                 },
-                "category": {
+                "sub_category": {
                   "example": "any"
                 },
                 "description": {
@@ -2950,6 +2950,9 @@
                   "example": "any"
                 },
                 "category": {
+                  "example": "any"
+                },
+                "sub_category": {
                   "example": "any"
                 },
                 "description": {
