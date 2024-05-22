@@ -3159,13 +3159,16 @@
                 "owner": {
                   "example": "any"
                 },
-                "category": {
+                "sub_category": {
                   "example": "any"
                 },
                 "brief_description": {
                   "example": "any"
                 },
                 "description": {
+                  "example": "any"
+                },
+                "tags": {
                   "example": "any"
                 },
                 "service_status": {
@@ -3254,13 +3257,16 @@
                 "name": {
                   "example": "any"
                 },
-                "category": {
+                "sub_category": {
                   "example": "any"
                 },
                 "brief_description": {
                   "example": "any"
                 },
                 "description": {
+                  "example": "any"
+                },
+                "tags": {
                   "example": "any"
                 },
                 "service_status": {
