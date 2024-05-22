@@ -17,6 +17,9 @@ const servicesSchema = Schema(
     description: {
       type: String,
     },
+    tag: {
+      type: String,
+    },
 
     // owner
     owner: {
