@@ -195,7 +195,7 @@ SellerOrder.updateServiceOrderTerms = asyncHandler(async (req, res) => {
 SellerOrder.updateServiceOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Seller Order']
 
-  const serviceOrder = req.body.serviceOrder;
+  const serviceOrder = req.body;
   const order_id = req.params.order_id;
 
   try {
@@ -223,15 +223,14 @@ SellerOrder.updateServiceOrder = asyncHandler(async (req, res) => {
 });
 
 SellerOrder.getServiceOrderById = asyncHandler(async (req, res) => {
-  // #swagger.tags = ['Seller Order']
-  const order_id = req.params.order_id;
-
   try {
+    const order_id = req.params.order_id;
+
     const serviceOrder = await ServiceOrderModel.findOne({ order_id });
 
     if (!serviceOrder) {
       res.status(500);
-      throw new Error("could not get service order");
+      throw new Error("could not get service order1");
     }
 
     responseHandle.successResponse(

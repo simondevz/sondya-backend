@@ -3714,18 +3714,6 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "serviceOrder": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -3740,9 +3728,6 @@
     },
     "/api/v1/seller/order/services/{order_id}": {
       "get": {
-        "tags": [
-          "Seller Order"
-        ],
         "description": "",
         "parameters": [
           {
