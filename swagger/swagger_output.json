@@ -5193,6 +5193,35 @@
         }
       }
     },
+    "/api/v1/user/order/services/check": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/user/order/products/create": {
       "post": {
         "tags": [
@@ -5416,7 +5445,19 @@
             "schema": {
               "type": "object",
               "properties": {
-                "serviceOrder": {
+                "order_id": {
+                  "example": "any"
+                },
+                "payment_id": {
+                  "example": "any"
+                },
+                "buyer": {
+                  "example": "any"
+                },
+                "seller": {
+                  "example": "any"
+                },
+                "checkout_items": {
                   "example": "any"
                 }
               }

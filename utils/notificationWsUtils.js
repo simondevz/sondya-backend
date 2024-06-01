@@ -50,6 +50,8 @@ wsUtil.createRoom = (data, ws) => {
 
 wsUtil.echoPayload = (sender_id, receiver_id, payload, ws) => {
   const room = wsUtil.rooms[receiver_id];
+  console.log("hy1");
+  console.log(room);
   wsUtil.joinRoom({ receiver_id: sender_id }, ws);
   if (room)
     if (room[0][receiver_id]) {

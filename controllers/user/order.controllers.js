@@ -226,7 +226,7 @@ Order.getProductOrderByOrderId = asyncHandler(async (req, res) => {
 Order.createServiceOrder = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Order']
 
-  const { serviceOrder } = req.body;
+  const serviceOrder = req.body;
   const service_id = req.params.service_id;
 
   // Generate a 8-digit order
@@ -261,6 +261,17 @@ Order.createServiceOrder = asyncHandler(async (req, res) => {
       throw new Error("Can't find seller");
     }
 
+    const checkIfTradeExists = await ServiceOrderModel.exists({
+      "buyer.id": serviceOrder.buyer.id,
+      "seller.id": serviceOrder.seller.id,
+      order_status: "IN PROGRESS",
+      "checkout_items._id": serviceOrder.checkout_items._id,
+    });
+    if (checkIfTradeExists) {
+      res.status(400);
+      throw new Error("service order already exists");
+    }
+
     const newServiceOrder = await ServiceOrderModel.create({ ...serviceOrder });
     if (!newServiceOrder) {
       res.status(500);
@@ -273,6 +284,69 @@ Order.createServiceOrder = asyncHandler(async (req, res) => {
       "Service order created successfully.",
       newServiceOrder
     );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+Order.checkServiceOrder1 = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Order']
+
+  const { buyer_id, seller_id, service_id } = req.body;
+
+  try {
+    const check = await ServiceModel.exists({ _id: service_id });
+    if (!check) {
+      res.status(404);
+      throw new Error("service not found");
+    }
+
+    const checkBuyer = await UserModel.exists({ _id: buyer_id });
+    if (!checkBuyer) {
+      res.status(400);
+      throw new Error("Can't find buyer(user)");
+    }
+
+    const checkSeller = await UserModel.exists({
+      _id: seller_id,
+    });
+    if (!checkSeller) {
+      res.status(400);
+      throw new Error("Can't find seller");
+    }
+
+    // const checkIfTradeExists = await ServiceOrderModel.exists({
+    //   "buyer.id": buyer_id,
+    //   "seller.id": seller_id,
+    //   order_status: "IN PROGRESS",
+    //   "checkout_items._id": service_id,
+    // });
+
+    const checkIfTradeExists = await ServiceOrderModel.findOne({
+      "buyer.id": buyer_id,
+      "seller.id": seller_id,
+      order_status: "IN PROGRESS",
+      "checkout_items._id": service_id,
+    });
+
+    let terms_agreed = false;
+
+    // console.log(checkIfTradeExists.checkout_items.terms);
+
+    if (
+      checkIfTradeExists.checkout_items.terms.acceptedByBuyer &&
+      checkIfTradeExists.checkout_items.terms.acceptedBySeller
+    ) {
+      terms_agreed = true;
+    }
+
+    responseHandle.successResponse(res, 201, "Service status checked.", {
+      ...checkIfTradeExists._doc,
+      order_exist: checkIfTradeExists ? true : false,
+      // order_id: checkIfTradeExists ? checkIfTradeExists._id : null,
+      terms_agreed: terms_agreed,
+    });
   } catch (error) {
     res.status(500);
     throw new Error(error);
