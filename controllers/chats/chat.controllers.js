@@ -1,7 +1,7 @@
+import asyncHandler from "express-async-handler";
 import ChatModel from "../../models/chat.model.js";
 import ChatMessageModel from "../../models/chatMessage.model.js";
 import responseHandle from "../../utils/handleResponse.js";
-import asyncHandler from "express-async-handler";
 
 const Chat = {};
 

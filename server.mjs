@@ -90,6 +90,10 @@ import ServicesRoutes from "./routes/user/services.routes.js";
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+//swagger inititailization
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 app.use("/api/v1/", TrackRoutes);
 app.use("/api/v1/", homeRoutes);
 app.use("/api/v1/", contactusRoutes);
@@ -102,9 +106,6 @@ app.use("/api/v1/", groupMembersRoutes.unprotected);
 app.use("/api/v1/", groupMessagesRoutes.unprotected);
 app.use("/api/v1/", reviewsRoutes.unprotected);
 app.use("/api/v1/", SubscribersRoute.unprotected);
-
-//swagger inititailization
-app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // protected routes
 app.use(AuthMiddleware.protectUser);

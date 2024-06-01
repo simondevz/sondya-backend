@@ -1,8 +1,8 @@
-import wsUtil from "../utils/notificationWsUtils.js";
 import asyncHandler from "express-async-handler";
-import responseHandle from "../utils/handleResponse.js";
 import NotificationsModel from "../models/notifications.model.js";
 import UserModel from "../models/users.model.js";
+import responseHandle from "../utils/handleResponse.js";
+import wsUtil from "../utils/notificationWsUtils.js";
 
 const Notifications = {};
 
@@ -188,7 +188,6 @@ wsNotificationController.use = (path, app) =>
                 ws
               );
               break;
-
             case "testing_connection":
               wsUtil.echoPayload(
                 data.sender_id,

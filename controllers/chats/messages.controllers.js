@@ -1,9 +1,9 @@
-import ChatModel from "../../models/chat.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import asyncHandler from "express-async-handler";
-import handleUpload from "../../utils/upload.js";
+import ChatModel from "../../models/chat.model.js";
 import ChatMessageModel from "../../models/chatMessage.model.js";
 import UserModel from "../../models/users.model.js";
+import responseHandle from "../../utils/handleResponse.js";
+import handleUpload from "../../utils/upload.js";
 
 const custom_format = {
   "image/jpeg": "jpeg",
@@ -99,6 +99,11 @@ chatMessages.sendMessage = asyncHandler(async (req, res) => {
   });
 
   try {
+    if (sender_id == null || sender_id == "") {
+      res.status(400);
+      throw new Error("No sender ID provided");
+    }
+
     const sender = await UserModel.findById(sender_id).lean();
     if (!sender?._id) {
       res.status(400);
@@ -128,9 +133,8 @@ chatMessages.sendMessage = asyncHandler(async (req, res) => {
         user2: receiver_id,
       });
     }
-
     let fileUrl = "null";
-    if (req.files.length > 0) {
+    if (req.files && req.files.length > 0) {
       // upload images to cloudinary
       let files = req?.files;
       console.log(files);
