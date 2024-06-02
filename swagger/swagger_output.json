@@ -5194,7 +5194,7 @@
       }
     },
     "/api/v1/user/order/services/check": {
-      "get": {
+      "post": {
         "tags": [
           "Order"
         ],
@@ -5204,6 +5204,24 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "buyer_id": {
+                  "example": "any"
+                },
+                "seller_id": {
+                  "example": "any"
+                },
+                "service_id": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
