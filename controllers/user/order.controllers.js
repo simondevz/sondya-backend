@@ -298,8 +298,7 @@ Order.checkServiceOrder1 = asyncHandler(async (req, res) => {
   try {
     const check = await ServiceModel.exists({ _id: service_id });
     if (!check) {
-      res.status(404);
-      throw new Error("service not found");
+      responseHandle.successResponse(res, 201, "Service status checked.", {});
     }
 
     const checkBuyer = await UserModel.exists({ _id: buyer_id });
