@@ -410,7 +410,7 @@ Order.updateServiceOrder = asyncHandler(async (req, res) => {
   try {
     const updatedServiceOrder = await ServiceOrderModel.findOneAndUpdate(
       { order_id },
-      serviceOrder,
+      serviceOrder ? serviceOrder : req.body,
       { new: true }
     );
 
