@@ -6,8 +6,8 @@ import { readFileSync } from "fs";
 import { load } from "js-yaml";
 import { v4 as uuidv4 } from "uuid";
 import OrderPaymentModel from "../../models/productOrderPayment.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import { sendOrdersMadeEmail } from "../../services/orders.services.js";
+import responseHandle from "../../utils/handleResponse.js";
 dotenv.config();
 
 const config = load(readFileSync("config.yaml", "utf8"));
