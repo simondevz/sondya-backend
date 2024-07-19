@@ -1,6 +1,6 @@
+import asyncHandler from "express-async-handler";
 import GroupChatModel from "../../models/groupchat.model.js";
 import responseHandle from "../../utils/handleResponse.js";
-import asyncHandler from "express-async-handler";
 
 const groupChat = {};
 
