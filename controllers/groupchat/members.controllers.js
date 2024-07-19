@@ -1,14 +1,17 @@
-import GroupChatModel from "../../models/groupchat.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import asyncHandler from "express-async-handler";
+import GroupChatModel from "../../models/groupchat.model.js";
 import GroupMembershipModel from "../../models/groupMembership.model.js";
 import UserModel from "../../models/users.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const groupMembers = {};
 
 groupMembers.getMembers = asyncHandler(async (req, res) => {
   // #swagger.tags = ['Group Chat Handlers']
   const group_id = req.params.group_id;
+
+  //  for a regex search pattern
+  const searchRegex = new RegExp(req.query.search, "i");
 
   try {
     const check = await GroupChatModel.findById(group_id);
@@ -17,10 +20,19 @@ groupMembers.getMembers = asyncHandler(async (req, res) => {
       throw new Error("Id not found");
     }
 
-    const members = await GroupMembershipModel.find({ group_id }).populate(
-      "user_id",
-      ["email", "username", "image"]
-    );
+    const members = await GroupMembershipModel.find({
+      group_id: group_id,
+    }).populate("user_id", ["email", "username", "image"]);
+
+    const filteredMembers = members.filter((member) => {
+      if (searchRegex) {
+        return (
+          searchRegex.test(member.user_id.username) ||
+          searchRegex.test(member.user_id.email)
+        );
+      }
+      return true;
+    });
 
     if (!members) {
       res.status(500);
@@ -29,8 +41,8 @@ groupMembers.getMembers = asyncHandler(async (req, res) => {
       responseHandle.successResponse(
         res,
         200,
-        "Got Group mmembers successfully.",
-        members
+        "Got Group members successfully.",
+        filteredMembers
       );
     }
   } catch (error) {
