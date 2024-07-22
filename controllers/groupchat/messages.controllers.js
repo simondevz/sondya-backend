@@ -1,9 +1,9 @@
-import GroupChatModel from "../../models/groupchat.model.js";
-import responseHandle from "../../utils/handleResponse.js";
 import asyncHandler from "express-async-handler";
-import UserModel from "../../models/users.model.js";
+import GroupChatModel from "../../models/groupchat.model.js";
 import GroupMessageModel from "../../models/groupMessage.model.js";
 import LikesModel from "../../models/likes.model.js";
+import UserModel from "../../models/users.model.js";
+import responseHandle from "../../utils/handleResponse.js";
 
 const groupMessages = {};
 
@@ -136,4 +136,44 @@ groupMessages.likeMessage = asyncHandler(async (req, res) => {
   }
 });
 
+groupMessages.sendMessage = asyncHandler(async (req, res) => {
+  // #swagger.tags = ['Group Chat Handlers']
+  const { message, group_id, sender_id } = req.body;
+
+  try {
+    const check = await GroupChatModel.findById(group_id);
+    if (!check) {
+      res.status(404);
+      throw new Error("Message not found");
+    }
+
+    const user = await UserModel.findById(sender_id);
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    const newMessage = await GroupMessageModel.create({
+      message: message,
+      group_id: group_id,
+      sender_id: sender_id,
+    });
+
+    if (!newMessage) {
+      res.status(500);
+      throw new Error("could not send message");
+    } else {
+      responseHandle.successResponse(
+        res,
+        201,
+        "Message sent successfully.",
+        newMessage
+      );
+    }
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    throw new Error(error);
+  }
+});
 export default groupMessages;
