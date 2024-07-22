@@ -9,10 +9,13 @@ groupMessagesRoutes.protected.post(
   "/groupchat/messages/like",
   groupMessages.likeMessage
 );
-// groupMessagesRoutes.protected.post(
-//   "/groupchat/messages/send",
-//   groupMessages.sendMessage
-// );
+
+// should be off soon
+groupMessagesRoutes.protected.post(
+  "/groupchat/messages/send",
+  groupMessages.sendMessage
+);
+
 groupMessagesRoutes.unprotected.get(
   "/groupchat/messages/:group_id",
   groupMessages.getMessages
