@@ -1,6 +1,6 @@
+import asyncHandler from "express-async-handler";
 import GroupMessageModel from "../models/groupMessage.model.js";
 import GroupChatModel from "../models/groupchat.model.js";
-import asyncHandler from "express-async-handler";
 import UserModel from "../models/users.model.js";
 import handleUpload from "./upload.js";
 
@@ -37,33 +37,50 @@ wsUtil.roomExist = (room_id) => {
   }
 };
 
+// wsUtil.userExistInRoom = (room_id, user_id) => {
+//   let status = false;
+//   const room = wsUtil.rooms[room_id];
+//   for (let i = 0; i < room?.length; i++) {
+//     let user = room[i];
+//     for (const key in user) {
+//       if (user_id === key) {
+//         status = true;
+//         break;
+//       }
+//     }
+//   }
+//   return status;
+// };
+
 wsUtil.userExistInRoom = (room_id, user_id) => {
-  let status = false;
   const room = wsUtil.rooms[room_id];
-  for (let i = 0; i < room?.length; i++) {
+  if (!room) return false;
+
+  for (let i = 0; i < room.length; i++) {
     let user = room[i];
-    for (const key in user) {
-      if (user_id === key) {
-        status = true;
-        break;
-      }
+    if (Object.prototype.hasOwnProperty.call(user, user_id)) {
+      return true;
     }
   }
-  return status;
+  return false;
 };
 
-// create room
 wsUtil.createRoom = (data, ws) => {
   try {
     let { room_id, user_id, recipient_id, chat } = data;
 
+    // Ensure user_id is a string
+    user_id = String(user_id);
+
     wsUtil.rooms[room_id] = [];
     const user = {};
-    user[user_id] = ws;
+    user[user_id] = ws; // Add user_id as string key
 
     wsUtil.rooms[room_id].push(user);
+
+    // Set user_id as a string in the WebSocket object
     ws["room_id"] = room_id;
-    ws["user_id"] = user_id;
+    ws["user_id"] = user_id; // Ensure this is a string
     if (recipient_id) ws["recipient_id"] = recipient_id;
     if (chat) ws["chat"] = chat;
 
@@ -93,10 +110,19 @@ wsUtil.getOnlineUsers = (data, ws) => {
 };
 
 wsUtil.echoPayload = (receiver_id, payload, ws) => {
-  const { sender_id, chat_id } = payload;
+  let { sender_id, chat_id } = payload;
+
+  // Check if sender_id is an object (i.e., a map)
+  if (typeof sender_id === "object" && sender_id !== null) {
+    sender_id = sender_id._id; // Extract the actual sender_id from the object
+  }
+
+  // Ensure sender_id is a string
+  sender_id = String(sender_id);
 
   // Add the person sending the message to the room
   const senderInRoom = wsUtil.userExistInRoom(chat_id, sender_id);
+
   if (!senderInRoom)
     wsUtil.joinRoom(
       {
@@ -108,8 +134,10 @@ wsUtil.echoPayload = (receiver_id, payload, ws) => {
     );
 
   const room = wsUtil.rooms[chat_id];
+
   for (let i = 0; i < room.length; i++) {
     let user = room[i];
+
     for (let key in user) {
       let wsClient = user[key];
       wsClient.send(JSON.stringify(payload));
@@ -147,8 +175,11 @@ wsUtil.newRoomCheck = (data, ws) => {
 wsUtil.joinRoom = (data, ws) => {
   try {
     let { room_id, user_id, recipient_id, chat } = data;
-    // check if room exist or not
 
+    // Ensure user_id is a string
+    user_id = String(user_id);
+
+    // Check if the room exists or not
     const roomExist = wsUtil.roomExist(room_id);
 
     if (!roomExist) {
@@ -161,11 +192,13 @@ wsUtil.joinRoom = (data, ws) => {
       return;
     } else {
       const user = {};
-      user[user_id] = ws;
+      user[user_id] = ws; // Add user_id as string key
+
       wsUtil.rooms[room_id].push(user);
 
+      // Set user_id as a string in the WebSocket object
       ws["room_id"] = room_id;
-      ws["user_id"] = user_id;
+      ws["user_id"] = user_id; // Ensure this is a string
       if (recipient_id) ws["recipient_id"] = recipient_id;
       if (chat) ws["chat"] = chat;
 

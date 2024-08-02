@@ -37,7 +37,7 @@ chatMessages.getMessages = asyncHandler(async (req, res) => {
   const service_id = req.query.service_id || null;
 
   try {
-    const chat = await ChatModel.findOne({
+    let chat = await ChatModel.findOne({
       $or: [
         { user1: sender_id, user2: receiver_id },
         { user1: receiver_id, user2: sender_id },
@@ -48,13 +48,28 @@ chatMessages.getMessages = asyncHandler(async (req, res) => {
       .lean();
 
     if (!chat?._id) {
-      return responseHandle.successResponse(
-        res,
-        200,
-        "Chat does not exist yet.",
-        []
-      );
+      // First, create the chat document
+      chat = await ChatModel.create({
+        user1: sender_id,
+        user2: receiver_id,
+      });
+
+      await ChatMessageModel.create({
+        message: "This is the beginning of your chat, say Hi! 😊",
+        chat_id: chat?.id,
+        sender_id,
+      });
+
+      // Then, populate the necessary fields in a separate query
+      chat = await ChatModel.findById(chat._id)
+        .populate("user1", ["username", "first_name", "last_name", "email"])
+        .populate("user2", ["username", "first_name", "last_name", "email"])
+        .lean();
     }
+
+    // console.log(chat);
+
+    // return responseHandle.successResponse(res, 200, "Chat created", chat);
 
     const chatMessages = await ChatMessageModel.find({
       chat_id: chat._id,

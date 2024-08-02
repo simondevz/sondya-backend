@@ -2,6 +2,8 @@ import wsUtil from "../../utils/websocketsUtils.js";
 
 const wsChatController = {};
 
+wsChatController.activeUsers = new Map();
+
 wsChatController.use = (path, app) =>
   app.ws(path, (ws) => {
     try {
@@ -32,6 +34,10 @@ wsChatController.use = (path, app) =>
                 { room_id: data.room_id, user_id: data.sender_id },
                 ws
               );
+              // eslint-disable-next-line no-case-declarations
+              const user_id = data.sender_id;
+              wsChatController.activeUsers.set(user_id, ws);
+              wsChatController.broadcastStatus(user_id, "online", ws);
               break;
 
             case "join_review_terms_room":
@@ -41,14 +47,16 @@ wsChatController.use = (path, app) =>
               );
               break;
 
-            case "join_conversations":
+            case "join_conversations": {
               wsUtil.joinRooms(data, ws);
               break;
+            }
+            // wsUtil.joinRooms(data, ws);
+            // break;
 
             case "testing_connection":
               wsUtil.echoPayload(data.receiver_id, data.payload, ws);
               break;
-
             default:
               wsUtil.joinRoom(
                 { room_id: data.room_id, user_id: data.sender_id },
@@ -60,6 +68,9 @@ wsChatController.use = (path, app) =>
       });
 
       ws.on("close", () => {
+        const { user_id } = ws;
+        wsChatController.activeUsers.delete(user_id);
+        wsChatController.broadcastStatus(user_id, "offline");
         wsUtil.leaveRoom({
           room_id: ws.room_id,
           user_id: ws.user_id,
@@ -99,5 +110,21 @@ wsChatController.clearUnused = () =>
       delete wsUtil.rooms[removeKey[i]];
     }
   }, 50000);
+
+// Function to broadcast user status
+wsChatController.broadcastStatus = (user_id, status) => {
+  wsChatController.activeUsers.forEach((ws) => {
+    // if (id !== user_id) {
+    // Don't send the status update to the user themselves
+    ws.send(
+      JSON.stringify({
+        meta: "user_status",
+        user_id,
+        status,
+      })
+    );
+    // }
+  });
+};
 
 export default wsChatController;
