@@ -174,10 +174,10 @@ wsUtil.newRoomCheck = (data, ws) => {
 // join room
 wsUtil.joinRoom = (data, ws) => {
   try {
-    let { room_id, user_id, recipient_id, chat } = data;
+    let { room_id, user_id, sender_id, recipient_id, chat } = data;
 
     // Ensure user_id is a string
-    user_id = String(user_id);
+    user_id = String(user_id || sender_id);
 
     // Check if the room exists or not
     const roomExist = wsUtil.roomExist(room_id);
@@ -222,6 +222,7 @@ wsUtil.joinRooms = (data, ws) => {
 
 // send message
 wsUtil.sendMessage = asyncHandler(async (data, ws) => {
+  // console.log(data);
   const { room_id, message, images, user_id } = data;
   try {
     const check = await GroupChatModel.findById(room_id);

@@ -17,11 +17,12 @@ wsGroupChatController.use = (path, app) =>
             case "get_online_users":
               wsUtil.getOnlineUsers(data, ws);
               break;
-
             case "join_conversation":
               wsUtil.joinRoom(data, ws);
               break;
-
+            case "echo_payload":
+              wsUtil.echoPayload(data.receiver_id, data.payload, ws);
+              break;
             default:
               wsUtil.joinRoom(data, ws);
               break;
