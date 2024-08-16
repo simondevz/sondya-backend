@@ -13,6 +13,19 @@ const groupMessageSchema = Schema(
     message: {
       type: String,
     },
+    type: {
+      type: String,
+      default: "text",
+    },
+    file_extension: {
+      type: String,
+    },
+    file_size: {
+      type: Number,
+    },
+    file_name: {
+      type: String,
+    },
     image: [
       {
         url: {
@@ -26,7 +39,7 @@ const groupMessageSchema = Schema(
         },
       },
     ],
-    file_attachments: [
+    file: [
       {
         url: {
           type: String,

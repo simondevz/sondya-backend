@@ -49,6 +49,11 @@ groupMessages.getMessages = asyncHandler(async (req, res) => {
           group_id: 1,
           sender_id: 1,
           image: 1,
+          file: 1,
+          file_extension: 1,
+          file_size: 1,
+          file_name: 1,
+          type: 1,
           createdAt: 1, // Include createdAt field
           likes: "$likes.user_id", // Extract user_ids from the 'likes' array
         },
@@ -205,13 +210,21 @@ groupMessages.sendMessage = asyncHandler(async (req, res) => {
           message: message,
           group_id: group_id,
           sender_id: sender_id,
+          type: "image",
+          file_name: req.files?.[0].originalname,
           image: fileUrl,
         }))
       : (newMessage = await GroupMessageModel.create({
-          message: message,
+          message: fileUrl === "null" ? message : "file",
           group_id: group_id,
           sender_id: sender_id,
-          [fileUrl === "null" ? null : "file_attachments"]: fileUrl,
+          type: fileUrl === "null" ? "text" : "file",
+          [fileUrl === "null" ? null : "file_name"]:
+            req.files?.[0].originalname,
+          [fileUrl === "null" ? null : "file_extension"]:
+            req.files?.[0].mimetype,
+          [fileUrl === "null" ? null : "file_size"]: req.files?.[0].size,
+          [fileUrl === "null" ? null : "file"]: fileUrl,
         }));
 
     if (!newMessage) {
