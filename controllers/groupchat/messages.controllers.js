@@ -4,6 +4,8 @@ import GroupMessageModel from "../../models/groupMessage.model.js";
 import LikesModel from "../../models/likes.model.js";
 import UserModel from "../../models/users.model.js";
 import responseHandle from "../../utils/handleResponse.js";
+import handleUpload from "../../utils/upload.js";
+import custom_format from "../chats/messages.controllers.js";
 
 const groupMessages = {};
 
@@ -153,11 +155,64 @@ groupMessages.sendMessage = asyncHandler(async (req, res) => {
       throw new Error("User not found");
     }
 
-    const newMessage = await GroupMessageModel.create({
-      message: message,
-      group_id: group_id,
-      sender_id: sender_id,
-    });
+    // start of uploading files
+    let fileUrl = "null";
+    if (req.files && req.files.length > 0) {
+      // upload images to cloudinary
+      let files = req?.files;
+      // console.log(files);
+      let multipleFilePromise = files.map(async (file, index) => {
+        // eslint-disable-next-line no-undef
+        const b64 = Buffer.from(file.buffer).toString("base64");
+        let dataURI = "data:" + file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(
+          dataURI,
+          index,
+          file.mimetype,
+          file.originalname
+        );
+        cldRes.custom_format = custom_format[file?.mimetype];
+        cldRes.custom_filename = file.originalname;
+        return cldRes;
+      });
+
+      // get url of uploaded images
+      const fileResponse = await Promise.all(multipleFilePromise);
+      fileUrl = fileResponse.map((file) => {
+        const url = file.secure_url;
+        const public_id = file.public_id;
+        const folder = file.folder;
+        return {
+          url,
+          public_id,
+          folder,
+          format: file.custom_format,
+          filename: file.custom_filename,
+        };
+      });
+    }
+    // end of uploading files
+
+    let newMessage;
+
+    // check if there is a file
+    const isNewfile = req.files && req.files.length > 0 ? true : false;
+
+    // create new message
+    (isNewfile && req.files?.[0].mimetype === "image/jpeg") ||
+    (isNewfile && req.files?.[0].mimetype === "image/png")
+      ? (newMessage = await GroupMessageModel.create({
+          message: message,
+          group_id: group_id,
+          sender_id: sender_id,
+          image: fileUrl,
+        }))
+      : (newMessage = await GroupMessageModel.create({
+          message: message,
+          group_id: group_id,
+          sender_id: sender_id,
+          [fileUrl === "null" ? null : "file_attachments"]: fileUrl,
+        }));
 
     if (!newMessage) {
       res.status(500);

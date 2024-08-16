@@ -148,6 +148,8 @@ chatMessages.sendMessage = asyncHandler(async (req, res) => {
         user2: receiver_id,
       });
     }
+
+    // start of uploading files
     let fileUrl = "null";
     if (req.files && req.files.length > 0) {
       // upload images to cloudinary
@@ -183,6 +185,8 @@ chatMessages.sendMessage = asyncHandler(async (req, res) => {
         };
       });
     }
+
+    // end of uploading files
 
     const message = await ChatMessageModel.create({
       message: message_text,
