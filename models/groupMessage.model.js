@@ -26,6 +26,25 @@ const groupMessageSchema = Schema(
         },
       },
     ],
+    file_attachments: [
+      {
+        url: {
+          type: String,
+        },
+        public_id: {
+          type: String,
+        },
+        folder: {
+          type: String,
+        },
+        filename: {
+          type: String,
+        },
+        format: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

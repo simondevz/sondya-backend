@@ -1,30 +1,51 @@
 import multer, { memoryStorage } from "multer";
 
+const mimeTypes = [
+  "application/json",
+  "application/javascript",
+  "application/pdf",
+  "application/xml",
+  "application/zip",
+  "application/vnd.ms-excel",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/x-www-form-urlencoded",
+  "application/xhtml+xml",
+  "application/octet-stream",
+  "application/x-tar",
+  "application/x-rar-compressed",
+  "application/gzip",
+  "application/x-bzip",
+  "application/x-bzip2",
+  "application/x-7z-compressed",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wav",
+  "audio/webm",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/svg+xml",
+  "image/webp",
+  "image/tiff",
+  "image/vnd.microsoft.icon",
+  "text/css",
+  "text/csv",
+  "text/html",
+  "text/javascript",
+  "text/plain",
+  "text/xml",
+  "video/mp4",
+  "video/mpeg",
+  "video/ogg",
+  "video/webm",
+  "video/x-msvideo",
+];
+
 const fileFilter = (req, file, cb) => {
-  if (
-    file.mimetype === "image/jpeg" ||
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "video/mp4" ||
-    file.mimetype === "video/webm" ||
-    file.mimetype === "video/x-matroska" || // MKV
-    file.mimetype === "video/avi" ||
-    file.mimetype === "video/quicktime" || // MOV
-    file.mimetype === "audio/wav" || // WAV
-    file.mimetype === "audio/mpeg" || // MP3
-    file.mimetype === "application/pdf" ||
-    file.mimetype === "application/msword" || // DOC
-    file.mimetype ===
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || // DOCX
-    file.mimetype === "application/vnd.ms-excel" || // XLS
-    file.mimetype ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || // XLSX
-    file.mimetype === "application/vnd.ms-powerpoint" || // PPT
-    file.mimetype ===
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation" || // PPTX
-    file.mimetype === "text/plain" || // TXT
-    file.mimetype === "text/csv" // CSV
-  ) {
+  if (mimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
     // reject file
