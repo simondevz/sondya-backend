@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/lordscoba/sondya-backend#readme",
   "dependencies": {
+    "@faker-js/faker": "^9.4.0",
     "@google-analytics/data": "^4.3.0",
     "@google-cloud/local-auth": "^2.1.0",
     "axios": "^1.6.2",
